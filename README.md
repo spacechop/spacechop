@@ -73,3 +73,24 @@ Each source has its own set of configuration to be able to lookup and download o
 As you might have seen there is a :preset variable in the path in the example configuration above, this is the only required variable in path that there is, and this will match the exact name of your preset in the configuration as you might have guessed.
 
 In a preset there are steps which are composed of a list of operations with their unique set of options. You can [read more about each operation in our wiki documentation](https://github.com/spacechop/spacechop/wiki).
+
+## Contributing
+
+[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechopt)
+
+[Read the SpaceChop Contributor Guidelines.](CONTRIBUTING.md)
+
+Running tests locally:
+
+```
+sh test.sh
+```
+
+or manually using docker-compose
+
+```
+docker-compose up -d --build
+docker-compose exec spacechop sh -c "npm run test:watch"
+```
+
+This project uses TypeScript for static typing and TSLint for linting. You can get both of these built into your editor with no configuration by opening this project in [Visual Studio Code](https://code.visualstudio.com/), an open source IDE which is available for free on all platforms.
