@@ -4,6 +4,8 @@ SpaceChop is a fully-featured image processing microservice with integrations fo
 
 At [spacechop.com](https://spacechop.com), you can get for the hosted solution of SpaceChop which includes CDN, storage, caching, database, statistics and analytics for your service.
 
+To get started with SpaceChop, [go to our documentation website](https://spacechop.gitbook.io/spacechop/).
+
 ## Installation
 
 To install SpaceChop you need two files:
@@ -66,13 +68,13 @@ http://commons.wikipedia.org/your-unique-path/with-slashes/to-and-image-url.jpg
 
 Notice the usage of :image in paths and sources, you can change this to whatever makes sense for you in your matching. You can use your own variable names and matching in your sources.
 
-Each source has its own set of configuration to be able to lookup and download originals. You can [read more about each source in our wiki documentation](https://github.com/spacechop/spacechop/wiki).
+Each source has its own set of configuration to be able to lookup and download originals. You can [read more about each source in our documentation](https://spacechop.gitbook.io/spacechop/).
 
 ### presets
 
 As you might have seen there is a :preset variable in the path in the example configuration above, this is the only required variable in path that there is, and this will match the exact name of your preset in the configuration as you might have guessed.
 
-In a preset there are steps which are composed of a list of operations with their unique set of options. You can [read more about each operation in our wiki documentation](https://github.com/spacechop/spacechop/wiki).
+In a preset there are steps which are composed of a list of operations with their unique set of options. You can [read more about each operation in our documentation](https://spacechop.gitbook.io/spacechop/).
 
 ## Contributing
 
