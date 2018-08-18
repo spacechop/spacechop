@@ -29,11 +29,11 @@ Creating a good reproduction really helps contributors investigate and resolve y
 
 ### Improving the documentation
 
-Improving the documentation, examples, and other open source content can be the easiest way to contribute to the library. If you see a piece of content that can be better, open a PR with an improvement, no matter how small! If you would like to suggest a big change or major rewrite, we’d love to hear your ideas! Please open a feature request for discussion, over in the [Apollo Client Feature Request repo](https://github.com/spacechop/feature-requests), before writing the PR.
+Improving the documentation, examples, and other open source content can be the easiest way to contribute to the library. If you see a piece of content that can be better, open a PR with an improvement, no matter how small! If you would like to suggest a big change or major rewrite, we’d love to hear your ideas! Please open a feature request for discussion, over in the [SpaceChop Feature Request repo](https://github.com/spacechop/feature-requests), before writing the PR.
 
 ### Responding to issues
 
-In addition to reporting issues, a great way to contribute to Apollo is to respond to other peoples' issues and try to identify the problem or help them work around it. If you’re interested in taking a more active role in this process, please go ahead and respond to issues.
+In addition to reporting issues, a great way to contribute to SpaceChop is to respond to other peoples' issues and try to identify the problem or help them work around it. If you’re interested in taking a more active role in this process, please go ahead and respond to issues.
 
 ### Small bug fixes
 
