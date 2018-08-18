@@ -8,7 +8,6 @@ services:
   - docker
 
 script:
-  - docker images
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --abort-on-container-exit --build
 
 before_cache:
