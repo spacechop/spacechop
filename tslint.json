@@ -27,9 +27,7 @@
             "avoid-escape"
         ]
       },
-      "interface-name": {
-        "options": [],
-    },
+      "interface-name": false
   },
   "jsRules": {
       "max-line-length": {
