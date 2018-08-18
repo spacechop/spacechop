@@ -1,11 +1,11 @@
-import { Stream } from 'stream';
 import { spawn } from 'duplex-child-process';
+import { Stream } from 'stream';
 
-export default async (stream: Stream) : Promise<any> => new Promise((resolve, reject) => {
+export default async (stream: Stream): Promise<any> => new Promise((resolve, reject) => {
   const proc = spawn('exiftool', ['-json', '-']);
   stream.pipe(proc);
   const buffer = [];
-  proc.on('data', chunk => {
+  proc.on('data', (chunk) => {
     buffer.push(chunk);
   });
   proc.on('end', () => {

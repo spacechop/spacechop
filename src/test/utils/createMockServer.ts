@@ -1,8 +1,8 @@
-import express from 'express';
 import bodyParser from 'body-parser';
+import express from 'express';
 import matchPath from 'react-router/matchPath';
 
-export default (port, handler, routePath = '/*') => new Promise(resolve => {
+export default (port, handler, routePath = '/*') => new Promise((resolve) => {
   if (!handler) {
     throw new Error('handler is required in createMockServer');
   }
@@ -23,7 +23,7 @@ export default (port, handler, routePath = '/*') => new Promise(resolve => {
     }
   });
 
-  let server = app.listen(port, () => {
+  const server = app.listen(port, () => {
     resolve({
       close: () => {
         server.close();
@@ -38,7 +38,7 @@ export default (port, handler, routePath = '/*') => new Promise(resolve => {
           }, timeout);
 
           // Create a method that is called by the server when receiving request.
-          next = pathname => {
+          next = (pathname) => {
             if (!path || matchPath(pathname, { path })) {
               next = null;
               clearTimeout(t);
