@@ -1,6 +1,7 @@
-version: '3'
+version: '3.2'
 services:
   spacechop:
     command: npm run test
     build:
-      cache_from: spacechop:latest
+      cache_from: 
+        - spacechop:latest
