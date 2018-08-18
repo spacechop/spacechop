@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Strip Command should strip exif from gif 1`] = `
+"[{
+  \\"SourceFile\\": \\"-\\",
+  \\"ExifToolVersion\\": 10.55,
+  \\"FileType\\": \\"GIF\\",
+  \\"FileTypeExtension\\": \\"gif\\",
+  \\"MIMEType\\": \\"image/gif\\",
+  \\"GIFVersion\\": \\"89a\\",
+  \\"ImageWidth\\": 100,
+  \\"ImageHeight\\": 100,
+  \\"HasColorMap\\": \\"Yes\\",
+  \\"ColorResolutionDepth\\": 6,
+  \\"BitsPerPixel\\": 6,
+  \\"BackgroundColor\\": 0,
+  \\"ImageSize\\": \\"100x100\\",
+  \\"Megapixels\\": 0.010
+}]
+"
+`;
+
+exports[`Strip Command should strip exif from jpeg 1`] = `
+"[{
+  \\"SourceFile\\": \\"-\\",
+  \\"ExifToolVersion\\": 10.55,
+  \\"FileType\\": \\"JPEG\\",
+  \\"FileTypeExtension\\": \\"jpg\\",
+  \\"MIMEType\\": \\"image/jpeg\\",
+  \\"DCTEncodeVersion\\": 100,
+  \\"APP14Flags0\\": \\"[14]\\",
+  \\"APP14Flags1\\": \\"(none)\\",
+  \\"ColorTransform\\": \\"YCbCr\\",
+  \\"ImageWidth\\": 100,
+  \\"ImageHeight\\": 100,
+  \\"EncodingProcess\\": \\"Baseline DCT, Huffman coding\\",
+  \\"BitsPerSample\\": 8,
+  \\"ColorComponents\\": 3,
+  \\"YCbCrSubSampling\\": \\"YCbCr4:4:4 (1 1)\\",
+  \\"ImageSize\\": \\"100x100\\",
+  \\"Megapixels\\": 0.010
+}]
+"
+`;
+
+exports[`Strip Command should strip exif from png 1`] = `
+"[{
+  \\"SourceFile\\": \\"-\\",
+  \\"ExifToolVersion\\": 10.55,
+  \\"FileType\\": \\"PNG\\",
+  \\"FileTypeExtension\\": \\"png\\",
+  \\"MIMEType\\": \\"image/png\\",
+  \\"ImageWidth\\": 100,
+  \\"ImageHeight\\": 100,
+  \\"BitDepth\\": 8,
+  \\"ColorType\\": \\"RGB with Alpha\\",
+  \\"Compression\\": \\"Deflate/Inflate\\",
+  \\"Filter\\": \\"Adaptive\\",
+  \\"Interlace\\": \\"Noninterlaced\\",
+  \\"WhitePointX\\": 0.28021,
+  \\"WhitePointY\\": 0.296,
+  \\"RedX\\": 0.62387,
+  \\"RedY\\": 0.34046,
+  \\"GreenX\\": 0.31082,
+  \\"GreenY\\": 0.61183,
+  \\"BlueX\\": 0.13035,
+  \\"BlueY\\": 0.03627,
+  \\"ImageSize\\": \\"100x100\\",
+  \\"Megapixels\\": 0.010
+}]
+"
+`;

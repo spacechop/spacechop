@@ -1,0 +1,20 @@
+{
+  "t_720": [
+
+    { "$resize": {
+      "mode": "crop",
+      "width": 720
+    }},
+
+    { "$resize": {
+      "mode": "crop",
+      "width": 720
+    }},
+
+    { "$compress": {
+      "lossy": true,
+      "quality": 90
+    }}
+    
+  ]
+}

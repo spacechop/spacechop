@@ -1,0 +1,31 @@
+// import request from 'request-promise';
+// import fs from 'fs';
+// import path from 'path';
+// import createMockServer from '../utils/createMockServer';
+//
+// describe('hello world', () => {
+//   let server;
+//   const callback = jest.fn();
+//   const handler = (req, res) => {
+//     callback(req.originalUrl);
+//     const filepath = path.join(__dirname, '../assets/cat.jpg');
+//     const stream = fs.createReadStream(filepath);
+//     res.type('image/jpeg');
+//     stream.pipe(res);
+//   };
+//
+//   beforeAll(async () => {
+//     server = await createMockServer(9001, handler);
+//   });
+//
+//   afterAll(() => {
+//     callback.mockReset();
+//     server.close();
+//   });
+//
+//   it('should fetch image', async () => {
+//     const req = await request('http://localhost:3000/t_200/cat.jpg');
+//     await server.waitForPath('/t_200/cat.jpg');
+//     expect(callback).toHaveBeenCalledWith('http://localhost:9001/cat.jpg');
+//   });
+// });

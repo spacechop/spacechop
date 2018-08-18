@@ -1,0 +1,10 @@
+version: '3'
+services:
+  spacechop:
+    container_name: spacechop
+    image: spacechop
+    build: .
+    ports:
+      - 8080:3000
+    volumes:
+      - ./config.yml:/config.yml

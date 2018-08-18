@@ -1,0 +1,6 @@
+version: '3'
+services:
+  spacechop:
+    command: npm run develop
+    volumes:
+      - ./src:/src/app

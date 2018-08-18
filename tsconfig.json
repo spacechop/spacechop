@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "target": "es6",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "../dist",
+    "lib": [
+      "es6",
+      "dom",
+      "dom.iterable"
+    ],
+    "baseUrl": "./",
+    "typeRoots": [ "./node_modules/@types/" ],
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/*.spec.ts"
+  ]
+}
