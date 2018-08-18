@@ -3,7 +3,7 @@
 exports[`Strip Command should strip exif from gif 1`] = `
 "[{
   \\"SourceFile\\": \\"-\\",
-  \\"ExifToolVersion\\": 10.55,
+  \\"ExifToolVersion\\": 10.87,
   \\"FileType\\": \\"GIF\\",
   \\"FileTypeExtension\\": \\"gif\\",
   \\"MIMEType\\": \\"image/gif\\",
@@ -23,7 +23,7 @@ exports[`Strip Command should strip exif from gif 1`] = `
 exports[`Strip Command should strip exif from jpeg 1`] = `
 "[{
   \\"SourceFile\\": \\"-\\",
-  \\"ExifToolVersion\\": 10.55,
+  \\"ExifToolVersion\\": 10.87,
   \\"FileType\\": \\"JPEG\\",
   \\"FileTypeExtension\\": \\"jpg\\",
   \\"MIMEType\\": \\"image/jpeg\\",
@@ -46,7 +46,7 @@ exports[`Strip Command should strip exif from jpeg 1`] = `
 exports[`Strip Command should strip exif from png 1`] = `
 "[{
   \\"SourceFile\\": \\"-\\",
-  \\"ExifToolVersion\\": 10.55,
+  \\"ExifToolVersion\\": 10.87,
   \\"FileType\\": \\"PNG\\",
   \\"FileTypeExtension\\": \\"png\\",
   \\"MIMEType\\": \\"image/png\\",

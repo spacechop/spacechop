@@ -5,3 +5,5 @@ services:
     build:
       cache_from: 
         - spacechop:latest
+    volumes:
+      - ./coverage:/src/coverage
