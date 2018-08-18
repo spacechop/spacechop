@@ -4,7 +4,7 @@ SpaceChop is a fully-featured image processing microservice with integrations fo
 
 At [spacechop.com](https://spacechop.com), you can get for the hosted solution of SpaceChop which includes CDN, storage, caching, database, statistics and analytics for your service.
 
-To get started with SpaceChop, [go to our documentation website](https://spacechop.gitbook.io/spacechop/).
+To get started with SpaceChop, [**go to our documentation website**](https://spacechop.gitbook.io/spacechop/).
 
 ## Installation
 
