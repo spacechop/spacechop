@@ -1,6 +1,6 @@
 # [SpaceChop](https://spacechop.com) [![Build Status](https://travis-ci.org/spacechop/spacechop.svg?branch=master)](https://travis-ci.org/spacechop/spacechop)
 
-SpaceChop is a fully-featured image processing microservice with integrations for remote sources in Amazon S3, Digital Ocean Spaces, and more. It allows you to easily transform images through a HTTP get requests. SpaceChop does not use any CDN, storage, database or caching, instead it relies on you to add this in front and behind the processing pipeline.
+SpaceChop is a fully-featured image processing microservice with integrations for remote sources in Amazon S3, Digital Ocean Spaces, and more. It allows you to easily transform images through HTTP get requests. SpaceChop does not use any CDN, storage, database or caching, instead it relies on you to add this in front and behind the processing pipeline.
 
 At [spacechop.com](https://spacechop.com), you can get for the hosted solution of SpaceChop which includes CDN, storage, caching, database, statistics and analytics for your service.
 
