@@ -8,7 +8,7 @@
     "start": "node app/index.js",
     "test": "jest --verbose false",
     "test:watch": "jest --watchAll --verbose false",
-    "test:ci": "jest --verboce false && codecov"
+    "test:ci": "jest --verbose false --ci --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -45,7 +45,6 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
     "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
