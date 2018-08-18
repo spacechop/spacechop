@@ -60,16 +60,16 @@ Paths and sources are interlinked and work together using [`path-to-regex`](http
 Basically how it works is that the path you request at http://localhost:8080/t_200/your-unique-path/with-slashes/to-and-image-url.jpg will look through your sources until it finds an image for your root url (if you are using the http source).
 
 i.e.  
-http://localhost:8080/t_200/your-unique-path/with-slashes/to-and-image-url.jpg 
+http://localhost:8080/t_200/your-unique-path/with-slashes/to-and-image-url.jpg
 will in the above configuration look at:
 http://commons.wikipedia.org/your-unique-path/with-slashes/to-and-image-url.jpg
 
 Notice the usage of :image in paths and sources, you can change this to whatever makes sense for you in your matching. You can use your own variable names and matching in your sources.
 
-Each source has its own set of configuration to be able to lookup and download originals. You can [read more about each source in our wiki documentation](/wiki).
+Each source has its own set of configuration to be able to lookup and download originals. You can [read more about each source in our wiki documentation](https://github.com/spacechop/spacechop/wiki).
 
 ### presets
 
 As you might have seen there is a :preset variable in the path in the example configuration above, this is the only required variable in path that there is, and this will match the exact name of your preset in the configuration as you might have guessed.
 
-In a preset there are steps which are composed of a list of operations with their unique set of options. You can [read more about each operation in our wiki documentation](/wiki).
+In a preset there are steps which are composed of a list of operations with their unique set of options. You can [read more about each operation in our wiki documentation](https://github.com/spacechop/spacechop/wiki).
