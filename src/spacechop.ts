@@ -1,11 +1,11 @@
-import { Stream } from 'stream';
 import { spawn } from 'duplex-child-process';
 import pathToRegex from 'path-to-regexp';
+import { Stream } from 'stream';
+import ImageDefinition, { ImageType } from './imagedef';
 import Operations from './operations';
 import Sources from './sources';
-import ImageDefinition, { ImageType } from './imagedef';
 
-const lookThroughSources = async (sources, params) : Promise<Stream> => {
+const lookThroughSources = async (sources, params): Promise<Stream> => {
   for (const source of sources) {
     const name = Object.keys(source)[0];
     const props = source[name];
@@ -19,17 +19,17 @@ const lookThroughSources = async (sources, params) : Promise<Stream> => {
   return null;
 };
 
-const initializePipeline = steps => {
+const initializePipeline = (steps) => {
   let requirements = {};
-  const preparedSteps = steps.map(step => {
+  const preparedSteps = steps.map((step) => {
     const name = Object.keys(step)[0];
     const props = step[name];
 
     if (!Operations[name]) {
-      console.error('Operation')
+      console.error('Operation');
       throw new Error(
         `Operation ${name} was not found. \n\n` +
-        `Available operations are [${Object.keys(Operations)}]`
+        `Available operations are [${Object.keys(Operations)}]`,
       );
     }
     // initialize operation instance with config.
@@ -45,23 +45,23 @@ const initializePipeline = steps => {
   return { pipeline: preparedSteps, requirements };
 };
 
-const buildImageDefinition = async (stream, requirements) : Promise<ImageDefinition> => {
+const buildImageDefinition = async (stream, requirements): Promise<ImageDefinition> => {
     // XXX in case of face detection, analyze image for faces
 
   return {
     width: 2000,
     height: 1495,
-    type: ImageType.png
+    type: ImageType.png,
   };
-}
+};
 
-const asyncWrapper = fn => (req, res) => {
+const asyncWrapper = (fn) => (req, res) => {
   Promise
     .resolve(fn(req, res))
     .catch(handleError(res));
 };
 
-const handleError = res => error => {
+const handleError = (res) => (error) => {
   console.error(error);
   res.status(500);
   res.end(error.message);
@@ -88,7 +88,7 @@ const extractParams = (params, values) => {
   return params.reduce((acc, param, i) => Object.assign(acc, {
     [param.name]: values[i],
   }), {});
-}
+};
 
 export default (config, server) => {
   if (!config) {
@@ -98,7 +98,7 @@ export default (config, server) => {
   const { sources, paths = ['/*'] } = config;
 
   // listen on all paths.
-  paths.forEach(path => {
+  paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
     server.get(pattern, asyncWrapper(async (req, res) => {

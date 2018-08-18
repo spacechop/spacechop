@@ -1,10 +1,10 @@
 import path from 'path';
-import Resize, { ResizeConfig } from './../index';
-import ImageDefinition, { ImageType } from './../../../imagedef'
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+import ImageDefinition, { ImageType } from './../../../imagedef';
+import Resize, { ResizeConfig } from './../index';
 
-expect.extend({ toMatchImageSnapshot })
+expect.extend({ toMatchImageSnapshot });
 describe('Resize', () => {
   describe('Transformation of state', () => {
     const defaultConfig: ResizeConfig = { width: 200, height: 200 };
@@ -22,7 +22,7 @@ describe('Resize', () => {
       const { state } = op.execute(defaultState);
       expect(state).toEqual(expect.objectContaining({
         width: 200,
-        height: 200
+        height: 200,
       }));
     });
 
@@ -59,7 +59,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathJPEG,
         new Resize(defaultConfig),
-        defaultState
+        defaultState,
       );
       await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
     });
@@ -68,7 +68,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathPNG,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.png }
+        { ...defaultState, type: ImageType.png },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
@@ -77,7 +77,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathPNGInterlaced,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.png, interlacing: true }
+        { ...defaultState, type: ImageType.png, interlacing: true },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
@@ -86,7 +86,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathGIF,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.gif }
+        { ...defaultState, type: ImageType.gif },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'gif' });
     });

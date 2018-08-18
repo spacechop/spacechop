@@ -9,7 +9,7 @@ export default (pattern, parameters) => {
     throw new Error('Cant compile path. No pattern provided.');
   }
 
-  if (cache[pattern]) return cache[pattern](parameters);
+  if (cache[pattern]) { return cache[pattern](parameters); }
 
   if (cache[pattern]) {
     return cache[pattern];

@@ -3,7 +3,7 @@ export enum ImageType {
   png = 'png',
   gif = 'gif',
   webp = 'webp',
-};
+}
 
 export interface ImageFaceBox {
   x: number;
@@ -13,14 +13,14 @@ export interface ImageFaceBox {
 }
 
 export enum DefinitionRequirement {
-  FACES
-};
+  FACES,
+}
 
 export default interface ImageDefinition {
   width: number;
   height: number;
   type: ImageType;
-  alpha?: Boolean
-  interlacing?: Boolean
-  faces?: [ImageFaceBox?]
-};
+  alpha?: Boolean;
+  interlacing?: Boolean;
+  faces?: [ImageFaceBox?];
+}

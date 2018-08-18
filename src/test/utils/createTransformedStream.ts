@@ -1,10 +1,14 @@
-import ImageDefinition from "../../imagedef";
-import fs from 'fs';
 import { spawn } from 'duplex-child-process';
-import Operation from "../../operations/operation";
+import fs from 'fs';
+import ImageDefinition from '../../imagedef';
+import Operation from '../../operations/operation';
 
 
-export default (sourceImagePath: string, operation: Operation | Operation[], initialState: ImageDefinition) : NodeJS.ReadableStream => {
+export default (
+  sourceImagePath: string,
+  operation: Operation | Operation[],
+  initialState: ImageDefinition,
+): NodeJS.ReadableStream => {
   const operations = Array.isArray(operation) ? operation : [operation];
   const source = fs.createReadStream(sourceImagePath);
   let state = initialState;

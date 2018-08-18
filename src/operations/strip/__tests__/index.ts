@@ -1,11 +1,11 @@
+import { createReadStream } from 'fs';
 import path from 'path';
+import { PassThrough } from 'stream';
+import Strip, { StripConfig } from '..';
 import ImageDefinition, { ImageType } from '../../../imagedef';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
-import Strip, { StripConfig } from '..';
-import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import extractStreamExif from '../../../test/utils/extractStreamExif';
-import { PassThrough } from 'stream';
-import { createReadStream } from 'fs';
+import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 
 expect.extend({ toMatchImageSnapshot });
 

@@ -1,38 +1,38 @@
-import Operation from '../operation';
 import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
 import { magickTypeMap } from '../magickTypeMap';
+import Operation from '../operation';
 
 export interface FormatConfig {
-  type: ImageType,
-};
+  type: ImageType;
+}
 
 
 
-export const magickOptions = (config: FormatConfig, state: ImageDefinition): Array<String> => {
+export const magickOptions = (config: FormatConfig, state: ImageDefinition): String[] => {
   return [
     'convert',
     '-',
-    `${magickTypeMap[config.type]}:-`
+    `${magickTypeMap[config.type]}:-`,
   ];
 };
-export const transformState = (config: FormatConfig, state: ImageDefinition) : ImageDefinition => {
+export const transformState = (config: FormatConfig, state: ImageDefinition): ImageDefinition => {
   return {
     ...state,
-    type: config.type
-  }
-}
+    type: config.type,
+  };
+};
 
 export default class Format extends Operation {
-  config: FormatConfig;
+  public config: FormatConfig;
   constructor(config: FormatConfig) {
     super(config);
   }
 
-  requirements(): [DefinitionRequirement?] {
+  public requirements(): [DefinitionRequirement?] {
     return [];
   }
 
-  execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),

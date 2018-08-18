@@ -1,20 +1,20 @@
-import Operation from './../operation';
 import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
 import { magickTypeMap } from '../magickTypeMap';
+import Operation from './../operation';
 
 export interface CompressConfig {
-  quality?: number,
-  lossy?: boolean,
-};
+  quality?: number;
+  lossy?: boolean;
+}
 
-export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): Array<String> => {
+export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'mozjpeg',
     `-quality ${config.quality}`,
   ];
 };
 
-export const pngquantOptions = (config: CompressConfig, state: ImageDefinition): Array<String> => {
+export const pngquantOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'pngquant',
     '--speed 10',
@@ -22,7 +22,7 @@ export const pngquantOptions = (config: CompressConfig, state: ImageDefinition):
   ];
 };
 
-export const gifsicleOptions = (config: CompressConfig, state: ImageDefinition): Array<String> => {
+export const gifsicleOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'gifsicle',
     '-O3',
@@ -31,7 +31,7 @@ export const gifsicleOptions = (config: CompressConfig, state: ImageDefinition):
   ];
 };
 
-export const magickOptions = (config: CompressConfig, state: ImageDefinition): Array<String> => {
+export const magickOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'magick',
     '-',
@@ -41,28 +41,28 @@ export const magickOptions = (config: CompressConfig, state: ImageDefinition): A
 };
 
 
-export const transformState = (_, state: ImageDefinition) : ImageDefinition => {
+export const transformState = (_, state: ImageDefinition): ImageDefinition => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 export const defaultConfig: CompressConfig = {
-  quality: 100,
   lossy: false,
+  quality: 100,
 };
 
 export default class Compress extends Operation {
-  config: CompressConfig;
+  public config: CompressConfig;
   constructor(config: CompressConfig) {
     super({ ...defaultConfig, ...config });
   }
 
-  requirements(): [DefinitionRequirement?] {
+  public requirements(): [DefinitionRequirement?] {
     return [];
   }
 
-  execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     let options;
     switch (state.type) {
       case ImageType.jpeg:
@@ -82,13 +82,13 @@ export default class Compress extends Operation {
         break;
       default:
         throw new Error(
-          `Compresss cant handle type ${state.type}`
+          `Compresss cant handle type ${state.type}`,
         );
     }
 
     return {
-      state: transformState(this.config, state),
       command: options.join(' '),
+      state: transformState(this.config, state),
     };
   }
 }

@@ -5,4 +5,4 @@ export default t.Partial({
   width: t.Number,
   height: t.Number,
   gravity: Gravity,
-}).withConstraint(n => n && !!(n.width || n.height));
+}).withConstraint((n) => n && !!(n.width || n.height));

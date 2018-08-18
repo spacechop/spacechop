@@ -1,16 +1,16 @@
 import Config from '../types/Config';
 
-export const validate = config => {
+export const validate = (config) => {
   try {
     Config.check(config);
   } catch (err) {
     throw new Error(`${err.key}: ${err.message}`);
   }
-}
+};
 
 let valid = true;
 
-export default config => {
+export default (config) => {
   try {
     validate(config);
     if (!valid) {
