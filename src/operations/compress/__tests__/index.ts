@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
-import ImageDefinition, { ImageType } from '../../../imagedef';
-import createTransformedStream from '../../../test/utils/createTransformedStream';
-import Compress, { CompressConfig } from '..';
-import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import countStreamBytes from '../../../test/utils/countStreamBytes';
 import { PassThrough } from 'stream';
+import Compress, { CompressConfig } from '..';
+import ImageDefinition, { ImageType } from '../../../imagedef';
+import countStreamBytes from '../../../test/utils/countStreamBytes';
+import createTransformedStream from '../../../test/utils/createTransformedStream';
+import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -19,7 +19,7 @@ describe('Compress', () => {
     jpeg: path.join(__dirname, __assets, 'grid.jpg'),
     png: path.join(__dirname, __assets, 'grid.png'),
     gif: path.join(__dirname, __assets, 'grid.gif'),
-    webp: path.join(__dirname, __assets, 'grid.webp')
+    webp: path.join(__dirname, __assets, 'grid.webp'),
   };
 
   // create a test for all file types
@@ -40,7 +40,7 @@ describe('Compress', () => {
         state = { ...defaultState, type: ImageType[type] };
         // get source file size.
         stats = fs.statSync(source);
-  
+
         // do the transformation operation.
         const result = createTransformedStream(source, operation, state);
         for (let i = 0; i < numberOfCopies; i++) {
@@ -57,13 +57,13 @@ describe('Compress', () => {
       it('should be smaller in size than source', async () => {
         const size = await countStreamBytes(resultCopies[1]);
         expect(size).toBeLessThan(stats.size);
-      })
+      });
 
       it('should match source mime', async () => {
         // measure mime type and image size to match source.
         const meta = await probeImageSize(resultCopies[2]);
         expect(meta.mime).toBe(`image/${state.type}`);
-      })
+      });
     });
   }
 });

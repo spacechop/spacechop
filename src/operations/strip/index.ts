@@ -1,11 +1,11 @@
-import Operation from './../operation';
 import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
+import Operation from './../operation';
 
 export interface StripConfig {
-  icu_profile?: boolean
-};
+  icu_profile?: boolean;
+}
 
-export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): Array<String> => {
+export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): String[] => {
   return [
     'exiftool',
     '-all=',
@@ -15,27 +15,27 @@ export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): Ar
 };
 
 
-export const transformState = (_, state: ImageDefinition) : ImageDefinition => {
+export const transformState = (_, state: ImageDefinition): ImageDefinition => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 export const defaultConfig: StripConfig = {
   icu_profile: false,
 };
 
 export default class Strip extends Operation {
-  config: StripConfig;
+  public config: StripConfig;
   constructor(config: StripConfig) {
     super({ ...defaultConfig, ...config });
   }
 
-  requirements(): [DefinitionRequirement?] {
+  public requirements(): [DefinitionRequirement?] {
     return [];
   }
 
-  execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
     const options = exiftoolOptions(this.config, state);
     return {
       state: transformState(this.config, state),

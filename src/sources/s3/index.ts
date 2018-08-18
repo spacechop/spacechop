@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
+import { Stream } from 'stream';
+import Source, { SourceParams } from '../source';
 import compilePath from './../compile-path';
 import { S3Config } from './types';
-import Source, { SourceParams } from '../source';
-import { Stream } from 'stream';
 
 const agent = new Https.Agent({
   keepAlive: true,
@@ -18,10 +18,10 @@ AWS.config.update({
 });
 
 export default class S3Resolver extends Source {
-  S3: any;
-  bucketName: string;
-  path: string;
-  config: S3Config;
+  public S3: any;
+  public bucketName: string;
+  public path: string;
+  public config: S3Config;
 
   constructor(config: S3Config) {
     super(config);
@@ -35,19 +35,19 @@ export default class S3Resolver extends Source {
     this.path = config.path;
   }
 
-  getPath({ imageAlias }) {
+  public getPath({ imageAlias }) {
     const path = this.path.length > 0 ? `${this.path}/` : '';
     return `${path}${imageAlias}`;
   }
 
-  exists(params: SourceParams): Promise<Boolean> {
+  public exists(params: SourceParams): Promise<Boolean> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const query = {
         Bucket,
-        Key
+        Key,
       };
 
       this.S3.headObject(query, (err, data) => {
@@ -56,13 +56,13 @@ export default class S3Resolver extends Source {
     });
   }
 
-  stream(params: SourceParams): Stream {
+  public stream(params: SourceParams): Stream {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
     const query = {
       Bucket,
-      Key
+      Key,
     };
 
     const obj = this.S3.getObject(query);

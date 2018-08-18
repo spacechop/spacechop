@@ -1,8 +1,8 @@
 import path from 'path';
-import Fit, { FitConfig } from './../index';
-import ImageDefinition, { ImageType } from './../../../imagedef'
-import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
+import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+import ImageDefinition, { ImageType } from './../../../imagedef';
+import Fit, { FitConfig } from './../index';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -24,7 +24,7 @@ describe('Fit', () => {
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
           width: 200,
-          height: 200
+          height: 200,
         }));
       });
 
@@ -32,7 +32,7 @@ describe('Fit', () => {
         const op = new Fit(defaultConfig);
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
-          type: defaultState.type
+          type: defaultState.type,
         }));
       });
     });
@@ -53,7 +53,7 @@ describe('Fit', () => {
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
           width: 200,
-          height: 200
+          height: 200,
         }));
       });
 
@@ -61,9 +61,9 @@ describe('Fit', () => {
         const op = new Fit(defaultConfig);
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
-          type: defaultState.type
+          type: defaultState.type,
         }));
-      })
+      });
     });
 
     describe('height only', () => {
@@ -82,7 +82,7 @@ describe('Fit', () => {
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
           width: 200,
-          height: 200
+          height: 200,
         }));
       });
 
@@ -90,9 +90,9 @@ describe('Fit', () => {
         const op = new Fit(defaultConfig);
         const { state } = op.execute(defaultState);
         expect(state).toEqual(expect.objectContaining({
-          type: defaultState.type
+          type: defaultState.type,
         }));
-      })
+      });
     });
   });
 
@@ -104,7 +104,7 @@ describe('Fit', () => {
       const op = new Fit(defaultConfig);
       const { command } = op.execute(defaultState);
       expect(command).toEqual(expect.stringMatching(/-resize 200x200/));
-    })
+    });
   });
 
 
@@ -122,7 +122,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathJPEG,
           new Fit(defaultConfig),
-          defaultState
+          defaultState,
         );
         await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
       });
@@ -131,7 +131,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathPNG,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.png }
+          { ...defaultState, type: ImageType.png },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
@@ -140,7 +140,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathPNGInterlaced,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.png, interlacing: true }
+          { ...defaultState, type: ImageType.png, interlacing: true },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
@@ -149,7 +149,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathGIF,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.gif }
+          { ...defaultState, type: ImageType.gif },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'gif' });
       });
@@ -168,7 +168,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathJPEG,
           new Fit(defaultConfig),
-          defaultState
+          defaultState,
         );
         await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
       });
@@ -177,7 +177,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathPNG,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.png }
+          { ...defaultState, type: ImageType.png },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
@@ -186,7 +186,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathPNGInterlaced,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.png, interlacing: true }
+          { ...defaultState, type: ImageType.png, interlacing: true },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
@@ -195,7 +195,7 @@ describe('Fit', () => {
         const result = createTransformedStream(
           gridPathGIF,
           new Fit(defaultConfig),
-          { ...defaultState, type: ImageType.gif }
+          { ...defaultState, type: ImageType.gif },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'gif' });
       });

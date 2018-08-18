@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs';
-import setupRoutes from './spacechop';
 import loadConfig from './config';
+import setupRoutes from './spacechop';
 
 // read initial config.
 let config = loadConfig();
@@ -12,7 +12,7 @@ let router = express.Router();
 // Setup routes for the SpaceChop service.
 setupRoutes(config, router);
 // Enable reloading of routes runtime by using a simple router that we switch out.
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   // pass through requests to the router.
   router(req, res, next);
 });

@@ -1,9 +1,9 @@
 import path from 'path';
-import Crop, { CropConfig } from './../index';
-import { Gravity } from '../../Gravity';
-import ImageDefinition, { DefinitionRequirement, ImageType } from './../../../imagedef'
-import toMatchImageSnapshot from './../../../test/utils/toMatchImageSnapshot';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
+import { Gravity } from '../../Gravity';
+import ImageDefinition, { DefinitionRequirement, ImageType } from './../../../imagedef';
+import toMatchImageSnapshot from './../../../test/utils/toMatchImageSnapshot';
+import Crop, { CropConfig } from './../index';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -110,7 +110,7 @@ describe('Crop', () => {
         const { state } = op.execute(defaultState);
         expect(state).toEqual(
           expect.objectContaining({
-            type: defaultState.type
+            type: defaultState.type,
           }),
         );
       });
@@ -185,7 +185,7 @@ describe('Crop', () => {
       for (const g of Object.keys(Gravity)) {
 
         // In grid image there are no faces so face gravity is useless.
-        if (g === Gravity.face) continue;
+        if (g === Gravity.face) { continue; }
 
         it(`Gravity JPEG ${g}`, async () => {
           const operation = new Crop({ ...defaultConfig, gravity: Gravity[g] });
@@ -198,7 +198,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNG,
             operation,
-            { ...defaultState, type: ImageType.png }
+            { ...defaultState, type: ImageType.png },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -208,7 +208,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNGInterlaced,
             operation,
-            { ...defaultState, type: ImageType.png, interlacing: true }
+            { ...defaultState, type: ImageType.png, interlacing: true },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -218,7 +218,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathGIF,
             operation,
-            { ...defaultState, type: ImageType.gif}
+            { ...defaultState, type: ImageType.gif},
           );
           await expect(result).toMatchImageSnapshot({ extension: 'gif'});
         });
@@ -238,7 +238,7 @@ describe('Crop', () => {
       for (const g of Object.keys(Gravity)) {
 
         // In grid image there are no faces so face gravity is useless.
-        if (g === Gravity.face) continue;
+        if (g === Gravity.face) { continue; }
 
         it(`Gravity JPEG ${g}`, async () => {
           const operation = new Crop({ ...defaultConfig, gravity: Gravity[g] });
@@ -251,7 +251,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNG,
             operation,
-            { ...defaultState, type: ImageType.png }
+            { ...defaultState, type: ImageType.png },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -261,7 +261,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNGInterlaced,
             operation,
-            { ...defaultState, type: ImageType.png, interlacing: true }
+            { ...defaultState, type: ImageType.png, interlacing: true },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -271,7 +271,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathGIF,
             operation,
-            { ...defaultState, type: ImageType.gif}
+            { ...defaultState, type: ImageType.gif},
           );
           await expect(result).toMatchImageSnapshot({ extension: 'gif'});
         });
@@ -291,7 +291,7 @@ describe('Crop', () => {
       for (const g of Object.keys(Gravity)) {
 
         // In grid image there are no faces so face gravity is useless.
-        if (g === Gravity.face) continue;
+        if (g === Gravity.face) { continue; }
 
         it(`Gravity JPEG ${g}`, async () => {
           const operation = new Crop({ ...defaultConfig, gravity: Gravity[g] });
@@ -304,7 +304,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNG,
             operation,
-            { ...defaultState, type: ImageType.png }
+            { ...defaultState, type: ImageType.png },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -314,7 +314,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathPNGInterlaced,
             operation,
-            { ...defaultState, type: ImageType.png, interlacing: true }
+            { ...defaultState, type: ImageType.png, interlacing: true },
           );
           await expect(result).toMatchImageSnapshot({ extension: 'png'});
         });
@@ -324,7 +324,7 @@ describe('Crop', () => {
           const result = createTransformedStream(
             gridPathGIF,
             operation,
-            { ...defaultState, type: ImageType.gif}
+            { ...defaultState, type: ImageType.gif},
           );
           await expect(result).toMatchImageSnapshot({ extension: 'gif'});
         });

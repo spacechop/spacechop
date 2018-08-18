@@ -10,4 +10,4 @@ export enum Gravity {
   southwest = 'southwest',
   west = 'west',
   northwest = 'northwest',
-};
+}
