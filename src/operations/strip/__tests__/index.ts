@@ -51,7 +51,9 @@ describe('Strip', () => {
           const exif = await extractStreamExif(a);
 
           // check that exif data was removed and did not change from snapchot.
-          expect(exif.length).toBeLessThan(exifOrig.length);
+          expect(Object.keys(exif).length).toBeLessThan(Object.keys(exifOrig).length);
+          // Ignore version of exiftool in test.
+          delete exif.ExifToolVersion;
           expect(exif).toMatchSnapshot();
 
           // check so that the image matches the snapshot.
