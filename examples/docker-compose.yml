@@ -2,7 +2,7 @@ version: '3'
 services:
   spacechop:
     container_name: spacechop
-    image: spacechop
+    image: spacechop/spacechop:latest
     ports:
       - 8080:3000
     volumes:
