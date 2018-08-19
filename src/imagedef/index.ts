@@ -5,6 +5,15 @@ export enum ImageType {
   webp = 'webp',
 }
 
+export const getImageType = (type: string): ImageType => {
+  switch (type) {
+    case 'jpg':
+      return ImageType['jpeg'];
+    default:
+      return ImageType[type];
+  }
+};
+
 export interface ImageFaceBox {
   x: number;
   y: number;

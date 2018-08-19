@@ -1,9 +1,10 @@
 import { spawn } from 'duplex-child-process';
 import pathToRegex from 'path-to-regexp';
 import { Stream } from 'stream';
-import ImageDefinition, { ImageType } from './imagedef';
+import ImageDefinition from './imagedef';
 import Operations from './operations';
 import Sources from './sources';
+import analyze from './imagedef/analyze';
 
 const lookThroughSources = async (sources, params): Promise<Stream> => {
   for (const source of sources) {
@@ -43,16 +44,6 @@ const initializePipeline = (steps) => {
   });
 
   return { pipeline: preparedSteps, requirements };
-};
-
-const buildImageDefinition = async (stream, requirements): Promise<ImageDefinition> => {
-    // XXX in case of face detection, analyze image for faces
-
-  return {
-    width: 2000,
-    height: 1495,
-    type: ImageType.png,
-  };
 };
 
 const asyncWrapper = (fn) => (req, res) => {
@@ -127,7 +118,7 @@ export default (config, server) => {
       const { pipeline, requirements } = initializePipeline(preset.steps);
 
       // prepare the image definition
-      const definition = await buildImageDefinition(stream, requirements);
+      const definition: ImageDefinition = await analyze(stream, requirements);
 
       // build command from pipeline and image state
       const { commands } = simulateTransformation(pipeline, definition);
