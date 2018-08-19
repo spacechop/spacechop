@@ -36,7 +36,7 @@ version: '3'
 services:
   spacechop:
     container_name: spacechop
-    image: spacechop
+    image: spacechop/spacechop:latest
     ports:
       - 8080:3000
     volumes:
@@ -78,7 +78,7 @@ In a preset there are steps which are composed of a list of operations with thei
 
 ## Contributing
 
-[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechopt)
+[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechop)
 
 [Read the SpaceChop Contributor Guidelines.](CONTRIBUTING.md)
 
