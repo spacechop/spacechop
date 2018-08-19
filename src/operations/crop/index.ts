@@ -10,7 +10,7 @@ export interface CropConfig {
   height?: number;
 }
 
-export const magickOptions = (config: CropConfig, state: ImageDefinition): String[] => {
+export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
   const width = config.width === undefined ? state.width : config.width;
   const height = config.height === undefined ? state.height : config.height;
   return [
@@ -48,7 +48,7 @@ export default class Crop extends Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),

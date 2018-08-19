@@ -20,7 +20,7 @@ export default interface ImageDefinition {
   width: number;
   height: number;
   type: ImageType;
-  alpha?: Boolean;
-  interlacing?: Boolean;
+  alpha?: boolean;
+  interlacing?: boolean;
   faces?: [ImageFaceBox?];
 }

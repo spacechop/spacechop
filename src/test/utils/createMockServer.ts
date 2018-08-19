@@ -30,7 +30,7 @@ export default (port, handler, routePath = '/*') => new Promise((resolve) => {
       },
 
       waitForPath: (path, timeout = 1000) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((innerResolve, reject) => {
           // Create a timeout if we are waiting for too long.
           const t = setTimeout(() => {
             next = null;
@@ -42,7 +42,7 @@ export default (port, handler, routePath = '/*') => new Promise((resolve) => {
             if (!path || matchPath(pathname, { path })) {
               next = null;
               clearTimeout(t);
-              resolve();
+              innerResolve();
             }
           };
         });

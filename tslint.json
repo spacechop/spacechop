@@ -14,7 +14,6 @@
           "severity": "warning",
           "options": [
               "debug",
-              "info",
               "log",
               "time",
               "timeEnd",
@@ -27,7 +26,8 @@
             "avoid-escape"
         ]
       },
-      "interface-name": false
+      "interface-name": false,
+      "object-literal-sort-keys": false
   },
   "jsRules": {
       "max-line-length": {

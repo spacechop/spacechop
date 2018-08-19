@@ -31,7 +31,7 @@ interface SnapshotResult {
   message(): string;
 }
 
-interface toMatchImageSnapshotOptions {
+interface ToMatchImageSnapshotOptions {
   threshold?: number;
   extension: string;
 }
@@ -40,7 +40,7 @@ export default async function toMatchImageSnapshot(
   {
     threshold = .9,
     extension = '',
-  }: toMatchImageSnapshotOptions,
+  }: ToMatchImageSnapshotOptions,
 ): Promise<SnapshotResult> {
   const {
     snapshotState,

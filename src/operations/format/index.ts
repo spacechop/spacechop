@@ -8,7 +8,7 @@ export interface FormatConfig {
 
 
 
-export const magickOptions = (config: FormatConfig, state: ImageDefinition): String[] => {
+export const magickOptions = (config: FormatConfig, state: ImageDefinition): string[] => {
   return [
     'convert',
     '-',
@@ -32,7 +32,7 @@ export default class Format extends Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),

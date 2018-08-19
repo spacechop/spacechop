@@ -8,11 +8,11 @@ export default (filepath) => {
     try {
       return loadConfig(filepath);
     } catch (err) {
-      console.log(`Could not load ${filepath}`);
+      console.error(`Could not load ${filepath}`);
       console.error(err);
     }
   } else {
-    console.log(`Could not find ${filepath}`);
+    console.error(`Could not find ${filepath}`);
   }
   return null;
 };

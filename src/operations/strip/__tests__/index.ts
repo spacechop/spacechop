@@ -14,11 +14,11 @@ describe('Strip', () => {
     const defaultConfig: StripConfig = {};
     const defaultState: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
 
-    const __assets = '../../../test/assets';
+    const assets = '../../../test/assets';
     const sources = {
-      jpeg: path.join(__dirname, __assets, 'grid.jpg'),
-      png: path.join(__dirname, __assets, 'grid.png'),
-      gif: path.join(__dirname, __assets, 'grid.gif'),
+      jpeg: path.join(__dirname, assets, 'grid.jpg'),
+      png: path.join(__dirname, assets, 'grid.png'),
+      gif: path.join(__dirname, assets, 'grid.gif'),
     };
 
     // create a test for all file types

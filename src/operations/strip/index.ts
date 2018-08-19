@@ -5,7 +5,7 @@ export interface StripConfig {
   icu_profile?: boolean;
 }
 
-export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): String[] => {
+export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): string[] => {
   return [
     'exiftool',
     '-all=',
@@ -35,7 +35,7 @@ export default class Strip extends Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = exiftoolOptions(this.config, state);
     return {
       state: transformState(this.config, state),

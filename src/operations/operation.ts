@@ -1,11 +1,9 @@
 import ImageDefinition, { DefinitionRequirement } from '../imagedef';
 
-export interface OperationConfig {}
-
 export default class Operation {
-  public config: OperationConfig;
+  public config: any;
 
-  constructor(config: OperationConfig) {
+  constructor(config: any) {
     this.config = config;
   }
 
@@ -13,7 +11,7 @@ export default class Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { state: ImageDefinition, command: String } {
+  public execute(state: ImageDefinition): { state: ImageDefinition, command: string } {
     return {
       command: 'exit 0',
       state,

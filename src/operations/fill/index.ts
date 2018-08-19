@@ -10,7 +10,7 @@ export interface FillConfig {
   gravity?: Gravity;
 }
 
-export const magickOptions = (config: FillConfig, state: ImageDefinition): String[] => {
+export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
   return [
     '-',
     `-resize ${config.width}x${config.height}^`,
@@ -47,7 +47,7 @@ export default class Fill extends Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),

@@ -1,20 +1,17 @@
 import { Stream } from 'stream';
 
-export interface SourceConfig {}
-export interface SourceParams {}
-
 export default class Source {
-  public config: SourceConfig;
+  public config: any;
 
-  constructor(config: SourceConfig) {
+  constructor(config: any) {
     this.config = config;
   }
 
-  public exists(params: SourceParams): Promise<Boolean> {
+  public exists(params: any): Promise<boolean> {
     return Promise.resolve(false);
   }
 
-  public stream(params: SourceParams): Stream {
+  public stream(params: any): Stream {
     return null;
   }
 }

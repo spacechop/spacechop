@@ -15,7 +15,7 @@ export default class HttpSource extends Source {
     super(config);
   }
 
-  public exists(params: SourceParams): Promise<Boolean> {
+  public exists(params: SourceParams): Promise<boolean> {
     const url = compilePath(this.config.root, params);
     return new Promise((resolve, reject) => {
       request.head(url, (err, res) => {

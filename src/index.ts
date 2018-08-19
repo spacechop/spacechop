@@ -12,7 +12,7 @@ let router = express.Router();
 // Setup routes for the SpaceChop service.
 setupRoutes(config, router);
 // Enable reloading of routes runtime by using a simple router that we switch out.
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   // pass through requests to the router.
   router(req, res, next);
 });
@@ -20,12 +20,11 @@ app.use(function(req, res, next) {
 
 // Re-Initialize routes when new config is loaded.
 fs.watchFile('/config.yml', { interval: 1000 }, async () => {
-  console.log('Reloading config...');
+  console.info('Reloading config...');
   router = express.Router();
   config = loadConfig();
   setupRoutes(config, router);
-  console.log('Listening on port 3000');
 });
 
 // start listening on port.
-app.listen(3000, () => console.log('Listening on port 3000'));
+app.listen(3000, () => console.info('Listening on port 3000'));

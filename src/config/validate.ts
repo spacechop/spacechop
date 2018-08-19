@@ -15,15 +15,15 @@ export default (config) => {
     validate(config);
     if (!valid) {
       valid = true;
-      console.log('Config is valid again');
+      console.info('Config is valid again');
     }
     return true;
   } catch (err) {
     valid = false;
-    console.log('\nThere is an error in /config.yml:');
-    console.log('--------------------------------');
-    console.log(err.message);
-    console.log('--------------------------------');
+    console.error('\nThere is an error in /config.yml:');
+    console.error('--------------------------------');
+    console.error(err.message);
+    console.error('--------------------------------');
   }
   return false;
 };

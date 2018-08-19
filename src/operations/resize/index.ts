@@ -7,7 +7,7 @@ export interface ResizeConfig {
   height: number;
 }
 
-export const magickOptions = (config: ResizeConfig, state: ImageDefinition): String[] => {
+export const magickOptions = (config: ResizeConfig, state: ImageDefinition): string[] => {
   return [
     '-',
     `-resize ${config.width || ''}x${config.height || ''}!`,
@@ -38,7 +38,7 @@ export default class Crop extends Operation {
     return [];
   }
 
-  public execute(state: ImageDefinition): { command: String, state: ImageDefinition } {
+  public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),

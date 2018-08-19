@@ -11,11 +11,11 @@ const RuntypeS3Config = t.Record({
 });
 
 export interface S3Config {
-  access_key_id: string,
-  secret_access_key: string,
-  region: string,
-  bucket_name: string,
-  path: string
+  access_key_id: string;
+  secret_access_key: string;
+  region: string;
+  bucket_name: string;
+  path: string;
 }
 
 export default RuntypeS3Config;
