@@ -9,7 +9,7 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
     buffer.push(chunk);
   });
   proc.on('end', () => {
-    const data = Buffer.concat(buffer).toString();
+    const [data] = JSON.parse(Buffer.concat(buffer).toString());
     resolve(data);
   });
 });
