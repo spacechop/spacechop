@@ -8,6 +8,8 @@ RUN echo "@edge-testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /e
 RUN mkdir /src
 WORKDIR /src
 
+ADD /bin/CMakeLists.txt /bin/CMakeLists.txt
+ADD /bin/facedetect.cpp /bin/facedetect.cpp
 ADD scripts/install_deps.sh /install_deps.sh
 RUN sh /install_deps.sh
 
