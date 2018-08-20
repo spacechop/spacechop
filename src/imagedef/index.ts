@@ -5,13 +5,9 @@ export enum ImageType {
   webp = 'webp',
 }
 
-export const getImageType = (type: string): ImageType => {
-  switch (type) {
-    case 'jpg':
-      return ImageType['jpeg'];
-    default:
-      return ImageType[type];
-  }
+export const getImageTypeFromMimeType = (mime: string): ImageType => {
+  const type = mime.match(/^image\/(\w+)$/)[1];
+  return ImageType[type];
 };
 
 export interface ImageFaceBox {
@@ -22,7 +18,8 @@ export interface ImageFaceBox {
 }
 
 export enum DefinitionRequirement {
-  FACES,
+  FACES = 'faces',
+  ICC_PROFILE = 'icc_profile',
 }
 
 export default interface ImageDefinition {

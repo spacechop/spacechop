@@ -12,7 +12,11 @@ expect.extend({ toMatchImageSnapshot });
 describe('Strip', () => {
   describe('Command', () => {
     const defaultConfig: StripConfig = {};
-    const defaultState: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = {
+      width: 100,
+      height: 100,
+      type: ImageType.jpeg
+    };
 
     const assets = '../../../test/assets';
     const sources = {

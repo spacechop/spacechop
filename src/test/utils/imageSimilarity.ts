@@ -2,20 +2,12 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { Stream } from 'stream';
+import randomNameGenerator from '../../lib/randomNameGenerator';
 
 type File = Stream | string;
 
-const randomFilename = () => {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 15; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
 const saveToDisk = (image: Stream): Promise<string> => {
-  const p = path.join('/tmp', randomFilename());
+  const p = path.join('/tmp', randomNameGenerator());
   const out = fs.createWriteStream(p);
   return new Promise((resolve) => {
     image.pipe(out).on('finish', () => resolve(p));
