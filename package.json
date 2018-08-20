@@ -5,7 +5,8 @@
   "main": "test-piping.js",
   "scripts": {
     "develop": "nodemon",
-    "start": "node app/index.js",
+    "start": "node dist/index.js",
+    "build": "tsc",
     "test": "jest --verbose false",
     "test:watch": "jest --watchAll --verbose false",
     "test:ci": "jest --verbose false --ci --coverage"

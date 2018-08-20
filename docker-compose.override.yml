@@ -4,3 +4,6 @@ services:
     command: npm run develop
     volumes:
       - ./src:/src/app
+    build:
+      args:
+        env: development

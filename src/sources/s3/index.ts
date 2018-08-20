@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
-import Source, { SourceParams } from '../source';
+import Source from '../source';
 import compilePath from './../compile-path';
 import { S3Config } from './types';
 
@@ -40,7 +40,7 @@ export default class S3Resolver extends Source {
     return `${path}${imageAlias}`;
   }
 
-  public exists(params: SourceParams): Promise<boolean> {
+  public exists(params: any): Promise<boolean> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
@@ -56,7 +56,7 @@ export default class S3Resolver extends Source {
     });
   }
 
-  public stream(params: SourceParams): Stream {
+  public stream(params: any): Stream {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
