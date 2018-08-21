@@ -23,13 +23,13 @@ export const defaultConfig: ResizeConfig = {
   height: null,
 };
 
-export default class Crop extends Operation {
+export default class Crop implements Operation {
   public config: ResizeConfig;
   constructor(config: ResizeConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 

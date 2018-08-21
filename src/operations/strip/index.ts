@@ -22,13 +22,13 @@ export const defaultConfig: StripConfig = {
   icc_profile: true,
 };
 
-export default class Strip extends Operation {
+export default class Strip implements Operation {
   public config: StripConfig;
   constructor(config: StripConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 

@@ -10,6 +10,12 @@ import Format from './../index';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Format', () => {
+  describe('Requirements', () => {
+    it('should not have any requirements', () => {
+      const compress = new Format({});
+      expect(compress.requirements()).toEqual([]);
+    });
+  });
   describe('Transformation of state', () => {
     it('should not return same state', () => {
       const r = new Format({ type: 'png' });

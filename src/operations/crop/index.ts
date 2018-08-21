@@ -28,13 +28,13 @@ export const defaultConfig: CropConfig = {
   gravity: 'center',
 };
 
-export default class Crop extends Operation {
+export default class Crop implements Operation {
   public config: CropConfig;
   constructor(config: CropConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     if (this.config.gravity === 'face') {
       return [ DefinitionRequirement.FACES ];
     }

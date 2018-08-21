@@ -27,13 +27,13 @@ export const defaultConfig: FillConfig = {
   gravity: 'center',
 };
 
-export default class Fill extends Operation {
+export default class Fill implements Operation {
   public config: FillConfig;
   constructor(config: FillConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     if (this.config.gravity === 'face') {
       return [ DefinitionRequirement.FACES ];
     }

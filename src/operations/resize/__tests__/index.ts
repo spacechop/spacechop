@@ -7,6 +7,12 @@ import { ResizeConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 describe('Resize', () => {
+  describe('Requirements', () => {
+    it('should not have any requirements', () => {
+      const compress = new Resize({ width: 200, height: 200 });
+      expect(compress.requirements()).toEqual([]);
+    });
+  });
   describe('Transformation of state', () => {
     const defaultConfig: ResizeConfig = { width: 200, height: 200 };
     const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };

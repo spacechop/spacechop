@@ -47,13 +47,13 @@ export const defaultConfig: CompressConfig = {
   quality: 100,
 };
 
-export default class Compress extends Operation {
+export default class Compress implements Operation {
   public config: CompressConfig;
   constructor(config: CompressConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 
