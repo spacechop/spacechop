@@ -63,13 +63,13 @@ describe('HTTP Source', () => {
       );
     });
 
-    it('should resolve exists', async () => {
+    it('should resolve true if file exists', async () => {
       const result = await instance.exists({image: 'cat.jpg' });
       expect(listener).toHaveBeenCalledWith('/cat.jpg');
       expect(result).toBe(true);
     });
 
-    it('should resolve to stream', async () => {
+    it('should resolve to stream if image exists', async () => {
       const result = instance.stream({image: 'cat.jpg' });
       expect(listener).toHaveBeenCalledWith('/cat.jpg');
       expect(result).toBeInstanceOf(Stream);
