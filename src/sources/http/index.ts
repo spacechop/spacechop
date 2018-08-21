@@ -3,7 +3,7 @@ import path from 'path';
 import request from 'request';
 import { Stream } from 'stream';
 import compilePath from './../compile-path';
-import Source, { SourceParams } from './../source';
+import Source from './../source';
 
 export interface HttpSourceConfig {
   root: string;
@@ -15,7 +15,7 @@ export default class HttpSource extends Source {
     super(config);
   }
 
-  public exists(params: SourceParams): Promise<boolean> {
+  public exists(params: any): Promise<boolean> {
     const url = compilePath(this.config.root, params);
     return new Promise((resolve, reject) => {
       request.head(url, (err, res) => {
@@ -29,7 +29,7 @@ export default class HttpSource extends Source {
     });
   }
 
-  public stream(params: SourceParams): Stream {
+  public stream(params: any): Stream {
     const url = compilePath(this.config.root, params);
     return request(url);
 

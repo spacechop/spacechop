@@ -4,3 +4,7 @@ services:
     command: npm run develop
     volumes:
       - ./src:/src/app
+      - ./config.yml:/config.yml
+    build:
+      args:
+        env: development

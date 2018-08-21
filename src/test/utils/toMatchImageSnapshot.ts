@@ -6,7 +6,7 @@ import imageSimilarity from './imageSimilarity';
 declare global {
   namespace jest {
     interface Matchers<R> {
-      toMatchImageSnapshot(options: toMatchImageSnapshotOptions): typeof toMatchImageSnapshot;
+      toMatchImageSnapshot(options: ToMatchImageSnapshotOptions): typeof toMatchImageSnapshot;
     }
   }
 }
