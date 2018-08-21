@@ -1,6 +1,4 @@
 import { validate } from '../../validate';
-import * as t from 'runtypes';
-import Config from '../../../types/Config';
 
 describe('validate s3 source', () => {
   it('should throw on invalid source', () => {

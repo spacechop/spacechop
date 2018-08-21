@@ -1,8 +1,9 @@
 import * as t from 'runtypes';
+import PositiveNumber from '../PositiveNumber';
 
 const ResizeConfig = t.Record({
-  width: t.Number,
-  height: t.Number,
+  width: PositiveNumber,
+  height: PositiveNumber,
 });
 
 export type ResizeConfig = t.Static<typeof ResizeConfig>;

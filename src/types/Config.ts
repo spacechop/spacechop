@@ -5,7 +5,7 @@ import Source from './Source';
 // Test to make sure :preset exists in path.
 const pattern = /^\/.*:preset(\([^)]+\))?([^\w)]*?$|\/.*)/i;
 
-export default t.Record({
+const Config = t.Record({
   paths: t.Array(
     t.String
       .withConstraint((n) => !!n || 'Cannot be empty')
@@ -15,3 +15,6 @@ export default t.Record({
   sources: t.Array(Source),
   presets: t.Dictionary(PresetConfig, 'string'),
 });
+
+export type Config = t.Static<typeof Config>;
+export default Config;
