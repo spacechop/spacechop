@@ -1,13 +1,20 @@
-import fs from 'fs';
-import path from 'path';
+import url from 'url';
 import request from 'request';
 import { Stream } from 'stream';
 import compilePath from './../compile-path';
-import Source, { SourceParams } from './../source';
+import Source from './../source';
 
 export interface HttpSourceConfig {
   root: string;
 }
+
+export const buildUri = (input: string, params: {}) => {
+  const { pathname, ...parts } = url.parse(input);
+  return url.format({
+    ...parts,
+    pathname: compilePath(pathname, params),
+  });
+};
 
 export default class HttpSource extends Source {
   public config: HttpSourceConfig;
@@ -15,10 +22,10 @@ export default class HttpSource extends Source {
     super(config);
   }
 
-  public exists(params: SourceParams): Promise<boolean> {
-    const url = compilePath(this.config.root, params);
+  public exists(params: {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      request.head(url, (err, res) => {
+      const uri = buildUri(this.config.root, params);
+      request.head(uri, (err, res) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -29,9 +36,8 @@ export default class HttpSource extends Source {
     });
   }
 
-  public stream(params: SourceParams): Stream {
-    const url = compilePath(this.config.root, params);
-    return request(url);
-
+  public stream(params: {}): Stream {
+    const uri = buildUri(this.config.root, params);
+    return request(uri);
   }
 }
