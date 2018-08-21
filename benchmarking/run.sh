@@ -12,9 +12,12 @@ sleep 5
 
 for image in $(ls ./assets)
 do
-  echo "Running ${image}..."
-  docker run --rm --net=sc-benchmark williamyeh/wrk -t 4 -c 10 -d 5 http://spacechop-benched:3000/t_720/${image}
-  echo ""
+  for preset in t_720 t_thumb
+  do
+    echo "Running ${preset} ${image}..."
+    docker run --rm --net=sc-benchmark williamyeh/wrk -t 4 -c 10 -d 5 http://spacechop-benched:3000/${preset}/${image}
+    echo ""
+  done
 done
 
 docker kill ${sc_hash} ${nginx_hash} > /dev/null

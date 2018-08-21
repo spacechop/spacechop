@@ -6,6 +6,14 @@ sources:
       root: http://nginx/:image
 
 presets:
+  t_thumb:
+    steps:
+      - $fit:
+          width: 150
+          height: 150
+      - $compress:
+          quality: 92
+
   t_720:
     steps:
       - $crop:
