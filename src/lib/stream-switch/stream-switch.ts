@@ -4,7 +4,7 @@ import SourceEmitter from './source-emitter';
 export default class StreamSwitch {
   public sourceStream: Stream;
   public buffers: Buffer[];
-  public bufferLength: number; public s;
+  public bufferLength: number;
   public bufferPromises: {};
   public bufferResolvers: {};
 
