@@ -9,6 +9,11 @@ expect.extend({ toMatchImageSnapshot });
 
 describe('Crop', () => {
   describe('Requirements', () => {
+    it('should not have any requirements by default', () => {
+      const compress = new Crop({});
+      expect(compress.requirements()).toEqual([]);
+    });
+
     it('should require face detection if gravity = face', () => {
       const r = new Crop({ gravity: 'face' });
       const requirements = r.requirements();

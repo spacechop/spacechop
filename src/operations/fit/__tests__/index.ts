@@ -8,6 +8,13 @@ import { FitConfig } from './../types';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Fit', () => {
+  describe('Requirements', () => {
+    it('should not have any requirements', () => {
+      const compress = new Fit({});
+      expect(compress.requirements()).toEqual([]);
+    });
+  });
+
   describe('Transformation of state', () => {
     describe('width & height', () => {
       const defaultConfig: FitConfig = { width: 200, height: 200 };

@@ -13,6 +13,13 @@ import { allFormats } from './../../../types/Format';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Compress', () => {
+  describe('Requirements', () => {
+    it('should not have any requirements', () => {
+      const compress = new Compress({});
+      expect(compress.requirements()).toEqual([]);
+    });
+  });
+
   const defaultConfig: CompressConfig = {};
   const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
 
