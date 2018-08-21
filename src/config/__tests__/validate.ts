@@ -14,6 +14,11 @@ describe('should validate config.yml', () => {
     expect(() => validate(config, true)).toThrow();
   });
 
+  it('should return false on invalid config', () => {
+    const config = {};
+    expect(validate(config)).toBe(false);
+  });
+
   it('should now throw on valid config', () => {
     const config = {
       paths: ['/:preset/:image'],
