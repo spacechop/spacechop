@@ -1,12 +1,13 @@
 import { spawn } from 'duplex-child-process';
 import pathToRegex from 'path-to-regexp';
-import { Stream } from 'stream';
+import { Readable, Stream } from 'stream';
 import ImageDefinition from './imagedef';
+import analyze from './imagedef/analyze';
+import StreamSwitch from './lib/stream-switch';
 import Operations from './operations';
 import Sources from './sources';
-import analyze from './imagedef/analyze';
 
-const lookThroughSources = async (sources, params): Promise<Stream> => {
+const lookThroughSources = async (sources, params): Promise<Readable> => {
   for (const source of sources) {
     const name = Object.keys(source)[0];
     const props = source[name];
@@ -81,6 +82,30 @@ const extractParams = (params, values) => {
   }), {});
 };
 
+export const transform = async (stream: Readable, steps: any[]): Promise<Readable> => {
+  if (steps.length === 0) {
+    return stream;
+  }
+
+  const streamSwitch = new StreamSwitch(stream);
+  const streamToAnalyze = streamSwitch.createReadStream();
+  const streamToTransform = streamSwitch.createReadStream();
+
+  // initialize steps
+  const { pipeline, requirements } = initializePipeline(steps);
+
+  // prepare the image definition
+  const definition: ImageDefinition = await analyze(streamToAnalyze, requirements);
+
+  // build command from pipeline and image state
+  const { commands } = simulateTransformation(pipeline, definition);
+
+  // Spawn new worker to work through the commands.
+  const worker = spawn('sh', ['-c', commands.join(' | ')]);
+  streamToTransform.pipe(worker);
+  return worker;
+};
+
 export default (config, server) => {
   if (!config) {
     return;
@@ -114,20 +139,10 @@ export default (config, server) => {
         return;
       }
 
-      // initialize steps
-      const { pipeline, requirements } = initializePipeline(preset.steps);
-
-      // prepare the image definition
-      const definition: ImageDefinition = await analyze(stream, requirements);
-
-      // build command from pipeline and image state
-      const { commands } = simulateTransformation(pipeline, definition);
-
-      // Spawn new worker to work through the commands.
-      const worker = spawn('sh', ['-c', commands.join(' | ')]);
+      const transformed = await transform(stream, preset.steps);
 
       // Send image data through the worker which passes through to response.
-      stream.pipe(worker).pipe(res);
+      transformed.pipe(res);
     }));
   });
 };
