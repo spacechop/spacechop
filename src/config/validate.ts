@@ -1,4 +1,5 @@
 import Config from '../types/Config';
+import console from './console';
 
 export const validate = (config) => {
   try {
@@ -10,7 +11,7 @@ export const validate = (config) => {
 
 let valid = true;
 
-export default (config) => {
+export default (config, throwError = false) => {
   try {
     validate(config);
     if (!valid) {
@@ -24,6 +25,9 @@ export default (config) => {
     console.error('--------------------------------');
     console.error(err.message);
     console.error('--------------------------------');
+    if (throwError) {
+      throw new Error(err);
+    }
   }
   return false;
 };

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should validate operations no double operations in step 1`] = `"presets.t_200.steps.[0]: please only one operation per step"`;
+
+exports[`should validate strip config should throw on invalid config require valid icc_profile 1`] = `"presets.t_200.steps.[0].$strip.icc_profile: Expected boolean, but was string"`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should validate fill config should throw on invalid config require valid gravity 1`] = `"presets.t_200.steps.[0].$fill.gravity: Expected \\"center\\" | \\"face\\" | \\"north\\" | \\"northeast\\" | \\"east\\" | \\"southeast\\" | \\"south\\" | \\"southwest\\" | \\"west\\" | \\"northwest\\", but was string"`;
+
+exports[`should validate fill config should throw on invalid config require valid width and height 1`] = `"presets.t_200.steps.[0].$fill.width: please no negative number"`;
+
+exports[`should validate fill config should throw on invalid config require valid width and height 2`] = `"presets.t_200.steps.[0].$fill.height: please no negative number"`;
+
+exports[`should validate fill config should throw on invalid config require width or height 1`] = `"presets.t_200.steps.[0].$fill.width: Expected number, but was undefined"`;
+
+exports[`should validate operations no double operations in step 1`] = `"presets.t_200.steps.[0]: please only one operation per step"`;

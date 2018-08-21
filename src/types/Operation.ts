@@ -7,13 +7,22 @@ import FormatConfig from '../operations/format/types';
 import ResizeConfig from '../operations/resize/types';
 import StripConfig from '../operations/strip/types';
 
-
-export default t.Union(
-  t.Record({ $compress: CompressConfig }),
-  t.Record({ $crop: CropConfig }),
-  t.Record({ $fill: FillConfig }),
-  t.Record({ $fit: FitConfig }),
-  t.Record({ $format: FormatConfig }),
-  t.Record({ $resize: ResizeConfig }),
-  t.Record({ $strip: StripConfig }),
+export default t.Partial({
+  $compress: CompressConfig,
+  $crop: CropConfig,
+  $fill: FillConfig,
+  $fit: FitConfig,
+  $format: FormatConfig,
+  $resize: ResizeConfig,
+  $strip: StripConfig,
+}).withConstraint(
+  (n) => {
+    if (Object.keys(n).length > 1) {
+      return 'please only one operation per step';
+    }
+    if (Object.keys(n).length === 0) {
+      return 'please no empty step';
+    }
+    return true;
+  },
 );

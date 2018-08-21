@@ -1,7 +1,7 @@
 import * as t from 'runtypes';
 import Format from './../../types/Format';
 
-const FormatConfig = t.Partial({
+const FormatConfig = t.Record({
   type: Format,
 });
 
