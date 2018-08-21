@@ -1,20 +1,23 @@
-import { buildUri } from '..';
+import fs from 'fs';
+import path from 'path';
+import HttpSource, { buildUri } from '..';
+import createMockServer from '../../../test/utils/createMockServer';
+import { Stream } from 'stream';
 
 describe('HTTP Source', () => {
   describe('buildUri', () => {
     const paths = [
-      'http://spacechop.com/:preset/:image',
-      'http://localhost:8080/:preset/:image',
+      'http://spacechop.com/:image',
+      'http://localhost:8080/:image',
     ];
 
     const params = {
-      preset: 't_720',
       image: 'test.jpg',
     };
 
     const expected = [
-      'http://spacechop.com/t_720/test.jpg',
-      'http://localhost:8080/t_720/test.jpg',
+      'http://spacechop.com/test.jpg',
+      'http://localhost:8080/test.jpg',
     ];
 
     for (let i in paths) {
@@ -23,5 +26,50 @@ describe('HTTP Source', () => {
         expect(buildUri(path, params)).toBe(expected[i]);
       });
     }
+  });
+
+  describe('config', () => {
+    const config = { root: 'http://localhost:9000/:image' };
+    const instance = new HttpSource(config);
+    const listener = jest.fn();
+    const handler = (req, res) => {
+      const { image } = req.params;
+      const filename = path.join(__dirname, '../../../test/assets', image);
+      const exists = fs.existsSync(filename);
+      listener(req.originalUrl);
+      res.status(exists ? 200 : 404);
+      if (exists && req.method === 'GET') {
+        const stream = fs.createReadStream(filename);
+        res.end(stream);
+      } else {
+        res.end();
+      }
+    };
+    let server;
+
+    beforeAll(async() => {
+      server = await createMockServer(9000, handler, '/:image');
+    });
+    afterAll(async () => {
+      await server.close();
+    });
+
+    it('should save config', () => {
+      expect(instance.config).toEqual(
+        expect.objectContaining(config),
+      );
+    });
+
+    it('should resolve exists', async () => {
+      const result = await instance.exists({image: 'cat.jpg' });
+      expect(listener).toHaveBeenCalledWith('/cat.jpg');
+      expect(result).toBe(true);
+    });
+
+    it('should resolve to stream', async () => {
+      const result = instance.stream({image: 'cat.jpg' });
+      expect(listener).toHaveBeenCalledWith('/cat.jpg');
+      expect(result).toBeInstanceOf(Stream);
+    });
   });
 });
