@@ -1,6 +1,6 @@
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
-import { Gravity } from '../../Gravity';
+import { allGravities, Gravity } from '../../Gravity';
 import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
 import toMatchImageSnapshot from './../../../test/utils/toMatchImageSnapshot';
 import Crop from './../index';
@@ -182,12 +182,7 @@ describe('Crop', () => {
       const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
 
       // Add fixtures for all gravities on grid image
-      const gravities: Gravity[] = [
-        'east', 'center', 'north',
-        'northeast', 'northwest', 'south',
-        'southeast', 'southwest', 'west',
-      ];
-      for (const gravity of gravities) {
+      for (const gravity of allGravities) {
 
         // In grid image there are no faces so face gravity is useless.
         if (gravity === 'face') { continue; }
@@ -240,12 +235,8 @@ describe('Crop', () => {
       const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
 
       // Add fixtures for all gravities on grid image
-      const gravities: Gravity[] = [
-        'east', 'center', 'north',
-        'northeast', 'northwest', 'south',
-        'southeast', 'southwest', 'west',
-      ];
-      for (const gravity of gravities) {
+      for (const gravity of allGravities) {
+        if (gravity === 'face') { continue; }
         it(`Gravity JPEG ${gravity}`, async () => {
           const operation = new Crop({ ...defaultConfig, gravity });
           const result = createTransformedStream(gridPathJPEG, operation, defaultState);
@@ -294,13 +285,8 @@ describe('Crop', () => {
       const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
 
       // Add fixtures for all gravities on grid image
-      const gravities: Gravity[] = [
-        'east', 'center', 'north',
-        'northeast', 'northwest', 'south',
-        'southeast', 'southwest', 'west',
-      ];
-      for (const gravity of gravities) {
-
+      for (const gravity of allGravities) {
+        if (gravity === 'face') { continue; }
         it(`Gravity JPEG ${gravity}`, async () => {
           const operation = new Crop({ ...defaultConfig, gravity });
           const result = createTransformedStream(gridPathJPEG, operation, defaultState);

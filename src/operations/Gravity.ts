@@ -13,6 +13,6 @@ const Gravity = t.Union(
   t.Literal('west'),
   t.Literal('northwest'),
 );
-
+export const allGravities = Gravity.alternatives.map((f) => f.value);
 export type Gravity = t.Static<typeof Gravity>;
 export default Gravity;

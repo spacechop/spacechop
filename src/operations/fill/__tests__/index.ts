@@ -1,7 +1,7 @@
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { Gravity } from '../../Gravity';
+import { allGravities, Gravity } from '../../Gravity';
 import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
 import Fill from './../index';
 import { FillConfig } from './../types';
@@ -77,12 +77,9 @@ describe('Fill', () => {
     const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
 
     // Add fixtures for all gravities on grid image
-    const gravities: Gravity[] = [
-      'east', 'center', 'north',
-      'northeast', 'northwest', 'south',
-      'southeast', 'southwest', 'west',
-    ];
-    for (const gravity of gravities) {
+    for (const gravity of allGravities) {
+      // There are no faces in grid image, so testing for it is useless.
+      if (gravity === 'face') { continue; }
 
       it(`Gravity JPEG ${gravity}`, async () => {
         const result = createTransformedStream(

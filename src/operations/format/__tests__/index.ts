@@ -52,10 +52,10 @@ describe('Format', () => {
 
   const assetsFolder = path.join(__dirname, '../../../test/assets');
   const inputPaths = {
-    ['jpeg']: path.join(assetsFolder, 'grid.jpg'),
-    ['png']: path.join(assetsFolder, 'grid.png'),
-    ['gif']: path.join(assetsFolder, 'grid.gif'),
-    ['webp']: path.join(assetsFolder, 'grid.webp'),
+    jpeg: path.join(assetsFolder, 'grid.jpg'),
+    png: path.join(assetsFolder, 'grid.png'),
+    gif: path.join(assetsFolder, 'grid.gif'),
+    webp: path.join(assetsFolder, 'grid.webp'),
   };
 
 

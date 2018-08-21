@@ -86,9 +86,5 @@ describe('ImageDefinition', () => {
         });
       }
     });
-
-    describe('Stream reusability', () => {
-      console.log('s');
-    });
   });
 });
