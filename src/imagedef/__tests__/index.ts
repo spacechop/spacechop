@@ -6,7 +6,7 @@ import analyze from '../analyze';
 
 describe('ImageDefinition', () => {
   describe('Analyze', () => {
-    describe('regular files', () => {
+    describe('Basic files', () => {
       const assets = '../../test/assets';
       const sources: Array<{
         source: string;
@@ -85,6 +85,10 @@ describe('ImageDefinition', () => {
           );
         });
       }
+    });
+
+    describe('Stream reusability', () => {
+      console.log('s');
     });
   });
 });
