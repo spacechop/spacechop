@@ -35,11 +35,6 @@ export default class S3Resolver extends Source {
     this.path = config.path;
   }
 
-  public getPath({ imageAlias }) {
-    const path = this.path.length > 0 ? `${this.path}/` : '';
-    return `${path}${imageAlias}`;
-  }
-
   public exists(params: any): Promise<boolean> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;

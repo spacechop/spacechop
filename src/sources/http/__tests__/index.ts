@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { Stream } from 'stream';
 import HttpSource, { buildUri } from '..';
 import createMockServer from '../../../test/utils/createMockServer';
-import { Stream } from 'stream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 
 expect.extend({ toMatchImageSnapshot });
@@ -23,7 +23,7 @@ describe('HTTP Source', () => {
       'http://localhost:8080/test.jpg',
     ];
 
-    for (let i in paths) {
+    for (const i in paths) {
       const path = paths[i];
       it(`should work with path: ${path}`, () => {
         expect(buildUri(path, params)).toBe(expected[i]);
@@ -50,7 +50,7 @@ describe('HTTP Source', () => {
     };
     let server;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       server = await createMockServer(9000, handler, '/:image');
     });
     afterAll(async () => {
