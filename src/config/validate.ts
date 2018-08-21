@@ -10,20 +10,26 @@ export const validate = (config) => {
 
 let valid = true;
 
-export default (config) => {
+export default (config, print = true) => {
   try {
     validate(config);
     if (!valid) {
       valid = true;
-      console.info('Config is valid again');
+      if (print) {
+        console.info('Config is valid again');
+      }
     }
     return true;
   } catch (err) {
     valid = false;
-    console.error('\nThere is an error in /config.yml:');
-    console.error('--------------------------------');
-    console.error(err.message);
-    console.error('--------------------------------');
+    if (print) {
+      console.error('\nThere is an error in /config.yml:');
+      console.error('--------------------------------');
+      console.error(err.message);
+      console.error('--------------------------------');
+    } else {
+      throw new Error(err);
+    }
   }
   return false;
 };

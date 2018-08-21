@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate paths should require paths 1`] = `"paths: Expected array, but was undefined"`;
+
+exports[`validate paths should throw on invalid paths array 1`] = `"paths: Expected array, but was object"`;
+
+exports[`validate paths should throw on invalid paths array 2`] = `"paths: Requires at least one path"`;
+
+exports[`validate paths should throw on invalid paths array 3`] = `"paths.[0]: Cannot be empty"`;
+
+exports[`validate paths should throw on invalid paths array 4`] = `"paths.[0]: Requires :preset in path"`;
+
+exports[`validate paths should throw on invalid paths array 5`] = `"paths.[0]: Requires :preset in path"`;
+
+exports[`validate paths should throw on invalid paths array 6`] = `"paths.[0]: Must start with /"`;
