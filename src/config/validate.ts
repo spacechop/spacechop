@@ -1,4 +1,5 @@
 import Config from '../types/Config';
+import console from './console';
 
 export const validate = (config) => {
   try {
@@ -10,24 +11,21 @@ export const validate = (config) => {
 
 let valid = true;
 
-export default (config, print = true) => {
+export default (config, throwError = false) => {
   try {
     validate(config);
     if (!valid) {
       valid = true;
-      if (print) {
-        console.info('Config is valid again');
-      }
+      console.info('Config is valid again');
     }
     return true;
   } catch (err) {
     valid = false;
-    if (print) {
-      console.error('\nThere is an error in /config.yml:');
-      console.error('--------------------------------');
-      console.error(err.message);
-      console.error('--------------------------------');
-    } else {
+    console.error('\nThere is an error in /config.yml:');
+    console.error('--------------------------------');
+    console.error(err.message);
+    console.error('--------------------------------');
+    if (throwError) {
       throw new Error(err);
     }
   }

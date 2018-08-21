@@ -1,15 +1,17 @@
 import validate from '../validate';
 
+jest.mock('../console');
+
 describe('should validate config.yml', () => {
   it('should throw on invalid config', () => {
     let config = {};
-    expect(() => validate(config, false)).toThrow();
+    expect(() => validate(config, true)).toThrow();
 
     config = null;
-    expect(() => validate(config, false)).toThrow();
+    expect(() => validate(config, true)).toThrow();
 
     config = undefined;
-    expect(() => validate(config, false)).toThrow();
+    expect(() => validate(config, true)).toThrow();
   });
 
   it('should now throw on valid config', () => {
@@ -26,6 +28,6 @@ describe('should validate config.yml', () => {
         },
       },
     };
-    expect(() => validate(config, false)).not.toThrow();
+    expect(() => validate(config, true)).not.toThrow();
   });
 });
