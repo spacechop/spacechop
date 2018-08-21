@@ -2,17 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
-import Compress, { CompressConfig } from '..';
-import ImageDefinition, { ImageType } from '../../../imagedef';
+import Compress from '..';
+import ImageDefinition from '../../../imagedef';
 import countStreamBytes from '../../../test/utils/countStreamBytes';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+import { CompressConfig } from '../types';
+import { allFormats } from './../../../types/Format';
 
 expect.extend({ toMatchImageSnapshot });
 
 describe('Compress', () => {
   const defaultConfig: CompressConfig = {};
-  const defaultState: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
+  const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
 
   const assets = '../../../test/assets';
   const sources = {
@@ -23,7 +25,7 @@ describe('Compress', () => {
   };
 
   // create a test for all file types
-  for (const type of Object.keys(ImageType)) {
+  for (const type of allFormats) {
     describe(`Compressing ${type}`, async () => {
 
       const resultCopies = [];
@@ -37,7 +39,7 @@ describe('Compress', () => {
         // select source image to use.
         const source = sources[type];
         // set current state of source image.
-        state = { ...defaultState, type: ImageType[type] };
+        state = { ...defaultState, type };
         // get source file size.
         stats = fs.statSync(source);
 

@@ -1,11 +1,6 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
-import { magickTypeMap } from '../magickTypeMap';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-
-export interface FitConfig {
-  width?: number;
-  height?: number;
-}
+import { FitConfig } from './types';
 
 export const magickOptions = (config: FitConfig, state: ImageDefinition): string[] => {
   const width = config.width === undefined ? '' : config.width;
@@ -13,7 +8,7 @@ export const magickOptions = (config: FitConfig, state: ImageDefinition): string
   return [
     '-',
     `-resize ${width}x${height}`,
-    `${magickTypeMap[state.type]}:-`,
+    `${state.type}:-`,
   ];
 };
 

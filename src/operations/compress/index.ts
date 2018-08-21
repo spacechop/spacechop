@@ -1,11 +1,6 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
-import { magickTypeMap } from '../magickTypeMap';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-
-export interface CompressConfig {
-  quality?: number;
-  lossy?: boolean;
-}
+import { CompressConfig } from './types';
 
 export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
@@ -36,7 +31,7 @@ export const magickOptions = (config: CompressConfig, state: ImageDefinition): s
     'magick',
     '-',
     `-quality ${config.quality}`,
-    `${magickTypeMap[state.type]}:-`,
+    `${state.type}:-`,
   ];
 };
 
@@ -65,19 +60,19 @@ export default class Compress extends Operation {
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     let options;
     switch (state.type) {
-      case ImageType.jpeg:
+      case 'jpeg':
         options = mozjpegOptions(this.config, state);
         break;
 
-      case ImageType.png:
+      case 'png':
         options = pngquantOptions(this.config, state);
         break;
 
-      case ImageType.gif:
+      case 'gif':
         options = gifsicleOptions(this.config, state);
         break;
 
-      case ImageType.webp:
+      case 'webp':
         options = magickOptions(this.config, state);
         break;
       default:

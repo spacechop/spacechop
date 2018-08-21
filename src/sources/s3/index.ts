@@ -3,7 +3,7 @@ import Https from 'https';
 import { Stream } from 'stream';
 import Source from '../source';
 import compilePath from './../compile-path';
-import { S3Config } from './types';
+import { S3SourceConfig } from './types';
 
 const agent = new Https.Agent({
   keepAlive: true,
@@ -21,9 +21,9 @@ export default class S3Resolver extends Source {
   public S3: any;
   public bucketName: string;
   public path: string;
-  public config: S3Config;
+  public config: S3SourceConfig;
 
-  constructor(config: S3Config) {
+  constructor(config: S3SourceConfig) {
     super(config);
     this.S3 = new AWS.S3({
       accessKeyId: config.access_key_id,

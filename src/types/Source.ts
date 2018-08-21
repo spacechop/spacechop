@@ -1,5 +1,8 @@
 import * as t from 'runtypes';
-import S3Source from './../sources/s3/types';
-import HTTPSource from './HTTPSource';
+import HttpSourceConfig from '../sources/http/types';
+import S3SourceConfig from './../sources/s3/types';
 
-export default t.Union(HTTPSource, S3Source);
+export default t.Union(
+  t.Record({ http: HttpSourceConfig }),
+  t.Record({ s3: S3SourceConfig }),
+);

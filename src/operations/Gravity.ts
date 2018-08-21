@@ -1,13 +1,18 @@
-export enum Gravity {
-  center = 'center',
-  face = 'face',
+import * as t from 'runtypes';
 
-  north = 'north',
-  northeast = 'northeast',
-  east = 'east',
-  southeast = 'southeast',
-  south = 'south',
-  southwest = 'southwest',
-  west = 'west',
-  northwest = 'northwest',
-}
+const Gravity = t.Union(
+  t.Literal('center'),
+  t.Literal('face'),
+
+  t.Literal('north'),
+  t.Literal('northeast'),
+  t.Literal('east'),
+  t.Literal('southeast'),
+  t.Literal('south'),
+  t.Literal('southwest'),
+  t.Literal('west'),
+  t.Literal('northwest'),
+);
+export const allGravities = Gravity.alternatives.map((f) => f.value);
+export type Gravity = t.Static<typeof Gravity>;
+export default Gravity;

@@ -1,12 +1,22 @@
 import { createReadStream } from 'fs';
 import path from 'path';
-import ImageDefinition, { ImageType } from '..';
+import ImageDefinition from '..';
+import { Format } from '../../types/Format';
 import analyze from '../analyze';
+
 describe('ImageDefinition', () => {
   describe('Analyze', () => {
     describe('Basic files', () => {
       const assets = '../../test/assets';
-      const sources = [
+      const sources: Array<{
+        source: string;
+        alpha: boolean;
+        interlacing: boolean;
+        root: string,
+        type: Format,
+        width: number,
+        height: number
+      }> = [
         {
           source: 'grid.jpg',
           alpha: false,
@@ -64,7 +74,7 @@ describe('ImageDefinition', () => {
           const expected: ImageDefinition = {
             width,
             height,
-            type: ImageType[type],
+            type,
             alpha,
             interlacing,
           };
@@ -75,10 +85,6 @@ describe('ImageDefinition', () => {
           );
         });
       }
-    });
-
-    describe('Stream reusability', () => {
-      console.log('s');
     });
   });
 });

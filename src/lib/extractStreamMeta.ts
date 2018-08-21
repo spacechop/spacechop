@@ -1,6 +1,7 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
 
+
 export default async (stream: Stream): Promise<any> => new Promise((resolve, reject) => {
   const proc = spawn('magick', ['-', 'json:']);
   stream.pipe(proc);
@@ -18,8 +19,8 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
       const [{ image }] = json;
       resolve(image);
     } catch (err) {
-      console.log(err);
-      console.log(data);
+      console.error(err);
+      console.error(data);
       return null;
     }
   });

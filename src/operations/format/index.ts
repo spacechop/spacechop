@@ -1,18 +1,12 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
-import { magickTypeMap } from '../magickTypeMap';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from '../operation';
-
-export interface FormatConfig {
-  type: ImageType;
-}
-
-
+import { FormatConfig } from './types';
 
 export const magickOptions = (config: FormatConfig, state: ImageDefinition): string[] => {
   return [
     'convert',
     '-',
-    `${magickTypeMap[config.type]}:-`,
+    `${config.type}:-`,
   ];
 };
 export const transformState = (config: FormatConfig, state: ImageDefinition): ImageDefinition => {
