@@ -3,7 +3,7 @@ paths:
 
 sources:
   - http:
-      root: http://localhost:8081/:image
+      root: http://nginx/:image
 
 presets:
   t_720:
