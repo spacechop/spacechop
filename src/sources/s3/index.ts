@@ -17,14 +17,14 @@ AWS.config.update({
   },
 });
 
-export default class S3Resolver extends Source {
+export default class S3Resolver implements Source {
   public S3: any;
   public bucketName: string;
   public path: string;
   public config: S3SourceConfig;
 
   constructor(config: S3SourceConfig) {
-    super(config);
+    this.config = config;
     this.S3 = new AWS.S3({
       accessKeyId: config.access_key_id,
       secretAccessKey: config.secret_access_key,

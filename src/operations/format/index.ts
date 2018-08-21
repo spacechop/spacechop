@@ -16,13 +16,13 @@ export const transformState = (config: FormatConfig, state: ImageDefinition): Im
   };
 };
 
-export default class Format extends Operation {
+export default class Format implements Operation {
   public config: FormatConfig;
   constructor(config: FormatConfig) {
-    super(config);
+    this.config = config;
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 

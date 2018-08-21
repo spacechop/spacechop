@@ -1,6 +1,6 @@
-import url from 'url';
 import request from 'request';
 import { Stream } from 'stream';
+import url from 'url';
 import compilePath from './../compile-path';
 import Source from './../source';
 
@@ -16,10 +16,10 @@ export const buildUri = (input: string, params: {}) => {
   });
 };
 
-export default class HttpSource extends Source {
+export default class HttpSource implements Source {
   public config: HttpSourceConfig;
   constructor(config: HttpSourceConfig) {
-    super(config);
+    this.config = config;
   }
 
   public exists(params: {}): Promise<boolean> {
