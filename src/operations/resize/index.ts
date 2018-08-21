@@ -1,17 +1,12 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
-import { magickTypeMap } from '../magickTypeMap';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-
-export interface ResizeConfig {
-  width: number;
-  height: number;
-}
+import { ResizeConfig } from './types';
 
 export const magickOptions = (config: ResizeConfig, state: ImageDefinition): string[] => {
   return [
     '-',
     `-resize ${config.width || ''}x${config.height || ''}!`,
-    `${magickTypeMap[state.type]}:-`,
+    `${state.type}:-`,
   ];
 };
 

@@ -1,17 +1,8 @@
-export enum ImageType {
-  jpeg = 'jpeg',
-  png = 'png',
-  gif = 'gif',
-  webp = 'webp',
-}
+import { Format } from '../types/Format';
 
-export const getImageType = (type: string): ImageType => {
-  switch (type) {
-    case 'jpg':
-      return ImageType['jpeg'];
-    default:
-      return ImageType[type];
-  }
+export const getImageTypeFromMimeType = (mime: string): any => {
+  const type = mime.match(/^image\/(\w+)$/)[1];
+  return type;
 };
 
 export interface ImageFaceBox {
@@ -22,13 +13,13 @@ export interface ImageFaceBox {
 }
 
 export enum DefinitionRequirement {
-  FACES,
+  FACES = 'faces',
 }
 
 export default interface ImageDefinition {
   width: number;
   height: number;
-  type: ImageType;
+  type: Format;
   alpha?: boolean;
   interlacing?: boolean;
   faces?: [ImageFaceBox?];

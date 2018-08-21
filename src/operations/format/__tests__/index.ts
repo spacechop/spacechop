@@ -3,23 +3,24 @@ import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import ImageDefinition, { DefinitionRequirement, ImageType } from './../../../imagedef';
-import Format, { FormatConfig } from './../index';
+import ImageDefinition from './../../../imagedef';
+import { allFormats } from './../../../types/Format';
+import Format from './../index';
 
 expect.extend({ toMatchImageSnapshot });
 
-describe('Fill', () => {
+describe('Format', () => {
   describe('Transformation of state', () => {
     it('should not return same state', () => {
-      const r = new Format({ type: ImageType.png });
-      const stateBefore: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
+      const r = new Format({ type: 'png' });
+      const stateBefore: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
       const { state: stateAfter } = r.execute(stateBefore);
       expect(stateBefore === stateAfter).toBe(false);
     });
 
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
     it('should not update width & height', () => {
-      const op = new Format({ type: ImageType.png });
+      const op = new Format({ type: 'png' });
       const { state } = op.execute(defaultState);
       expect(state).toEqual(expect.objectContaining({
         width: 400,
@@ -28,21 +29,21 @@ describe('Fill', () => {
     });
 
     it('should update type', () => {
-      const op = new Format({ type: ImageType.png });
+      const op = new Format({ type: 'png' });
       const { state } = op.execute(defaultState);
       expect(state).toEqual(expect.objectContaining({
-        type: ImageType.png,
+        type: 'png',
       }));
     });
   });
 
   describe('Command', () => {
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg'};
 
     it('should use width & height', () => {
-      const op = new Format({ type: ImageType.png });
+      const op = new Format({ type: 'png'});
       const { command } = op.execute(defaultState);
-      expect(command).toEqual(expect.stringMatching(/PNG:-/));
+      expect(command).toEqual(expect.stringMatching(/png:-/));
     });
 
   });
@@ -51,16 +52,16 @@ describe('Fill', () => {
 
   const assetsFolder = path.join(__dirname, '../../../test/assets');
   const inputPaths = {
-    [ImageType.jpeg]: path.join(assetsFolder, 'grid.jpg'),
-    [ImageType.png]: path.join(assetsFolder, 'grid.png'),
-    [ImageType.gif]: path.join(assetsFolder, 'grid.gif'),
-    [ImageType.webp]: path.join(assetsFolder, 'grid.webp'),
+    jpeg: path.join(assetsFolder, 'grid.jpg'),
+    png: path.join(assetsFolder, 'grid.png'),
+    gif: path.join(assetsFolder, 'grid.gif'),
+    webp: path.join(assetsFolder, 'grid.webp'),
   };
 
 
   // Test converting between different formats
-  for (const fromFormat of Object.keys(inputPaths)) {
-    for (const toFormat of Object.keys(inputPaths)) {
+  for (const fromFormat of allFormats) {
+    for (const toFormat of allFormats) {
 
       // Dont perform noop conversions
       if (fromFormat === toFormat) { continue; }
@@ -73,8 +74,8 @@ describe('Fill', () => {
         beforeAll(() => {
           const result = createTransformedStream(
             inputPaths[fromFormat],
-            new Format({ type: ImageType[toFormat] }),
-            { width: 100, height: 100, type: ImageType[fromFormat] },
+            new Format({ type: toFormat }),
+            { width: 100, height: 100, type: fromFormat },
           );
 
           for (let i = 0; i < numberOfCopies; i++) {

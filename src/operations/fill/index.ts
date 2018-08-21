@@ -1,14 +1,7 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
-import { Gravity } from '../Gravity';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import { magickGravityMap } from '../magickGravityMap';
-import { magickTypeMap } from '../magickTypeMap';
 import Operation from './../operation';
-
-export interface FillConfig {
-  width: number;
-  height: number;
-  gravity?: Gravity;
-}
+import { FillConfig } from './types';
 
 export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
   return [
@@ -16,7 +9,7 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
     `-resize ${config.width}x${config.height}^`,
     `-gravity ${magickGravityMap[config.gravity]}`,
     `-extent ${config.width}x${config.height}`,
-    `${magickTypeMap[state.type]}:-`,
+    `${state.type}:-`,
   ];
 };
 
@@ -31,7 +24,7 @@ export const transformState = (config: FillConfig, state: ImageDefinition): Imag
 export const defaultConfig: FillConfig = {
   width: 99999,
   height: 99999,
-  gravity: Gravity.center,
+  gravity: 'center',
 };
 
 export default class Fill extends Operation {
@@ -41,7 +34,7 @@ export default class Fill extends Operation {
   }
 
   public requirements(): [DefinitionRequirement?] {
-    if (this.config.gravity === Gravity.face) {
+    if (this.config.gravity === 'face') {
       return [ DefinitionRequirement.FACES ];
     }
     return [];

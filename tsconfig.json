@@ -10,14 +10,14 @@
     "target": "es6",
     "sourceMap": true,
     "allowJs": true,
-    "outDir": "../dist",
+    "outDir": "dist",
     "lib": [
       "es6",
       "dom",
       "dom.iterable"
     ],
     "baseUrl": "./",
-    "typeRoots": [ "./node_modules/@types/" ],
+    "typeRoots": [ "./node_modules/@types/", "./@types/"],
   },
   "exclude": [
     "**/node_modules",

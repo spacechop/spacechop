@@ -1,15 +1,12 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-
-export interface StripConfig {
-  icu_profile?: boolean;
-}
+import { StripConfig } from './types';
 
 export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): string[] => {
   return [
     'exiftool',
     '-all=',
-    // ...config.icu_profile ? ['--icc_profile:all'] : [],
+    ...!config.icc_profile ? ['--icc_profile:all'] : [],
     '-',
   ];
 };
@@ -22,7 +19,7 @@ export const transformState = (_, state: ImageDefinition): ImageDefinition => {
 };
 
 export const defaultConfig: StripConfig = {
-  icu_profile: false,
+  icc_profile: true,
 };
 
 export default class Strip extends Operation {
