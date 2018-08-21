@@ -1,18 +1,17 @@
-import path from 'path';
-import analyze from '../analyze';
-import ImageDefinition, { ImageType } from '..';
 import { createReadStream } from 'fs';
-
+import path from 'path';
+import ImageDefinition, { ImageType } from '..';
+import analyze from '../analyze';
 describe('ImageDefinition', () => {
   describe('Analyze', () => {
-    describe('regular files', () => {
-      const __assets = '../../test/assets';
+    describe('Basic files', () => {
+      const assets = '../../test/assets';
       const sources = [
         {
           source: 'grid.jpg',
           alpha: false,
           interlacing: false,
-          root: __assets,
+          root: assets,
           type: 'jpeg',
           width: 100,
           height: 100,
@@ -20,7 +19,7 @@ describe('ImageDefinition', () => {
           source: 'grid-no-exif.jpg',
           alpha: false,
           interlacing: false,
-          root: __assets,
+          root: assets,
           type: 'jpeg',
           width: 100,
           height: 100,
@@ -28,7 +27,7 @@ describe('ImageDefinition', () => {
           source: 'grid.png',
           alpha: true,
           interlacing: false,
-          root: __assets,
+          root: assets,
           type: 'png',
           width: 100,
           height: 100,
@@ -36,7 +35,7 @@ describe('ImageDefinition', () => {
           source: 'grid.gif',
           alpha: false,
           interlacing: false,
-          root: __assets,
+          root: assets,
           type: 'gif',
           width: 100,
           height: 100,
@@ -44,7 +43,7 @@ describe('ImageDefinition', () => {
           source: 'grid.webp',
           alpha: false,
           interlacing: false,
-          root: __assets,
+          root: assets,
           type: 'webp',
           width: 100,
           height: 100,
@@ -76,6 +75,10 @@ describe('ImageDefinition', () => {
           );
         });
       }
+    });
+
+    describe('Stream reusability', () => {
+      console.log('s');
     });
   });
 });
