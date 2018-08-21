@@ -3,6 +3,9 @@ import path from 'path';
 import HttpSource, { buildUri } from '..';
 import createMockServer from '../../../test/utils/createMockServer';
 import { Stream } from 'stream';
+import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+
+expect.extend({ toMatchImageSnapshot });
 
 describe('HTTP Source', () => {
   describe('buildUri', () => {
@@ -40,7 +43,7 @@ describe('HTTP Source', () => {
       res.status(exists ? 200 : 404);
       if (exists && req.method === 'GET') {
         const stream = fs.createReadStream(filename);
-        res.end(stream);
+        stream.pipe(res);
       } else {
         res.end();
       }
@@ -70,6 +73,7 @@ describe('HTTP Source', () => {
       const result = instance.stream({image: 'cat.jpg' });
       expect(listener).toHaveBeenCalledWith('/cat.jpg');
       expect(result).toBeInstanceOf(Stream);
+      await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
     });
   });
 });
