@@ -1,16 +1,15 @@
 paths: 
-  - /images/:preset/:image
+  - /:preset/:image
 
 sources:
   - http:
-      root: https://example.com/images/:image
+      root: http://localhost:8081/:image
 
 presets:
   t_720:
     steps:
       - $crop:
           width: 720
-          gravity: center
 
       - $format:
           type: jpeg
