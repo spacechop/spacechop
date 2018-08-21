@@ -18,8 +18,7 @@ export interface ImageFaceBox {
 }
 
 export enum DefinitionRequirement {
-  FACES = 'faces',
-  ICC_PROFILE = 'icc_profile',
+  FACES = 'faces'
 }
 
 export default interface ImageDefinition {
