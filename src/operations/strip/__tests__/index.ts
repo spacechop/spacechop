@@ -1,11 +1,13 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import { PassThrough } from 'stream';
-import Strip, { StripConfig } from '..';
-import ImageDefinition, { ImageType } from '../../../imagedef';
+import Strip from '..';
+import ImageDefinition from '../../../imagedef';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import extractStreamExif from '../../../test/utils/extractStreamExif';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+import { allFormats } from './../../../types/Format';
+import { StripConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -15,7 +17,7 @@ describe('Strip', () => {
     const defaultState: ImageDefinition = {
       width: 100,
       height: 100,
-      type: ImageType.jpeg
+      type: 'jpeg',
     };
 
     const assets = '../../../test/assets';
@@ -26,7 +28,7 @@ describe('Strip', () => {
     };
 
     // create a test for all file types
-    for (const type of Object.keys(ImageType)) {
+    for (const type of allFormats) {
       // XXX add source for webp and remove this if statement.
       if (type !== 'webp') {
         it(`should strip exif from ${type}`, async () => {
@@ -40,7 +42,7 @@ describe('Strip', () => {
           const exifOrig = await extractStreamExif(original);
 
           // set current state of source image.
-          const state = { ...defaultState, type: ImageType[type] };
+          const state = { ...defaultState, type };
 
           // do the transformation operation.
           const result = createTransformedStream(source, operation, state);

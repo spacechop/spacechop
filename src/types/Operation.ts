@@ -1,18 +1,19 @@
 import * as t from 'runtypes';
-import CompressOperation from './CompressOperation';
-import CropOperation from './CropOperation';
-import FillOperation from './FillOperation';
-import FitOperation from './FitOperation';
-import FormatOperation from './FormatOperation';
-import ResizeOperation from './ResizeOperation';
-import StripOperation from './StripOperation';
+import CompressConfig from '../operations/compress/types';
+import CropConfig from '../operations/crop/types';
+import FillConfig from '../operations/fill/types';
+import FitConfig from '../operations/fit/types';
+import FormatConfig from '../operations/format/types';
+import ResizeConfig from '../operations/resize/types';
+import StripConfig from '../operations/strip/types';
+
 
 export default t.Union(
-  CompressOperation,
-  CropOperation,
-  FillOperation,
-  FitOperation,
-  FormatOperation,
-  ResizeOperation,
-  StripOperation,
+  t.Record({ $compress: CompressConfig }),
+  t.Record({ $crop: CropConfig }),
+  t.Record({ $fill: FillConfig }),
+  t.Record({ $fit: FitConfig }),
+  t.Record({ $format: FormatConfig }),
+  t.Record({ $resize: ResizeConfig }),
+  t.Record({ $strip: StripConfig }),
 );

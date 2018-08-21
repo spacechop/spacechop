@@ -1,9 +1,6 @@
-import ImageDefinition, { DefinitionRequirement, ImageType } from '../../imagedef';
+import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-
-export interface StripConfig {
-  icc_profile?: boolean;
-}
+import { StripConfig } from './types';
 
 export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): string[] => {
   return [

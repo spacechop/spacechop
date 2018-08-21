@@ -2,8 +2,9 @@ import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import { Gravity } from '../../Gravity';
-import ImageDefinition, { DefinitionRequirement, ImageType } from './../../../imagedef';
-import Fill, { FillConfig } from './../index';
+import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
+import Fill from './../index';
+import { FillConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -13,7 +14,7 @@ describe('Fill', () => {
       const r = new Fill({
         width: 200,
         height: 200,
-        gravity: Gravity.face,
+        gravity: 'face',
       });
       const requirements = r.requirements();
       expect(requirements).toContain(DefinitionRequirement.FACES);
@@ -23,13 +24,13 @@ describe('Fill', () => {
   describe('Transformation of state', () => {
     it('should not return same state', () => {
       const r = new Fill({ width: 200, height: 200 });
-      const stateBefore: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+      const stateBefore: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
       const { state: stateAfter } = r.execute(stateBefore);
       expect(stateBefore === stateAfter).toBe(false);
     });
 
     const defaultConfig: FillConfig = { width: 200, height: 200 };
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
     it('should update width & height', () => {
       const op = new Fill(defaultConfig);
       const { state } = op.execute(defaultState);
@@ -50,7 +51,7 @@ describe('Fill', () => {
 
   describe('Command', () => {
     const defaultConfig: FillConfig = { width: 200, height: 200 };
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
 
     it('should use width & height', () => {
       const op = new Fill(defaultConfig);
@@ -59,7 +60,7 @@ describe('Fill', () => {
     });
 
     it('should use gravity', () => {
-      const op = new Fill({ ...defaultConfig, gravity: Gravity.east });
+      const op = new Fill({ ...defaultConfig, gravity: 'east'});
       const { command } = op.execute(defaultState);
       expect(command).toEqual(expect.stringMatching(/-gravity East/));
     });
@@ -68,7 +69,7 @@ describe('Fill', () => {
 
   describe('Image similarity', () => {
     const defaultConfig: FillConfig = { width: 50, height: 25 };
-    const defaultState: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
 
     const gridPathJPEG: string = path.join(__dirname, '../../../test/assets', 'grid.jpg');
     const gridPathPNG: string = path.join(__dirname, '../../../test/assets', 'grid.png');
@@ -76,44 +77,46 @@ describe('Fill', () => {
     const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
 
     // Add fixtures for all gravities on grid image
-    for (const g of Object.keys(Gravity)) {
+    const gravities: Gravity[] = [
+      'east', 'center', 'north',
+      'northeast', 'northwest', 'south',
+      'southeast', 'southwest', 'west',
+    ];
+    for (const gravity of gravities) {
 
-      // In grid image there are no faces so face gravity is useless.
-      if (g === Gravity.face) { continue; }
-
-      it(`Gravity JPEG ${g}`, async () => {
+      it(`Gravity JPEG ${gravity}`, async () => {
         const result = createTransformedStream(
           gridPathJPEG,
-          new Fill({ ...defaultConfig, gravity: Gravity[g] }),
+          new Fill({ ...defaultConfig, gravity }),
           defaultState,
         );
         await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
       });
 
 
-      it(`Gravity PNG ${g}`, async () => {
+      it(`Gravity PNG ${gravity}`, async () => {
         const result = createTransformedStream(
           gridPathPNG,
-          new Fill({ ...defaultConfig, gravity: Gravity[g] }),
-          { ...defaultState, type: ImageType.png },
+          new Fill({ ...defaultConfig, gravity }),
+          { ...defaultState, type: 'png' },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
 
-      it(`Gravity interlaced PNG ${g}`, async () => {
+      it(`Gravity interlaced PNG ${gravity}`, async () => {
         const result = createTransformedStream(
           gridPathPNGInterlaced,
-          new Fill({ ...defaultConfig, gravity: Gravity[g] }),
-          { ...defaultState, type: ImageType.png, interlacing: true },
+          new Fill({ ...defaultConfig, gravity }),
+          { ...defaultState, type: 'png', interlacing: true },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'png' });
       });
 
-      it(`Gravity GIF ${g}`, async () => {
+      it(`Gravity GIF ${gravity}`, async () => {
         const result = createTransformedStream(
           gridPathGIF,
-          new Fill({ ...defaultConfig, gravity: Gravity[g] }),
-          { ...defaultState, type: ImageType.gif },
+          new Fill({ ...defaultConfig, gravity }),
+          { ...defaultState, type: 'gif' },
         );
         await expect(result).toMatchImageSnapshot({ extension: 'gif' });
       });

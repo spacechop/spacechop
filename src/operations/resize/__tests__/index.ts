@@ -1,14 +1,15 @@
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import ImageDefinition, { ImageType } from './../../../imagedef';
-import Resize, { ResizeConfig } from './../index';
+import ImageDefinition from './../../../imagedef';
+import Resize from './../index';
+import { ResizeConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 describe('Resize', () => {
   describe('Transformation of state', () => {
     const defaultConfig: ResizeConfig = { width: 200, height: 200 };
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
 
     it('should not return same state', () => {
       const r = new Resize(defaultConfig);
@@ -37,7 +38,7 @@ describe('Resize', () => {
 
   describe('Command', () => {
     const defaultConfig: ResizeConfig = { width: 200, height: 200 };
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
 
     it('should use correct width & height', () => {
       const op = new Resize(defaultConfig);
@@ -48,7 +49,7 @@ describe('Resize', () => {
 
   describe('Image similarity', () => {
     const defaultConfig: ResizeConfig = { width: 50, height: 100 };
-    const defaultState: ImageDefinition = { width: 100, height: 100, type: ImageType.jpeg };
+    const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
 
     const gridPathJPEG: string = path.join(__dirname, '../../../test/assets', 'grid.jpg');
     const gridPathPNG: string = path.join(__dirname, '../../../test/assets', 'grid.png');
@@ -68,7 +69,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathPNG,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.png },
+        { ...defaultState, type: 'png' },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
@@ -77,7 +78,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathPNGInterlaced,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.png, interlacing: true },
+        { ...defaultState, type: 'png', interlacing: true },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
@@ -86,7 +87,7 @@ describe('Resize', () => {
       const result = createTransformedStream(
         gridPathGIF,
         new Resize(defaultConfig),
-        { ...defaultState, type: ImageType.gif },
+        { ...defaultState, type: 'gif' },
       );
       await expect(result).toMatchImageSnapshot({ extension: 'gif' });
     });

@@ -1,14 +1,7 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
-import { magickTypeMap } from '../magickTypeMap';
 import Operation from './../operation';
-
-export interface CropConfig {
-  gravity?: Gravity;
-  width?: number;
-  height?: number;
-}
+import { CropConfig } from './types';
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
   const width = config.width === undefined ? state.width : config.width;
@@ -17,7 +10,7 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
     '-',
     `-gravity ${magickGravityMap[config.gravity]}`,
     `-crop ${width}x${height}+0+0`,
-    `${magickTypeMap[state.type]}:-`,
+    `${state.type}:-`,
   ];
 };
 
@@ -32,7 +25,7 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
 };
 
 export const defaultConfig: CropConfig = {
-  gravity: Gravity.center,
+  gravity: 'center',
 };
 
 export default class Crop extends Operation {
@@ -42,7 +35,7 @@ export default class Crop extends Operation {
   }
 
   public requirements(): [DefinitionRequirement?] {
-    if (this.config.gravity === Gravity.face) {
+    if (this.config.gravity === 'face') {
       return [ DefinitionRequirement.FACES ];
     }
     return [];

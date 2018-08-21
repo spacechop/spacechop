@@ -1,19 +1,19 @@
-import { Stream, PassThrough } from 'stream';
+import { PassThrough, Stream } from 'stream';
 // import probeImageSize from 'probe-image-size';
 import ImageDefinition, { getImageTypeFromMimeType } from '.';
 import extractStreamMeta from '../lib/extractStreamMeta';
 
 interface ImageMetaData {
-  mimeType: string
+  mimeType: string;
   geometry: {
     width: number,
     height: number,
-  },
-  interlace: string,
+  };
+  interlace: string;
   channelDepth?: {
     alpha: number,
-  },
-};
+  };
+}
 
 const analyzeStream = (stream: Stream): Promise<ImageMetaData> => {
   const duplex = new PassThrough();
