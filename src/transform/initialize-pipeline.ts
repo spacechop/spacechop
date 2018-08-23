@@ -7,7 +7,6 @@ export default (steps) => {
     const props = step[name];
 
     if (!Operations[name]) {
-      console.error('Operation');
       throw new Error(
         `Operation ${name} was not found. \n\n` +
         `Available operations are [${Object.keys(Operations)}]`,
