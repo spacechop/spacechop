@@ -1,0 +1,26 @@
+path: /images/:preset/:image
+
+sources:
+  - s3:
+    access_key_id: access_key_id
+    secret_access_key: secret_access_key
+    region: region
+    bucket_name: bucket_name
+    path:
+
+  - http:
+    root: https://example.com/images/:image
+
+presets:
+  t_720:
+    steps:
+      - $crop:
+        width: 720
+        gravity: center
+
+      - $format:
+          type: jpg
+
+      - $compress:
+        quality: 92
+        lossy: true

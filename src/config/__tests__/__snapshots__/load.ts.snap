@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should load config.yml valid config should return config 1`] = `
+Object {
+  "path": "/images/:preset/:image",
+  "presets": Object {
+    "t_720": Object {
+      "steps": Array [
+        Object {
+          "$crop": null,
+          "gravity": "center",
+          "width": 720,
+        },
+        Object {
+          "$format": Object {
+            "type": "jpg",
+          },
+        },
+        Object {
+          "$compress": null,
+          "lossy": true,
+          "quality": 92,
+        },
+      ],
+    },
+  },
+  "sources": Array [
+    Object {
+      "access_key_id": "access_key_id",
+      "bucket_name": "bucket_name",
+      "path": null,
+      "region": "region",
+      "s3": null,
+      "secret_access_key": "secret_access_key",
+    },
+    Object {
+      "http": null,
+      "root": "https://example.com/images/:image",
+    },
+  ],
+}
+`;
