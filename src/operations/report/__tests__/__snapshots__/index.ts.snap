@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Report Operation report from [gif] to [json] should match snapshot 1`] = `
+Object {
+  "height": 100,
+  "type": "gif",
+  "width": 100,
+}
+`;
+
+exports[`Report Operation report from [jpeg] to [json] should match snapshot 1`] = `
+Object {
+  "height": 100,
+  "type": "jpeg",
+  "width": 100,
+}
+`;
+
+exports[`Report Operation report from [png] to [json] should match snapshot 1`] = `
+Object {
+  "height": 100,
+  "type": "png",
+  "width": 100,
+}
+`;
+
+exports[`Report Operation report from [webp] to [json] should match snapshot 1`] = `
+Object {
+  "height": 100,
+  "type": "webp",
+  "width": 100,
+}
+`;
+
 exports[`Report report from [gif] to [json] should match snapshot 1`] = `
 Object {
   "height": 100,
