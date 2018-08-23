@@ -9,7 +9,7 @@
     "build": "tsc",
     "test": "jest --verbose false",
     "test:watch": "jest --watchAll --verbose false",
-    "test:ci": "jest --verbose false --ci --coverage"
+    "test:ci": "jest --verbose false --ci --coverage --collectCoverageFrom=app/**/*.ts --collectCoverageFrom=!app/test/utils/*.ts"
   },
   "author": "",
   "license": "ISC",
