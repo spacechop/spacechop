@@ -27,7 +27,9 @@ export default class HttpSource implements Source {
       const uri = buildUri(this.config.root, params);
       request.head(uri, (err, res) => {
         if (err) {
+          console.error('Communicating with HTTP source failed with following error:');
           console.error(err);
+          console.error('Is it correctly configured?');
           reject(err);
           return;
         }

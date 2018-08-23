@@ -113,4 +113,22 @@ describe('HTTP Source', () => {
       });
     });
   });
+
+  describe('Source misconigured', () => {
+    // For these tests there are no server started at following path.
+    const config = { root: 'http://localhost:9000/:image' };
+    const instance = new HttpSource(config);
+
+    describe('.exists', () => {
+      it('should throw an error', async () => {
+        let threwError = false;
+        try {
+          await instance.exists({ image: 'some-image.jpg' });
+        } catch (e) {
+          threwError = true;
+        }
+        expect(threwError).toBe(true);
+      });
+    });
+  });
 });
