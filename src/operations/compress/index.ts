@@ -75,10 +75,6 @@ export default class Compress implements Operation {
       case 'webp':
         options = magickOptions(this.config, state);
         break;
-      default:
-        throw new Error(
-          `Compresss cant handle type ${state.type}`,
-        );
     }
 
     return {
