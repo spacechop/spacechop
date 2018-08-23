@@ -7,13 +7,16 @@ export const loadConfig = (filepath) => yaml.safeLoad(fs.readFileSync(filepath))
 export default (filepath) => {
   if (fs.existsSync(filepath)) {
     try {
-      return loadConfig(filepath) || null;
+      const config = loadConfig(filepath);
+      if (config) {
+        return config;
+      } else {
+        throw new Error(`Configuration is empty, ${filepath}`);
+      }
     } catch (err) {
-      console.error(`Could not load ${filepath}`);
-      console.error(err);
+      throw new Error(`Could not load ${filepath}:\n\n${err}`);
     }
   } else {
-    console.error(`Could not find ${filepath}`);
+    throw new Error(`Could not find ${filepath}`);
   }
-  return null;
 };
