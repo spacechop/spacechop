@@ -1,6 +1,7 @@
 import request from 'request';
-import { Readable, Stream } from 'stream';
+import { Stream } from 'stream';
 import url from 'url';
+import console from '../../lib/console';
 import compilePath from './../compile-path';
 import Source from './../source';
 

@@ -1,5 +1,5 @@
+import console from '../lib/console';
 import Config from '../types/Config';
-import console from './console';
 
 export const validate = (config) => {
   try {
