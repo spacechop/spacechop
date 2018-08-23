@@ -6,12 +6,7 @@ export const reportOptions = (config: ReportConfig, state: ImageDefinition): str
   switch (config.format) {
     case 'json':
     default:
-      let data;
-      if (config.compact) {
-        data = JSON.stringify(state);
-      } else {
-        data = JSON.stringify(state, null, 2);
-      }
+      const data = JSON.stringify(state);
       return [
         `${JSON.stringify(data)}`,
       ];
@@ -27,7 +22,6 @@ export const transformState = (config: ReportConfig, state: ImageDefinition): Im
 
 export const defaultConfig: ReportConfig = {
   format: 'json',
-  compact: true,
 };
 
 export default class Report implements Operation {

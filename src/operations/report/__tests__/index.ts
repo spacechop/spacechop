@@ -7,20 +7,23 @@ import ImageDefinition from './../../../imagedef';
 import { allFormats } from './../../../types/Format';
 import { allFormats as allReportFormats } from './../../../types/ReportFormat';
 import Report from './../index';
+import { ReportConfig } from '../types';
 
 expect.extend({ toMatchImageSnapshot });
 
 describe('Report', () => {
+  const defaultConfig: ReportConfig = { format: 'json' };
+
   describe('Requirements', () => {
     it('should not have any requirements', () => {
-      const compress = new Report({ format: 'json' });
+      const compress = new Report(defaultConfig);
       expect(compress.requirements()).toEqual([]);
     });
   });
 
   describe('Transformation of state', () => {
     it('should not return same state', () => {
-      const r = new Report({ format: 'json' });
+      const r = new Report(defaultConfig);
       const stateBefore: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
       const { state: stateAfter } = r.execute(stateBefore);
       expect(stateBefore === stateAfter).toBe(false);
@@ -28,7 +31,7 @@ describe('Report', () => {
 
     const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
     it('should not update width & height', () => {
-      const op = new Report({ format: 'json' });
+      const op = new Report(defaultConfig);
       const { state } = op.execute(defaultState);
       expect(state).toEqual(expect.objectContaining({
         width: 400,
@@ -37,7 +40,7 @@ describe('Report', () => {
     });
 
     it('should update mime', () => {
-      const op = new Report({ format: 'json' });
+      const op = new Report(defaultConfig);
       const { state } = op.execute(defaultState);
       expect(state).toEqual(expect.objectContaining({
         mime: 'application/json',
@@ -49,7 +52,7 @@ describe('Report', () => {
     const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg'};
 
     it('should use echo', () => {
-      const op = new Report({ format: 'json'});
+      const op = new Report(defaultConfig);
       const { command } = op.execute(defaultState);
       expect(command).toEqual(expect.stringMatching(/echo/));
     });
@@ -71,8 +74,8 @@ describe('Report', () => {
         const resultCopies = [];
         const numberOfCopies = 1;
         const source = inputPaths[fromFormat];
-        const operation = new Report({ format: 'json' });
-        const state = { width: 100, height: 100, type: fromFormat };
+        const operation = new Report({ ...defaultConfig, format: toFormat });
+        const state: ImageDefinition = { width: 100, height: 100, type: fromFormat };
         beforeAll(() => {
           const result = createTransformedStream(
             source,
