@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PassThrough, Stream } from 'stream';
+import { Format } from '../../types/Format';
 import imageSimilarity from './imageSimilarity';
 
 declare global {
@@ -33,13 +34,13 @@ interface SnapshotResult {
 
 interface ToMatchImageSnapshotOptions {
   threshold?: number;
-  extension: string;
+  extension: Format;
 }
 export default async function toMatchImageSnapshot(
   received: NodeJS.ReadableStream,
   {
     threshold = .9,
-    extension = '',
+    extension = 'jpeg',
   }: ToMatchImageSnapshotOptions,
 ): Promise<SnapshotResult> {
   const {

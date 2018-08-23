@@ -50,24 +50,6 @@ describe('should validate fit config', () => {
       };
       expect(() => validate(config)).toThrowErrorMatchingSnapshot();
     });
-
-    it('require valid gravity', () => {
-      const config = {
-        ...defaultConfig,
-        presets: {
-          t_200: {
-            steps: [{
-              $fit: {
-                width: 100,
-                height: 100,
-                gravity: 'right',
-              },
-            }],
-          },
-        },
-      };
-      expect(() => validate(config)).toThrowErrorMatchingSnapshot();
-    });
   });
 
   describe('should now throw on valid config', () => {
@@ -80,24 +62,6 @@ describe('should validate fit config', () => {
               $fit: {
                 width: 100,
                 height: 100,
-              },
-            }],
-          },
-        },
-      };
-      expect(() => validate(config)).not.toThrow();
-    });
-
-    it('width & height & gravity', () => {
-      const config: Config = {
-        ...defaultConfig,
-        presets: {
-          t_200: {
-            steps: [{
-              $fit: {
-                width: 100,
-                height: 100,
-                gravity: 'center',
               },
             }],
           },
