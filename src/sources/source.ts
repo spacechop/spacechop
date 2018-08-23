@@ -1,4 +1,4 @@
-import { Stream } from 'stream';
+import { Readable } from 'stream';
 
 export default interface Source {
   exists(params: any): Promise<boolean>;

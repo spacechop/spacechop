@@ -1,5 +1,5 @@
 import request from 'request';
-import { Stream } from 'stream';
+import { Readable, Stream } from 'stream';
 import url from 'url';
 import compilePath from './../compile-path';
 import Source from './../source';
