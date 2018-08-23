@@ -9,7 +9,7 @@
     "build": "tsc",
     "test": "jest --verbose false",
     "test:watch": "jest --watchAll --verbose false",
-    "test:ci": "jest --verbose false --ci --coverage --collectCoverageFrom=app/**/*.ts --collectCoverageFrom=!app/test/utils/*.ts --collectCoverageFrom=!app/**/types.ts"
+    "test:ci": "jest --verbose false --ci --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -46,6 +46,12 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
+    "collectCoverageFrom": [
+      "app/*.ts",
+      "app/**/*.ts",
+      "!app/test/utils/*.ts",
+      "!app/**/types.ts"
+    ],
     "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
