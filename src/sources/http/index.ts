@@ -1,5 +1,5 @@
 import request from 'request';
-import { Stream } from 'stream';
+import { Readable, Stream } from 'stream';
 import url from 'url';
 import compilePath from './../compile-path';
 import Source from './../source';
@@ -27,7 +27,9 @@ export default class HttpSource implements Source {
       const uri = buildUri(this.config.root, params);
       request.head(uri, (err, res) => {
         if (err) {
+          console.error('Communicating with HTTP source failed with following error:');
           console.error(err);
+          console.error('Is it correctly configured?');
           reject(err);
           return;
         }

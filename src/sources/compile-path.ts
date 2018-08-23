@@ -11,10 +11,6 @@ export default (pattern, parameters) => {
 
   if (cache[pattern]) { return cache[pattern](parameters); }
 
-  if (cache[pattern]) {
-    return cache[pattern];
-  }
-
   const toPath = pathToRegexp.compile(pattern);
 
   if (cacheCount < cacheLimit) {
