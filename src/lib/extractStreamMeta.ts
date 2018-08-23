@@ -9,6 +9,7 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
   proc.on('data', (chunk) => {
     buffer.push(chunk);
   });
+  proc.on('error', (err) => reject(err));
   proc.on('end', () => {
     let data = Buffer.concat(buffer).toString();
     // fix issues with convert json.
@@ -19,9 +20,7 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
       const [{ image }] = json;
       resolve(image);
     } catch (err) {
-      console.error(err);
-      console.error(data);
-      return null;
+      reject(err);
     }
   });
 });
