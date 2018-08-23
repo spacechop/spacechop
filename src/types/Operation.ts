@@ -7,7 +7,7 @@ import FormatConfig from '../operations/format/types';
 import ResizeConfig from '../operations/resize/types';
 import StripConfig from '../operations/strip/types';
 
-export default t.Partial({
+const Operation = t.Partial({
   $compress: CompressConfig,
   $crop: CropConfig,
   $fill: FillConfig,
@@ -26,3 +26,6 @@ export default t.Partial({
     return true;
   },
 );
+
+export type Operation = t.Static<typeof Operation>;
+export default Operation;

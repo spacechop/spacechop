@@ -87,23 +87,5 @@ describe('should validate fit config', () => {
       };
       expect(() => validate(config)).not.toThrow();
     });
-
-    it('width & height & gravity', () => {
-      const config: Config = {
-        ...defaultConfig,
-        presets: {
-          t_200: {
-            steps: [{
-              $fit: {
-                width: 100,
-                height: 100,
-                gravity: 'center',
-              },
-            }],
-          },
-        },
-      };
-      expect(() => validate(config)).not.toThrow();
-    });
   });
 });
