@@ -12,9 +12,9 @@ import { ReportConfig } from './../types';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Report', () => {
-  const defaultConfig: ReportConfig = { format: 'json' };
-
   describe('Requirements', () => {
+    const defaultConfig: ReportConfig = { format: 'json' };
+
     it('should not have any requirements', () => {
       const compress = new Report(defaultConfig);
       expect(compress.requirements()).toEqual([]);
@@ -22,6 +22,9 @@ describe('Report', () => {
   });
 
   describe('Transformation of state', () => {
+    const defaultConfig: ReportConfig = { format: 'json' };
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
+
     it('should not return same state', () => {
       const r = new Report(defaultConfig);
       const stateBefore: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
@@ -29,7 +32,6 @@ describe('Report', () => {
       expect(stateBefore === stateAfter).toBe(false);
     });
 
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
     it('should not update width & height', () => {
       const op = new Report(defaultConfig);
       const { state } = op.execute(defaultState);
@@ -49,6 +51,7 @@ describe('Report', () => {
   });
 
   describe('Command', () => {
+    const defaultConfig: ReportConfig = { format: 'json' };
     const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg'};
 
     it('should use echo', () => {
@@ -58,47 +61,50 @@ describe('Report', () => {
     });
   });
 
-  const assetsFolder = path.join(__dirname, '../../../test/assets');
-  const inputPaths = {
-    jpeg: path.join(assetsFolder, 'grid.jpg'),
-    png: path.join(assetsFolder, 'grid.png'),
-    gif: path.join(assetsFolder, 'grid.gif'),
-    webp: path.join(assetsFolder, 'grid.webp'),
-  };
+  describe('Operation', () => {
+    const defaultConfig: ReportConfig = { format: 'json' };
+    const assetsFolder = path.join(__dirname, '../../../test/assets');
+    const inputPaths = {
+      jpeg: path.join(assetsFolder, 'grid.jpg'),
+      png: path.join(assetsFolder, 'grid.png'),
+      gif: path.join(assetsFolder, 'grid.gif'),
+      webp: path.join(assetsFolder, 'grid.webp'),
+    };
 
-  // Test converting between different formats
-  for (const fromFormat of allFormats) {
-    for (const toFormat of allReportFormats) {
-      describe(`report from [${fromFormat}] to [${toFormat}]`, async () => {
+    // Test converting between different formats
+    for (const fromFormat of allFormats) {
+      for (const toFormat of allReportFormats) {
+        describe(`report from [${fromFormat}] to [${toFormat}]`, async () => {
 
-        const resultCopies = [];
-        const numberOfCopies = 1;
-        const source = inputPaths[fromFormat];
-        const operation = new Report({ ...defaultConfig, format: toFormat });
-        const state: ImageDefinition = { width: 100, height: 100, type: fromFormat };
-        beforeAll(() => {
-          const result = createTransformedStream(
-            source,
-            operation,
-            state,
-          );
+          const resultCopies = [];
+          const numberOfCopies = 1;
+          const source = inputPaths[fromFormat];
+          const operation = new Report({ ...defaultConfig, format: toFormat });
+          const state: ImageDefinition = { width: 100, height: 100, type: fromFormat };
+          beforeAll(() => {
+            const result = createTransformedStream(
+              source,
+              operation,
+              state,
+            );
 
-          for (let i = 0; i < numberOfCopies; i++) {
-            const pt = new PassThrough();
-            result.pipe(pt);
-            resultCopies.push(pt);
-          }
+            for (let i = 0; i < numberOfCopies; i++) {
+              const pt = new PassThrough();
+              result.pipe(pt);
+              resultCopies.push(pt);
+            }
+          });
+
+          it('should match snapshot', async () => {
+            const buffer: Buffer = await streamToBuffer(resultCopies[0]);
+            const data = JSON.parse(buffer.toString());
+            expect(data).toEqual(
+              expect.objectContaining(state),
+            );
+            await expect(data).toMatchSnapshot();
+          });
         });
-
-        it('should match snapshot', async () => {
-          const buffer: Buffer = await streamToBuffer(resultCopies[0]);
-          const data = JSON.parse(buffer.toString());
-          expect(data).toEqual(
-            expect.objectContaining(state),
-          );
-          await expect(data).toMatchSnapshot();
-        });
-      });
+      }
     }
-  }
+  });
 });
