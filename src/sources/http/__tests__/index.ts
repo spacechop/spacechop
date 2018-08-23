@@ -6,6 +6,8 @@ import streamToBuffer from '../../../lib/streamToBuffer';
 import createMockServer from '../../../test/utils/createMockServer';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 
+jest.mock('../../../lib/console');
+
 expect.extend({ toMatchImageSnapshot });
 
 describe('HTTP Source', () => {

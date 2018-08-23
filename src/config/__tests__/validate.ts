@@ -1,6 +1,6 @@
 import validate from '../validate';
 
-jest.mock('../console');
+jest.mock('../../lib/console');
 
 describe('should validate config.yml', () => {
   it('should throw on invalid config', () => {
