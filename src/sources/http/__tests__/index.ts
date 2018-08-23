@@ -114,7 +114,7 @@ describe('HTTP Source', () => {
     });
   });
 
-  describe('Source misconigured', () => {
+  describe('Source misconfigured', () => {
     // For these tests there are no server started at following path.
     const config = { root: 'http://localhost:9000/:image' };
     const instance = new HttpSource(config);
