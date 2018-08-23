@@ -68,7 +68,7 @@ describe('Resize', () => {
         new Resize(defaultConfig),
         defaultState,
       );
-      await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
+      await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
     });
 
     it('should correctly resize PNG', async () => {

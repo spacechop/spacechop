@@ -132,7 +132,7 @@ describe('Fit', () => {
           new Fit(defaultConfig),
           defaultState,
         );
-        await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
       });
 
       it('should correctly fit PNG', async () => {
@@ -178,7 +178,7 @@ describe('Fit', () => {
           new Fit(defaultConfig),
           defaultState,
         );
-        await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
       });
 
       it('should correctly fit PNG', async () => {

@@ -1,7 +1,7 @@
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { allGravities, Gravity } from '../../Gravity';
+import { allGravities } from '../../Gravity';
 import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
 import Fill from './../index';
 import { FillConfig } from './../types';
@@ -92,7 +92,7 @@ describe('Fill', () => {
           new Fill({ ...defaultConfig, gravity }),
           defaultState,
         );
-        await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
       });
 
 

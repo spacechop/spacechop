@@ -1,11 +1,27 @@
-import { spawn } from 'duplex-child-process';
 import pathToRegex from 'path-to-regexp';
-import { Readable, Stream } from 'stream';
-import ImageDefinition from './imagedef';
-import analyze from './imagedef/analyze';
-import StreamSwitch from './lib/stream-switch';
-import Operations from './operations';
+import { Readable } from 'stream';
 import Sources from './sources';
+import transform from './transform';
+import { Config } from './types/Config';
+
+const asyncWrapper = (fn) => (req, res) => {
+  Promise
+    .resolve(fn(req, res))
+    .catch(handleError(res));
+};
+
+const handleError = (res) => (error) => {
+  console.error(error);
+  res.status(500);
+  res.end(error.message);
+};
+
+// Extract named parameters from request.
+const extractParams = (params, values) => {
+  return params.reduce((acc, param, i) => Object.assign(acc, {
+    [param.name]: values[i],
+  }), {});
+};
 
 const lookThroughSources = async (sources, params): Promise<Readable> => {
   for (const source of sources) {
@@ -21,92 +37,7 @@ const lookThroughSources = async (sources, params): Promise<Readable> => {
   return null;
 };
 
-const initializePipeline = (steps) => {
-  let requirements = {};
-  const preparedSteps = steps.map((step) => {
-    const name = Object.keys(step)[0];
-    const props = step[name];
-
-    if (!Operations[name]) {
-      console.error('Operation');
-      throw new Error(
-        `Operation ${name} was not found. \n\n` +
-        `Available operations are [${Object.keys(Operations)}]`,
-      );
-    }
-    // initialize operation instance with config.
-    const instance = new Operations[name](props);
-    // prepare requirements from steps
-    requirements = {
-      ...requirements,
-      ...instance.requirements(),
-    };
-    return instance;
-  });
-
-  return { pipeline: preparedSteps, requirements };
-};
-
-const asyncWrapper = (fn) => (req, res) => {
-  Promise
-    .resolve(fn(req, res))
-    .catch(handleError(res));
-};
-
-const handleError = (res) => (error) => {
-  console.error(error);
-  res.status(500);
-  res.end(error.message);
-};
-
-const simulateTransformation = (pipeline, initialState) => {
-
-  // const { command } = steps.reduce((acc, operation) => {
-  //   const name = Object.keys(operation)[0];
-  //   return operations[name].execute();
-  // }, { command: '', state });
-  let currentState = initialState;
-  const commands = [];
-  for (const operation of pipeline) {
-    const { command, state } = operation.execute(currentState);
-    commands.push(command);
-    currentState = state;
-  }
-  return { commands, state: currentState };
-};
-
-// Extract named parameters from request.
-const extractParams = (params, values) => {
-  return params.reduce((acc, param, i) => Object.assign(acc, {
-    [param.name]: values[i],
-  }), {});
-};
-
-export const transform = async (stream: Readable, steps: any[]): Promise<Readable> => {
-  if (steps.length === 0) {
-    return stream;
-  }
-
-  const streamSwitch = new StreamSwitch(stream);
-  const streamToAnalyze = streamSwitch.createReadStream();
-  const streamToTransform = streamSwitch.createReadStream();
-
-  // initialize steps
-  const { pipeline, requirements } = initializePipeline(steps);
-
-  // prepare the image definition
-  const definition: ImageDefinition = await analyze(streamToAnalyze, requirements);
-
-  // build command from pipeline and image state
-  const { commands } = simulateTransformation(pipeline, definition);
-
-  // Spawn new worker to work through the commands.
-  const worker = spawn('sh', ['-c', commands.join(' | ')]);
-  streamToTransform.pipe(worker);
-  return worker;
-};
-
-export default (config, server) => {
+export default (config: Config, server) => {
   if (!config) {
     return;
   }
