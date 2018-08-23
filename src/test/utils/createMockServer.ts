@@ -1,7 +1,7 @@
-import url from 'url';
 import bodyParser from 'body-parser';
 import express from 'express';
 import matchPath from 'react-router/matchPath';
+import url from 'url';
 
 export default (port, handler, routePath = '/*') => new Promise((resolve) => {
   if (!handler) {
@@ -14,8 +14,8 @@ export default (port, handler, routePath = '/*') => new Promise((resolve) => {
 
   app.use('/*', (req, res) => {
     const { pathname } = url.parse(req.originalUrl);
-    let match;
-    if (match = matchPath(pathname, { path: routePath })) {
+    const match = matchPath(pathname, { path: routePath });
+    if (match) {
       handler({ ...req, params: match.params }, res);
       if (next) {
         next(pathname);
@@ -28,8 +28,8 @@ export default (port, handler, routePath = '/*') => new Promise((resolve) => {
   let server;
   server = app.listen(port, () => {
     resolve({
-      close: () => new Promise(resolve => {
-        server.close(resolve);
+      close: () => new Promise((closeResolve) => {
+        server.close(closeResolve);
       }),
 
       waitForPath: (path, timeout = 1000) => {

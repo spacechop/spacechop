@@ -12,7 +12,7 @@ expect.extend({ toMatchImageSnapshot });
 describe('Format', () => {
   describe('Requirements', () => {
     it('should not have any requirements', () => {
-      const compress = new Format({});
+      const compress = new Format({ type: 'jpeg' });
       expect(compress.requirements()).toEqual([]);
     });
   });
