@@ -7,7 +7,7 @@ import ImageDefinition from './../../../imagedef';
 import { allFormats } from './../../../types/Format';
 import { allFormats as allReportFormats } from './../../../types/ReportFormat';
 import Report from './../index';
-import { ReportConfig } from '../types';
+import { ReportConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 
