@@ -15,12 +15,8 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
     // fix issues with convert json.
     // replace -nan with NaN
     data = data.replace(/\-nan/g, 'null');
-    try {
-      const json = JSON.parse(data);
-      const [{ image }] = json;
-      resolve(image);
-    } catch (err) {
-      reject(err);
-    }
+    const json = JSON.parse(data);
+    const [{ image }] = json;
+    resolve(image);
   });
 });
