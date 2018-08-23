@@ -6,10 +6,18 @@ import { CropConfig } from './types';
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
   const width = config.width === undefined ? state.width : config.width;
   const height = config.height === undefined ? state.height : config.height;
+
+  const geometry = `${width}x${height}+0+0`;
   return [
     '-',
     `-gravity ${magickGravityMap[config.gravity]}`,
-    `-crop ${width}x${height}+0+0`,
+    `-crop ${geometry}`,
+
+    // magick crop only changes the image size, but not the canvas's.
+    // using repage solves this.
+    // If repage was not used, the true image size (that is widthxheight) would still
+    // be the same, but the "projected" image would be correct size.
+    `-repage ${geometry}`,
     `${state.type}:-`,
   ];
 };
