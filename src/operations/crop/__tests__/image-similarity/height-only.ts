@@ -27,7 +27,7 @@ describe('Image similarity - height only', () => {
     it(`Gravity JPEG ${gravity}`, async () => {
       const operation = new Crop({ ...defaultConfig, gravity });
       const result = createTransformedStream(paths.jpeg, operation, defaultState);
-      await expect(result).toMatchImageSnapshot({ extension: 'jpg'});
+      await expect(result).toMatchImageSnapshot({ extension: 'jpeg'});
     });
 
     it(`Gravity PNG ${gravity}`, async () => {
