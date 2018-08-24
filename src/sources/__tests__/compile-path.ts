@@ -12,6 +12,6 @@ describe('Compile path', () => {
   describe('succeeds', () => {
     const pattern = '/:preset/:image';
     const params = { preset: 't_200', image: 'cat.jpg' };
-    expect(compile(pattern, params)).toMatchSnapshot();
+    expect(compile(pattern, params)).toEqual('/t_200/cat.jpg');
   });
 });
