@@ -21,12 +21,12 @@ presets:
   t_200:
     steps:
       - $fill:
-        width: 200
-        height: 200
+          width: 200
+          height: 200
       - $format:
-        type: jpg
+          type: jpg
       - $compress:
-        quality: 0.9
+          quality: 0.9
 ```
 
 `docker-compose.yml`
