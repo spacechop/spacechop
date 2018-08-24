@@ -1,6 +1,6 @@
 import { Stream } from 'stream';
 
-export default (stream: Stream) => {
+export default (stream: Stream): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
     const chunks = [];
     stream.on('data', (chunk) => chunks.push(chunk));

@@ -40,5 +40,6 @@ export default async (stream, requirements): Promise<ImageDefinition> => {
     alpha: channelDepth && !!channelDepth.alpha,
     interlacing: interlace !== 'None',
     type: getImageTypeFromMimeType(mimeType),
+    mime: mimeType,
   };
 };
