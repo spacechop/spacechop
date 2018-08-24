@@ -10,9 +10,4 @@ describe('Extract stream meta', () => {
     const animated = await isStreamPNGAnimation(stream);
     expect(animated).toBe(true);
   });
-
-  it('should throw when stream is broken', async () => {
-    const empty = fs.createReadStream('/config.yml');
-    expect(isStreamPNGAnimation(empty)).rejects.toThrow();
-  });
 });

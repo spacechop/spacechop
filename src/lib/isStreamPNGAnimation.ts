@@ -8,7 +8,6 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
   proc.on('data', (chunk) => {
     buffer.push(chunk);
   });
-  proc.on('error', (err) => reject(err));
   proc.on('end', () => {
     const data = Buffer.concat(buffer).toString();
     const animated = /acTL/.test(data);
