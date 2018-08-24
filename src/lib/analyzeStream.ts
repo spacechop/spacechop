@@ -11,8 +11,9 @@ interface ImageMetaData {
   };
   interlace: string;
   channelDepth?: {
-    alpha: number,
+    alpha?: number,
   };
+  alpha?: string;
   animatedGIF?: boolean;
   animatedPNG?: boolean;
 }

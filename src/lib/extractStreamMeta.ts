@@ -17,7 +17,6 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
     // replace originGeometry with string
     data = data.replace(/"originGeometry": ([^,"]+),/g, '"originGeometry": "$1",');
     const json = JSON.parse(data);
-    const [{ image }] = json;
-    resolve(image);
+    resolve(json);
   });
 });
