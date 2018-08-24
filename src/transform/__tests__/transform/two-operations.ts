@@ -25,9 +25,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
@@ -44,9 +44,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
@@ -63,9 +63,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
@@ -82,9 +82,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
@@ -100,9 +100,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
@@ -118,9 +118,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
@@ -136,9 +136,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 });

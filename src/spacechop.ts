@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import pathToRegex from 'path-to-regexp';
 import { Readable } from 'stream';
 import Sources from './sources';
@@ -48,7 +49,7 @@ export default (config: Config, server) => {
   paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
-    server.get(pattern, asyncWrapper(async (req, res) => {
+    server.get(pattern, asyncWrapper(async (req: Request, res: Response) => {
       // Extract params from request (enables the use of dynamic named params (.*)).
       const params = extractParams(keys, req.params);
 
@@ -70,9 +71,11 @@ export default (config: Config, server) => {
         return;
       }
 
-      const transformed = await transform(stream, preset.steps);
+      const { stream: transformed, headers } = await transform(stream, preset.steps);
 
       // Send image data through the worker which passes through to response.
+      res.setHeader('Content-Type', headers.contentType);
+      res.setHeader('Content-Length', headers.contentLength);
       transformed.pipe(res);
     }));
   });
