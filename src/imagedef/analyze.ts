@@ -1,29 +1,8 @@
-import { PassThrough, Stream } from 'stream';
-// import probeImageSize from 'probe-image-size';
 import ImageDefinition, { getImageTypeFromMimeType } from '.';
-import extractStreamMeta from '../lib/extractStreamMeta';
-
-interface ImageMetaData {
-  mimeType: string;
-  geometry: {
-    width: number,
-    height: number,
-  };
-  interlace: string;
-  channelDepth?: {
-    alpha: number,
-  };
-}
-
-const analyzeStream = (stream: Stream): Promise<ImageMetaData> => {
-  const duplex = new PassThrough();
-  stream.pipe(duplex);
-  return extractStreamMeta(duplex);
-};
+import analyzeStream from '../lib/analyzeStream';
 
 export default async (stream, requirements): Promise<ImageDefinition> => {
-  // XXX in case of face detection, analyze image for faces
-  const data = await analyzeStream(stream);
+  const data = await analyzeStream(stream, requirements);
   const {
     mimeType,
     geometry: {
@@ -32,6 +11,8 @@ export default async (stream, requirements): Promise<ImageDefinition> => {
     },
     interlace,
     channelDepth,
+    animatedGIF,
+    animatedPNG,
   } = data;
 
   return {
@@ -41,5 +22,6 @@ export default async (stream, requirements): Promise<ImageDefinition> => {
     interlacing: interlace !== 'None',
     type: getImageTypeFromMimeType(mimeType),
     mime: mimeType,
+    animated: animatedGIF || animatedPNG,
   };
 };

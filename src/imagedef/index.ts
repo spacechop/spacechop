@@ -24,4 +24,5 @@ export default interface ImageDefinition {
   interlacing?: boolean;
   faces?: [ImageFaceBox?];
   mime?: string;
+  animated?: boolean;
 }
