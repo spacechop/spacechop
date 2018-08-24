@@ -19,6 +19,7 @@ describe('ImageDefinition', () => {
         type: Format,
         width: number,
         height: number
+        animated: boolean,
       }> = [
         {
           source: 'grid.jpg',
@@ -76,7 +77,7 @@ describe('ImageDefinition', () => {
           animated: true,
         }, {
           source: 'animated.png',
-          alpha: false,
+          alpha: true,
           interlacing: false,
           root: assets,
           type: 'png',
@@ -93,6 +94,7 @@ describe('ImageDefinition', () => {
         height,
         alpha,
         interlacing,
+        animated,
         type,
         root,
       } of sources) {
@@ -103,6 +105,7 @@ describe('ImageDefinition', () => {
             type,
             alpha,
             interlacing,
+            animated,
           };
           const stream = createReadStream(path.join(__dirname, root, source));
 
