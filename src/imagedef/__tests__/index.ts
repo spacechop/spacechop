@@ -1,8 +1,11 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import ImageDefinition from '..';
+import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
 import { Format } from '../../types/Format';
 import analyze from '../analyze';
+
+expect.extend({ toMatchImageSnapshot });
 
 describe('ImageDefinition', () => {
   describe('Analyze', () => {
@@ -25,6 +28,7 @@ describe('ImageDefinition', () => {
           type: 'jpeg',
           width: 100,
           height: 100,
+          animated: false,
         }, {
           source: 'grid-no-exif.jpg',
           alpha: false,
@@ -33,6 +37,7 @@ describe('ImageDefinition', () => {
           type: 'jpeg',
           width: 100,
           height: 100,
+          animated: false,
         }, {
           source: 'grid.png',
           alpha: true,
@@ -41,6 +46,7 @@ describe('ImageDefinition', () => {
           type: 'png',
           width: 100,
           height: 100,
+          animated: false,
         }, {
           source: 'grid.gif',
           alpha: false,
@@ -49,6 +55,7 @@ describe('ImageDefinition', () => {
           type: 'gif',
           width: 100,
           height: 100,
+          animated: false,
         }, {
           source: 'grid.webp',
           alpha: false,
@@ -57,6 +64,25 @@ describe('ImageDefinition', () => {
           type: 'webp',
           width: 100,
           height: 100,
+          animated: false,
+        }, {
+          source: 'animated.gif',
+          alpha: true,
+          interlacing: false,
+          root: assets,
+          type: 'gif',
+          width: 100,
+          height: 100,
+          animated: true,
+        }, {
+          source: 'animated.png',
+          alpha: false,
+          interlacing: false,
+          root: assets,
+          type: 'png',
+          width: 100,
+          height: 100,
+          animated: true,
         },
       ];
 
@@ -70,7 +96,7 @@ describe('ImageDefinition', () => {
         type,
         root,
       } of sources) {
-        it(`should return valid ImageDefinition for ${source}`, async () => {
+        describe(`analyze ImageDefinition for ${source}`, () => {
           const expected: ImageDefinition = {
             width,
             height,
@@ -79,10 +105,13 @@ describe('ImageDefinition', () => {
             interlacing,
           };
           const stream = createReadStream(path.join(__dirname, root, source));
-          const recieved = await analyze(stream, []);
-          expect(recieved).toEqual(
-            expect.objectContaining(expected),
-          );
+
+          it('should return valid ImageDefinition', async () => {
+            const recieved = await analyze(stream, []);
+            expect(recieved).toEqual(
+              expect.objectContaining(expected),
+            );
+          });
         });
       }
     });
