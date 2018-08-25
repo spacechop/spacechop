@@ -29,6 +29,7 @@ export const serialize = (message: any) => {
 export const log = (proc: number, message: any) => {
   const data = serialize(message);
   const row = buildLogRow(proc, data);
+  process.stdout.write(row);
 };
 
 const timing = {};
@@ -42,6 +43,6 @@ export const time = (proc: number, message: any) => {
   } else {
     const delta = process.hrtime(timing[key])[1] / 1000000;
     const row = buildLogRow(proc, data, delta);
-    console.log(row);
+    process.stdout.write(row);
   }
 };
