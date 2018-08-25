@@ -1,7 +1,6 @@
 import { Readable } from 'stream';
-import ImageDefinition from '../imagedef';
+import ImageDefinition, { Mime } from '../imagedef';
 import countBytes from '../lib/countBytes';
-import { Mime } from '../types/Mime';
 
 export interface TransformationHeaders {
   contentType: Mime;

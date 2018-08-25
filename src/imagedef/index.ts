@@ -1,5 +1,4 @@
 import { Format } from '../types/Format';
-import { Mime } from '../types/Mime';
 
 export const getImageTypeFromMimeType = (mime: string): any => {
   const type = mime.match(/^image\/(\w+)$/)[1];
@@ -16,6 +15,12 @@ export interface ImageFaceBox {
 export enum DefinitionRequirement {
   FACES = 'faces',
 }
+
+export type Mime = 'image/jpeg'
+  | 'image/png'
+  | 'image/gif'
+  | 'image/webp'
+  | 'application/json';
 
 export default interface ImageDefinition {
   width: number;

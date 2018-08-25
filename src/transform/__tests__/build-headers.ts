@@ -1,11 +1,9 @@
 import { createReadStream } from 'fs';
 import path from 'path';
+import ImageDefinition, { Mime } from '../../imagedef';
 import assetsFolder from '../../test/assets/dirname';
-import buildHeaders from '../build-headers';
-import ImageDefinition from '../../imagedef';
-import { Mime } from '../../types/Mime';
 import { Format } from '../../types/Format';
-
+import buildHeaders from '../build-headers';
 
 describe('buildHeaders', () => {
   // The expected contentLength stated below are taken fron 'ls -l'.
