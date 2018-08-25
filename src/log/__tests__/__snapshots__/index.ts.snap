@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Logging Serialize should handle array default 1`] = `"1 hej -1 null"`;
+
+exports[`Logging Serialize should handle array empty 1`] = `""`;
+
 exports[`Logging Serialize should handle number NaN 1`] = `"null"`;
 
 exports[`Logging Serialize should handle number default 1`] = `"1"`;

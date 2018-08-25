@@ -1,8 +1,10 @@
 import pathToRegex from 'path-to-regexp';
 import { Readable } from 'stream';
+import Log from './log';
 import Sources from './sources';
 import transform from './transform';
 import { Config } from './types/Config';
+import { Source } from './types/Source';
 
 const asyncWrapper = (fn) => (req, res) => {
   Promise
@@ -23,7 +25,7 @@ const extractParams = (params, values) => {
   }), {});
 };
 
-const lookThroughSources = async (sources, params): Promise<Readable> => {
+const lookThroughSources = async (sources, params): Promise<{ stream: Readable, source: Source }> => {
   for (const source of sources) {
     const name = Object.keys(source)[0];
     const props = source[name];
@@ -31,7 +33,10 @@ const lookThroughSources = async (sources, params): Promise<Readable> => {
     // initialize source instance with config.
     const instance = new Sources[name](props);
     if (await instance.exists(params)) {
-      return instance.stream(params);
+      return {
+        stream: instance.stream(params),
+        source,
+      };
     }
   }
   return null;
@@ -49,8 +54,10 @@ export default (config: Config, server) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
     server.get(pattern, asyncWrapper(async (req, res) => {
+      const stdlog = new Log();
       // Extract params from request (enables the use of dynamic named params (.*)).
       const params = extractParams(keys, req.params);
+      stdlog.log('request', req.originalUrl);
 
       // find the right preset steps to use
       const preset = config.presets[params.preset];
@@ -58,22 +65,38 @@ export default (config: Config, server) => {
       if (!preset) {
         res.status(404);
         res.end('Could not find preset');
+        stdlog.log(404, 'Could not find preset');
+        stdlog.end();
         return;
+      } else {
+        stdlog.log('found preset', { [params.preset]: preset });
       }
 
       // look through sources to fetch original source stream
-      const stream = await lookThroughSources(sources, params);
+      stdlog.time('found image');
+      const { stream, source } = await lookThroughSources(sources, params);
 
       if (!stream) {
         res.status(404);
         res.end('Could not find image');
+        stdlog.clearTime('found image in source');
+        stdlog.log(404, 'Could not find image');
+        stdlog.end();
         return;
+      } else {
+        stdlog.time('found image');
+        stdlog.log('in source', source);
       }
 
+      stdlog.time('transform');
       const transformed = await transform(stream, preset.steps);
 
       // Send image data through the worker which passes through to response.
       transformed.pipe(res);
+      transformed.on('end', () => {
+        stdlog.time('transform');
+        stdlog.end();
+      });
     }));
   });
 };

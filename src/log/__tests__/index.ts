@@ -1,4 +1,4 @@
-import { buildLogRow, serialize, time } from '..';
+import { buildLogRow, serialize } from '..';
 
 describe('Logging', () => {
   describe('Log row', () => {
@@ -113,22 +113,21 @@ describe('Logging', () => {
         expect(out).toMatchSnapshot();
       });
     });
-  });
 
-  it('should write to log', () => {
-    time(1, 'crop');
-    time(1, 'crop');
+    describe('should handle array', () => {
+      it('empty', () => {
+        const arr = [];
+        const out = serialize(arr);
+        expect(typeof out).toBe('string');
+        expect(out).toMatchSnapshot();
+      });
 
-    time(1, 'resize');
-    for (let i = 0; i < 10000; i++) {
-      ;
-    }
-    time(1, 'resize');
-
-    time(1, 'compress');
-    for (let i = 0; i < 50000; i++) {
-      ;
-    }
-    time(1, 'compress');
+      it('default', () => {
+        const arr = [1, 'hej', -1, NaN];
+        const out = serialize(arr);
+        expect(typeof out).toBe('string');
+        expect(out).toMatchSnapshot();
+      });
+    });
   });
 });

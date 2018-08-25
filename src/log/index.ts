@@ -23,26 +23,64 @@ export const serialize = (message: any) => {
     }
     return message;
   }
-  return JSON.stringify(message);
+  if (message instanceof Array) {
+    return message.map(serialize).join('\n');
+  }
+  return JSON.stringify(message, null, 2);
 };
 
 export const log = (proc: number, message: any) => {
   const data = serialize(message);
   const row = buildLogRow(proc, data);
-  process.stdout.write(row);
+  console.info(row);
 };
 
 const timing = {};
 
 export const time = (proc: number, message: any) => {
   const data = serialize(message);
-  const key = `${process}.${data}`;
+  const key = `${proc}.${data}`;
   if (!timing[key]) {
     timing[key] = process.hrtime();
 
   } else {
-    const delta = process.hrtime(timing[key])[1] / 1000000;
-    const row = buildLogRow(proc, data, delta);
-    process.stdout.write(row);
+    const hrtime = process.hrtime(timing[key]);
+    const nanoseconds = (hrtime[0] * 1e9) + hrtime[1];
+    const milliseconds = nanoseconds / 1e6;
+    delete timing[key];
+    log(proc, [data, `${milliseconds}ms`]);
   }
 };
+
+export const clearTime = (proc: number, message: any) => {
+  const data = serialize(message);
+  const key = `${proc}.${data}`;
+  delete timing[key];
+};
+
+let counter = 0;
+
+export default class Log {
+  private process: number;
+  public constructor() {
+    counter += 1;
+    this.process = counter;
+    time(this.process, 'total');
+  }
+
+  public log(...message: any[]): void {
+    log(this.process, message);
+  }
+
+  public time(...message: any[]): void {
+    time(this.process, message);
+  }
+
+  public clearTime(...message: any[]): void {
+    clearTime(this.process, message);
+  }
+
+  public end(): void {
+    time(this.process, 'total');
+  }
+}
