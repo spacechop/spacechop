@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logging Serialize should handle number NaN 1`] = `"null"`;
+
+exports[`Logging Serialize should handle number default 1`] = `"1"`;
+
+exports[`Logging Serialize should handle number large 1`] = `"Infinity"`;
+
+exports[`Logging Serialize should handle number negative 1`] = `"-1"`;
+
+exports[`Logging Serialize should handle number undefined 1`] = `"undefined"`;
+
+exports[`Logging Serialize should handle object default 1`] = `"{\\"a\\":1,\\"b\\":2}"`;
+
+exports[`Logging Serialize should handle object empty 1`] = `"{}"`;
+
+exports[`Logging Serialize should handle object nested 1`] = `"{\\"a\\":1,\\"b\\":2,\\"c\\":{\\"a\\":1,\\"b\\":1}}"`;
+
+exports[`Logging Serialize should handle object null 1`] = `"null"`;
+
+exports[`Logging Serialize should handle string default 1`] = `"hello world"`;
+
+exports[`Logging Serialize should handle string empty 1`] = `""`;
