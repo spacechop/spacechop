@@ -8,6 +8,7 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
     const data = Buffer.concat([chunk]).toString();
     const animated = /acTL/.test(data);
     if (animated) {
+      proc.removeAllListeners();
       resolve(animated);
     }
   });
