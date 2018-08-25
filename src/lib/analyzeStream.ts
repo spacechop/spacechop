@@ -1,7 +1,6 @@
-import { Stream } from 'stream';
+import { PassThrough, Stream } from 'stream';
 import extractStreamMeta from './extractStreamMeta';
 import isStreamPNGAnimation from './isStreamPNGAnimation';
-import StreamSwitch from './stream-switch';
 
 interface ImageMetaData {
   mimeType: string;
@@ -20,10 +19,10 @@ interface ImageMetaData {
 
 export default async (stream: Stream, requirements = []): Promise<ImageMetaData> => {
   // XXX in case of face detection, analyze image for faces
-  const streamSwitch = new StreamSwitch(stream);
   const readStreams = [];
   for (let i = 0; i < 2; i++) {
-    readStreams[i] = streamSwitch.createReadStream();
+    readStreams[i] = new PassThrough();
+    stream.pipe(readStreams[i]);
   }
   const [meta, animatedPNG] = await Promise.all([
     extractStreamMeta(readStreams[0]),
