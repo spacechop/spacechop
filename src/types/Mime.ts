@@ -5,6 +5,7 @@ const Mime = t.Union(
   t.Literal('image/png'),
   t.Literal('image/gif'),
   t.Literal('image/webp'),
+  t.Literal('application/json'), // available for $report operations.
 );
 
 export const allMimes = Mime.alternatives.map((f) => f.value);

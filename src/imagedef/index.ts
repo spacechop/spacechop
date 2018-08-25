@@ -1,4 +1,5 @@
 import { Format } from '../types/Format';
+import { Mime } from '../types/Mime';
 
 export const getImageTypeFromMimeType = (mime: string): any => {
   const type = mime.match(/^image\/(\w+)$/)[1];
@@ -23,5 +24,5 @@ export default interface ImageDefinition {
   alpha?: boolean;
   interlacing?: boolean;
   faces?: [ImageFaceBox?];
-  mime?: string;
+  mime?: Mime;
 }
