@@ -5,7 +5,7 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
   const proc = spawn('strings');
   stream.pipe(proc);
   proc.on('data', (chunk) => {
-    const data = Buffer.concat([chunk]).toString();
+    const data = chunk.toString();
     const animated = /acTL/.test(data);
     if (animated) {
       proc.removeAllListeners();
