@@ -4,13 +4,15 @@ import { Stream } from 'stream';
 export default async (stream: Stream): Promise<any> => new Promise((resolve, reject) => {
   const proc = spawn('strings');
   stream.pipe(proc);
-  const buffer = [];
   proc.on('data', (chunk) => {
-    buffer.push(chunk);
+    const data = Buffer.concat([chunk]).toString();
+    const animated = /acTL/.test(data);
+    if (animated) {
+      proc.removeAllListeners();
+      resolve(animated);
+    }
   });
   proc.on('end', () => {
-    const data = Buffer.concat(buffer).toString();
-    const animated = /acTL/.test(data);
-    resolve(animated);
+    resolve(false);
   });
 });
