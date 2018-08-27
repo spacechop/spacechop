@@ -9,10 +9,23 @@ import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';
 
+
 export interface TransformationResult {
   stream: Readable;
   headers: TransformationHeaders;
 }
+
+export const buildTransformation = async (
+  stream: Readable,
+  steps: Operation[],
+  definition: ImageDefinition = await analyze(stream, requirements),
+) => {
+  // initialize steps
+  const { pipeline, requirements } = initializePipeline(steps);
+
+  // build command from pipeline and image state
+  return simulateTransformation(pipeline, definition);
+};
 
 const transform = async (input: Readable, steps: Operation[]): Promise<{
   stream: Readable,
@@ -34,7 +47,7 @@ const transform = async (input: Readable, steps: Operation[]): Promise<{
   }
 
   // build command from pipeline and image state
-  const { commands } = simulateTransformation(pipeline, definition);
+  const { commands } = await buildTransformation(streamToAnalyze, steps, definition);
 
   // Spawn new worker to work through the commands.
   const finalCommand = joinCommands(commands);

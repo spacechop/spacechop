@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import pathToRegex from 'path-to-regexp';
 import { Readable } from 'stream';
 import Sources from './sources';
-import transform from './transform';
+import transform, { buildTransformation } from './transform';
 import { Config } from './types/Config';
 
 const asyncWrapper = (fn) => (req, res) => {
@@ -71,12 +71,20 @@ export default (config: Config, server) => {
         return;
       }
 
-      const { stream: transformed, headers } = await transform(stream, preset.steps);
+      // Only analyze image after pipeline
+      const onlyAnalyze = 'analyze' in req.query;
+      if (onlyAnalyze) {
+        const { state } = await buildTransformation(stream, preset.steps);
+        res.json(state);
+      } else {
+        const { stream: transformed, headers } = await transform(stream, preset.steps);
 
-      // Send image data through the worker which passes through to response.
-      res.setHeader('Content-Type', headers.contentType);
-      res.setHeader('Content-Length', headers.contentLength);
-      transformed.pipe(res);
+        // Send image data through the worker which passes through to response.
+        res.setHeader('Content-Type', headers.contentType);
+        res.setHeader('Content-Length', headers.contentLength);
+        // Send image data through the worker which passes through to response.
+        transformed.pipe(res);
+      }
     }));
   });
 };
