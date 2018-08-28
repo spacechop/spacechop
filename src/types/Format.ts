@@ -20,20 +20,17 @@ export type Format = t.Static<typeof Format>;
 export const allFormats = Format.alternatives.map((f) => f.value);
 export const allMimes = Mime.alternatives.map(f => f.value);
 
+
 export const formatToMime = (format: Format): Mime => {
-  if (format in allFormats) {
-    const mime = <Mime>('image/'+format);
-    return mime;
-  }
-  throw new Error('Unrecognized Format ' + format);
+  const typedFormat = Format.check(format);
+  const mime = <Mime>('image/'+typedFormat);
+  return mime;
 };
 
 export const mimeToFormat = (mime: Mime): Format => {
-  if (mime in allMimes) {
-    const type = <Format>mime.match(/^image\/(\w+)$/)[1];
-    return type;
-  }
-  throw new Error('Unrecognized Mime' + mime);
+  const typedMime = Mime.check(mime);
+  const type = <Format>typedMime.match(/^image\/(\w+)$/)[1];
+  return type;
 };
 
 export default Format;
