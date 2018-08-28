@@ -38,53 +38,55 @@ const lookThroughSources = async (sources, params): Promise<Readable> => {
   }
   return null;
 };
+export const requestHandler = (config: Config, keys) => async (req: Request, res: Response) => {
+  // Extract params from request (enables the use of dynamic named params (.*)).
+  const params = extractParams(keys, req.params);
+
+  // find the right preset steps to use
+  const preset = config.presets[params.preset];
+
+  if (!preset) {
+    res.status(404);
+    res.end('Could not find preset');
+    return;
+  }
+
+  // look through sources to fetch original source stream
+  const stream = await lookThroughSources(config.sources, params);
+
+  if (!stream) {
+    res.status(404);
+    res.end('Could not find image');
+    return;
+  }
+
+  // Only analyze image after pipeline
+  const onlyAnalyze = 'analyze' in req.query;
+  if (onlyAnalyze) {
+    const { state } = await buildTransformation(stream, preset.steps);
+    res.json(state);
+  } else {
+    const { stream: transformed, definition } = await transform(stream, preset.steps);
+
+    // Send image data through the worker which passes through to response.
+    res.set('Content-Type', formatToMime(definition.type));
+    // Send image data through the worker which passes through to response.
+    transformed.pipe(res);
+  }
+}
 
 export default (config: Config, server) => {
   if (!config) {
     return;
   }
   // extract paths from config to listen in on.
-  const { sources, paths = ['/*'] } = config;
+  const { paths = ['/*'] } = config;
 
   // listen on all paths.
   paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
-    server.get(pattern, asyncWrapper(async (req: Request, res: Response) => {
-      // Extract params from request (enables the use of dynamic named params (.*)).
-      const params = extractParams(keys, req.params);
-
-      // find the right preset steps to use
-      const preset = config.presets[params.preset];
-
-      if (!preset) {
-        res.status(404);
-        res.end('Could not find preset');
-        return;
-      }
-
-      // look through sources to fetch original source stream
-      const stream = await lookThroughSources(sources, params);
-
-      if (!stream) {
-        res.status(404);
-        res.end('Could not find image');
-        return;
-      }
-
-      // Only analyze image after pipeline
-      const onlyAnalyze = 'analyze' in req.query;
-      if (onlyAnalyze) {
-        const { state } = await buildTransformation(stream, preset.steps);
-        res.json(state);
-      } else {
-        const { stream: transformed, definition } = await transform(stream, preset.steps);
-
-        // Send image data through the worker which passes through to response.
-        res.setHeader('Content-Type', formatToMime(definition.type));
-        // Send image data through the worker which passes through to response.
-        transformed.pipe(res);
-      }
-    }));
+    const handler = requestHandler(config, keys)
+    server.get(pattern, asyncWrapper(handler));
   });
 };
