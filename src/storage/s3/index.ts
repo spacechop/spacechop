@@ -1,9 +1,11 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
-import Source from '../source';
+import Storage from '../storage';
+import { S3StorageConfig } from './types';
 import compilePath from '../../lib/compile-path';
-import { S3SourceConfig } from './types';
+
+const DEFAULT_ACL: S3StorageConfig['ACL'] = 'private';
 
 const agent = new Https.Agent({
   keepAlive: true,
@@ -17,22 +19,29 @@ AWS.config.update({
   },
 });
 
-export default class S3Resolver implements Source {
-  public S3: any;
+export default class S3Storage implements Storage {
+  public S3: AWS.S3;
   public bucketName: string;
   public path: string;
-  public config: S3SourceConfig;
-
-  constructor(config: S3SourceConfig) {
+  public config: S3StorageConfig;
+  public ACL: string;
+  constructor(config: S3StorageConfig) {
     this.config = config;
+    
+    let endpoint = null;
+    if (config.endpoint) {
+      endpoint = new AWS.Endpoint(config.endpoint);
+    }
     this.S3 = new AWS.S3({
       accessKeyId: config.access_key_id,
       secretAccessKey: config.secret_access_key,
       region: config.region,
+      endpoint
     });
 
     this.bucketName = config.bucket_name;
     this.path = config.path;
+    this.ACL = config.ACL || DEFAULT_ACL;
   }
 
   public exists(params: any): Promise<boolean> {
@@ -46,7 +55,7 @@ export default class S3Resolver implements Source {
       };
 
       this.S3.headObject(query, (err, data) => {
-        resolve(!err && data);
+        resolve(!err && !!data);
       });
     });
   }
@@ -63,6 +72,32 @@ export default class S3Resolver implements Source {
     const obj = this.S3.getObject(query);
     return obj.createReadStream();
   }
+
+  public upload(params: any, stream: Stream): Promise<void> {
+    const Key = compilePath(this.config.path, params);
+    const p = {
+      Bucket: this.bucketName,
+      Key,
+      Body: stream,
+      ACL: this.ACL
+    };
+
+    return new Promise((resolve, reject) => {
+      this.S3.upload(p, (err, data) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        if (!data) {
+          reject('No data was return from S3.upload which means something went wrong');
+          return;
+        }
+
+        resolve();
+      });
+    });
+  }
 }
 
-module.exports = S3Resolver;
+module.exports = S3Storage;
