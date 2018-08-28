@@ -9,21 +9,14 @@ jest.mock('aws-sdk', () => ({
       cb(null, false);
     }),
 
-    // simulates an faulty upload
-    upload: jest.fn((params, cb) => {
-      const error = new Error('Some error');
-      cb(error);
-    }),
-
     // simulates and an missing image
     getObject: jest.fn((params, cb) => {
       return {
         // getObject should return an EventEmitter but the only thing we are interested in
-        // here is the error event.
+        // here is the httpHeaders event
         on: jest.fn((event, cb) => {
-          if (event === 'error') {
-            const error = new Error('Some error');
-            cb(error);
+          if (event === 'httpHeaders') {
+            cb(404, {});
             return;
           }
         }),
