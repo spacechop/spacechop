@@ -4,6 +4,7 @@ import { Stream } from 'stream';
 import Storage from '../storage';
 import { S3StorageConfig } from './types';
 import compilePath from '../../lib/compile-path';
+import { Mime } from '../../types/Format';
 
 const DEFAULT_ACL: S3StorageConfig['ACL'] = 'private';
 
@@ -60,7 +61,7 @@ export default class S3Storage implements Storage {
     });
   }
 
-  public stream(params: any): Stream {
+  public stream(params: any): Promise<{ stream: Stream, contentType: Mime }> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
@@ -70,15 +71,22 @@ export default class S3Storage implements Storage {
     };
 
     const obj = this.S3.getObject(query);
-    return obj.createReadStream();
+    const stream = obj.createReadStream();
+    return new Promise(resolve => {
+      obj.on('httpHeaders', (status, headers) => {
+        const contentType = <Mime>(headers['content-type'] || null)
+        resolve({ stream, contentType })
+      });
+    });
   }
 
-  public upload(params: any, stream: Stream): Promise<void> {
+  public upload(params: any, stream: Stream, contentType: Mime): Promise<void> {
     const Key = compilePath(this.config.path, params);
-    const p = {
+    const p : AWS.S3.PutObjectRequest = {
       Bucket: this.bucketName,
       Key,
       Body: stream,
+      ContentType: contentType,
       ACL: this.ACL
     };
 
@@ -90,7 +98,7 @@ export default class S3Storage implements Storage {
         }
 
         if (!data) {
-          reject('No data was return from S3.upload which means something went wrong');
+          reject('No data was returned from S3.upload which means something went wrong');
           return;
         }
 
