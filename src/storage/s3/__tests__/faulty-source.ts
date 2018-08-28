@@ -11,6 +11,32 @@ jest.mock('aws-sdk', () => ({
       const error = new Error('Some error');
       cb(error);
     }),
+
+
+    // Simulates an faulty head request
+    headObject: jest.fn((params, cb) => {
+      const error = new Error('Some error');
+      cb(error);
+    }),
+    
+    // simulates and an missing image
+    getObject: jest.fn((params, cb) => {
+      return {
+        // getObject should return an EventEmitter but the only thing we are interested in
+        // here is the error event
+        on: jest.fn((event, cb) => {
+          if (event === 'error') {
+            const error = new Error('Some error');
+            cb(error);
+            return;
+          }
+        }),
+        createReadStream: jest.fn(() => {
+          const { PassThrough } =  require('stream');
+          return new PassThrough();
+        })
+      }
+    }),
   })),
   Endpoint: jest.fn(),
   config: { update: jest.fn() },
@@ -35,6 +61,27 @@ describe('S3 storage - image exists', () => {
       let errorThrown;
       try {
         await storage.upload({ image: 'hej' }, stream, 'image/jpeg');
+      } catch(err) {
+        errorThrown = err;
+      }
+      expect(errorThrown).toBeDefined();
+    });
+  });
+
+  describe('.exists', () => {    
+    it('should resolve to false', async () => {
+      const storage = new S3Storage(defaultConfig);
+      const result = await storage.exists({ image: 'hej' });
+      expect(result).toBe(false);
+    });
+  });
+  
+  describe('.stream', () => {
+    it('should reject', async () => {
+      const storage = new S3Storage(defaultConfig);
+      let errorThrown;
+      try {
+        await storage.stream({ image: 'hej' });
       } catch(err) {
         errorThrown = err;
       }
