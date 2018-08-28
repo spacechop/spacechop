@@ -8,7 +8,8 @@ const mocks = {
   headObject: jest.fn((params, cb) => { cb(null, false); }),
 
   // mocking a successful upload
-  upload: jest.fn((params, cb) => { cb(null, {})})
+  upload: jest.fn((params, cb) => { cb(null, {})}),
+
 };
 
 jest.mock('aws-sdk', () => ({
@@ -26,6 +27,7 @@ const defaultConfig: S3StorageConfig = {
   region: 'nyc3',
   bucket_name: 'yyy',
   path: ':image',
+  endpoint: 'test.example.com'
 };
 describe('S3 storage', () => {
   describe('.upload', () => {
