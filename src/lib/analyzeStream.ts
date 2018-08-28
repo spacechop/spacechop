@@ -1,9 +1,10 @@
 import { PassThrough, Stream } from 'stream';
 import extractStreamMeta from './extractStreamMeta';
 import isStreamPNGAnimation from './isStreamPNGAnimation';
+import { Mime } from '../types/Format';
 
 interface ImageMetaData {
-  mimeType: string;
+  mimeType: Mime;
   geometry: {
     width: number,
     height: number,

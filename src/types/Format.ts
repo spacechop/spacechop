@@ -21,17 +21,19 @@ export const allFormats = Format.alternatives.map((f) => f.value);
 export const allMimes = Mime.alternatives.map(f => f.value);
 
 export const formatToMime = (format: Format): Mime => {
-  switch(format) {
-    case 'jpeg':
-      return 'image/jpeg';
-    case 'gif':
-      return 'image/gif';
-    case 'png':
-      return 'image/png';
-    case 'webp':
-      return 'image/webp';
+  if (format in allFormats) {
+    const mime = <Mime>('image/'+format);
+    return mime;
   }
   throw new Error('Unrecognized Format ' + format);
+};
+
+export const mimeToFormat = (mime: Mime): Format => {
+  if (mime in allMimes) {
+    const type = <Format>mime.match(/^image\/(\w+)$/)[1];
+    return type;
+  }
+  throw new Error('Unrecognized Mime' + mime);
 };
 
 export default Format;

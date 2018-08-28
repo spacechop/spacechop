@@ -1,10 +1,5 @@
 import { Format } from '../types/Format';
 
-export const getImageTypeFromMimeType = (mime: string): any => {
-  const type = mime.match(/^image\/(\w+)$/)[1];
-  return type;
-};
-
 export interface ImageFaceBox {
   x: number;
   y: number;
