@@ -77,7 +77,7 @@ In a preset there are steps which are composed of a list of operations with thei
 
 ## Contributing
 
-[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechop)
+[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechop) [![Greenkeeper badge](https://badges.greenkeeper.io/spacechop/spacechop.svg)](https://greenkeeper.io/)
 
 [Read the SpaceChop Contributor Guidelines.](CONTRIBUTING.md)
 
