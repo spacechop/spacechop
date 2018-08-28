@@ -1,4 +1,4 @@
-import { Mime } from '../../src/imagedef';
+import { Mime } from '../../src/types/Format';
 
 declare module 'probe-image-size' {
   import { Readable } from "stream";
