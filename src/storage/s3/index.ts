@@ -72,10 +72,19 @@ export default class S3Storage implements Storage {
 
     const obj = this.S3.getObject(query);
     const stream = obj.createReadStream();
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      obj.on('error', (error) => {
+        reject(error);
+      })
       obj.on('httpHeaders', (status, headers) => {
-        const contentType = <Mime>(headers['content-type'] || null)
-        resolve({ stream, contentType })
+        // 300 is rather arbitrary, but 200 and 204 must be considered successful.
+        if (status < 300) {
+          const contentType = <Mime>(headers['content-type'] || null)
+          resolve({ stream, contentType })
+          return;
+        }
+
+        reject(new Error('Status code was ' + status));
       });
     });
   }
@@ -92,16 +101,10 @@ export default class S3Storage implements Storage {
 
     return new Promise((resolve, reject) => {
       this.S3.upload(p, (err, data) => {
-        if (err) {
+        if (err || !data) {
           reject(err);
           return;
         }
-
-        if (!data) {
-          reject('No data was returned from S3.upload which means something went wrong');
-          return;
-        }
-
         resolve();
       });
     });
