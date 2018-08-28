@@ -4,6 +4,7 @@ import { Readable } from 'stream';
 import Sources from './sources';
 import transform, { buildTransformation } from './transform';
 import { Config } from './types/Config';
+import { formatToMime } from './types/Format';
 
 const asyncWrapper = (fn) => (req, res) => {
   Promise
@@ -77,11 +78,10 @@ export default (config: Config, server) => {
         const { state } = await buildTransformation(stream, preset.steps);
         res.json(state);
       } else {
-        const { stream: transformed, headers } = await transform(stream, preset.steps);
+        const { stream: transformed, definition } = await transform(stream, preset.steps);
 
         // Send image data through the worker which passes through to response.
-        res.setHeader('Content-Type', headers.contentType);
-        res.setHeader('Content-Length', headers.contentLength);
+        res.setHeader('Content-Type', formatToMime(definition.type));
         // Send image data through the worker which passes through to response.
         transformed.pipe(res);
       }

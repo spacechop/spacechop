@@ -16,12 +16,6 @@ export enum DefinitionRequirement {
   FACES = 'faces',
 }
 
-export type Mime = 'image/jpeg'
-  | 'image/png'
-  | 'image/gif'
-  | 'image/webp'
-  | 'application/json';
-
 export default interface ImageDefinition {
   width: number;
   height: number;
@@ -29,6 +23,5 @@ export default interface ImageDefinition {
   alpha?: boolean;
   interlacing?: boolean;
   faces?: [ImageFaceBox?];
-  mime?: Mime;
   animated?: boolean;
 }

@@ -22,7 +22,6 @@ export default async (stream, requirements): Promise<ImageDefinition> => {
     alpha: channelDepth && !!channelDepth.alpha || !!alpha,
     interlacing: interlace !== 'None',
     type: getImageTypeFromMimeType(mimeType),
-    mime: mimeType,
     animated: animatedGIF || animatedPNG,
   };
 };
