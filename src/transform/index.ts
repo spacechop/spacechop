@@ -8,30 +8,40 @@ import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';
 
-export const buildTransformation = async (stream: Readable, steps: Operation[]) => {
+
+export interface TransformationResult {
+  stream: Readable;
+  definition: ImageDefinition;
+}
+
+export const buildTransformation = async (
+  stream: Readable,
+  steps: Operation[],
+) => {
   // initialize steps
   const { pipeline, requirements } = initializePipeline(steps);
-
-  // prepare the image definition
   const definition: ImageDefinition = await analyze(stream, requirements);
 
   // build command from pipeline and image state
   return simulateTransformation(pipeline, definition);
 };
 
-export default async (stream: Readable, steps: Operation[]): Promise<Readable> => {
-  if (steps.length === 0) {
-    return stream;
-  }
-
-  const streamSwitch = new StreamSwitch(stream);
+export default async (input: Readable, steps: Operation[]): Promise<TransformationResult> => {
+  const streamSwitch = new StreamSwitch(input);
   const streamToAnalyze = streamSwitch.createReadStream();
   const streamToTransform = streamSwitch.createReadStream();
-  const { commands } = await buildTransformation(streamToAnalyze, steps);
+  
+  // build command from pipeline and image state
+  const { commands, state } = await buildTransformation(streamToAnalyze, steps);
 
+  // do nothing when no steps.
+  if (steps.length === 0) {
+    return { stream: streamToTransform, definition: state };
+  }
+  
   // Spawn new worker to work through the commands.
   const finalCommand = joinCommands(commands);
-  const worker = spawn('sh', ['-c', finalCommand]);
-  streamToTransform.pipe(worker);
-  return worker;
+  const stream = spawn('sh', ['-c', finalCommand]);
+  streamToTransform.pipe(stream);
+  return { stream, definition: state };
 };

@@ -1,5 +1,6 @@
-import ImageDefinition, { getImageTypeFromMimeType } from '.';
+import ImageDefinition from '.';
 import analyzeStream from '../lib/analyzeStream';
+import { mimeToFormat } from '../types/Format';
 
 export default async (stream, requirements): Promise<ImageDefinition> => {
   const data = await analyzeStream(stream, requirements);
@@ -21,8 +22,7 @@ export default async (stream, requirements): Promise<ImageDefinition> => {
     height,
     alpha: channelDepth && !!channelDepth.alpha || !!alpha,
     interlacing: interlace !== 'None',
-    type: getImageTypeFromMimeType(mimeType),
-    mime: mimeType,
+    type: mimeToFormat(mimeType),
     animated: animatedGIF || animatedPNG,
   };
 };

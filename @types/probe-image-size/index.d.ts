@@ -1,3 +1,4 @@
+import { Mime } from '../../src/types/Format';
 
 declare module 'probe-image-size' {
   import { Readable } from "stream";
@@ -5,7 +6,7 @@ declare module 'probe-image-size' {
       width: number,
       height: number,
       type: string, // image 'type' (usual file name extention)
-      mime: string,  // mime type
-  }
+      mime: Mime, // mime type
+  };
   export default function probeImageSize(stream: Readable): Promise<ImageSizeResult>;
 }
