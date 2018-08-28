@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate s3 storage should throw on invalid params in source 1`] = `"storage: Expected { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; } & { ACL?: \\"private\\" | \\"public-read\\" | \\"public-read-write\\" | \\"authenticated-read\\" | \\"aws-exec-read\\" | \\"bucket-owner-read\\" | \\"bucket-owner-full-control\\"; endpoint?: string; }; }, but was object"`;
+
+exports[`validate s3 storage should throw on invalid storage 1`] = `"storage: Expected { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; } & { ACL?: \\"private\\" | \\"public-read\\" | \\"public-read-write\\" | \\"authenticated-read\\" | \\"aws-exec-read\\" | \\"bucket-owner-read\\" | \\"bucket-owner-full-control\\"; endpoint?: string; }; }, but was object"`;

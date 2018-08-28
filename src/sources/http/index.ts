@@ -2,7 +2,7 @@ import request from 'request';
 import { Stream } from 'stream';
 import url from 'url';
 import console from '../../lib/console';
-import compilePath from './../compile-path';
+import compilePath from '../../lib/compile-path';
 import Source from './../source';
 
 export interface HttpSourceConfig {
