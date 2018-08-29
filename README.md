@@ -56,6 +56,7 @@ docker-compose logs -f spacechop
 ```
 
 Go to `http://localhost:8080/t_200/c/c4/Photo_Wallet_product.jpg` in our browser and you should see an image fetched from Wikimedia and transformed with the above preset `t_200`. 
+**You just successfully transfomed your first image using SpaceChop!**
 
 ## Getting started
 
