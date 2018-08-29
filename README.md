@@ -33,7 +33,7 @@ paths:
   - /:preset/:image(.*)
 sources:
   - http:
-    root: https://upload.wikimedia.org/wikipedia/commons/:image
+      root: https://upload.wikimedia.org/wikipedia/commons/:image
 presets:
   # fill 200x200 with type jpeg and compress with quality 0.9
   t_200:
@@ -44,7 +44,8 @@ presets:
       - $format:
           type: jpeg
       - $compress:
-          quality: 0.9
+          quality: 90
+
 ```
 
 ```sh
