@@ -11,14 +11,10 @@ import Source from './sources/source';
 import fetchFromStorage from './storage/lib/fetch-from-storage';
 import lookThroughSources from './sources/lib/look-through-sources';
 import uploadToStorage from './storage/lib/upload-to-storage';
+import asyncWrapper from './lib/requestAsyncWrapper';
+import console from './lib/console';
 
-const asyncWrapper = (fn) => (req, res) => {
-  Promise
-    .resolve(fn(req, res))
-    .catch(handleError(res));
-};
-
-const handleError = (res) => (error) => {
+export const handleError = (res) => (error) => {
   console.error(error);
   res.status(500);
   res.end(error.message);
@@ -49,7 +45,6 @@ export const requestHandler = (config: Config, keys, sources: Source[], storage?
     const fromCache = await fetchFromStorage(storage, params);
     // It exists in cache
     if (fromCache) {
-      console.info('Serving image from cache');
       const { stream, contentType } = fromCache;
       if (contentType) {
         res.set('Content-Type', contentType);
@@ -104,6 +99,6 @@ export default (config: Config, server) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
     const handler = requestHandler(config, keys, sources, storage)
-    server.get(pattern, asyncWrapper(handler));
+    server.get(pattern, asyncWrapper(handler, handleError));
   });
 };
