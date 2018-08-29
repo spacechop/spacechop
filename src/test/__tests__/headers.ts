@@ -5,6 +5,7 @@ import path from 'path';
 import pathToRegex from 'path-to-regexp';
 import { Request, Response } from './../utils/expressMocks';
 import { Mime } from '../../types/Format';
+import instantiateSource from '../../sources/lib/instantiate-source';
 
 /**
  * Tests in this file use the full spacechop implementation by mocking Express 
@@ -26,10 +27,12 @@ describe('Headers', () => {
     }
   };
 
+  const sources = config.sources.map(instantiateSource);
+
   const keys = [];
   // populates `keys` array
   pathToRegex(p, keys);
-  const handler = requestHandler(config, keys)
+  const handler = requestHandler(config, keys, sources)
 
   describe('Content-Type', () => {
 

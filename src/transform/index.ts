@@ -1,5 +1,5 @@
 import { spawn } from 'duplex-child-process';
-import { Readable } from 'stream';
+import { Stream } from 'stream';
 import { Operation } from '../types/Operation';
 import ImageDefinition from './../imagedef';
 import analyze from './../imagedef/analyze';
@@ -10,12 +10,12 @@ import simulateTransformation from './simulate-transformation';
 
 
 export interface TransformationResult {
-  stream: Readable;
+  stream: Stream;
   definition: ImageDefinition;
 }
 
 export const buildTransformation = async (
-  stream: Readable,
+  stream: Stream,
   steps: Operation[],
 ) => {
   // initialize steps
@@ -26,7 +26,7 @@ export const buildTransformation = async (
   return simulateTransformation(pipeline, definition);
 };
 
-export default async (input: Readable, steps: Operation[]): Promise<TransformationResult> => {
+export default async (input: Stream, steps: Operation[]): Promise<TransformationResult> => {
   const streamSwitch = new StreamSwitch(input);
   const streamToAnalyze = streamSwitch.createReadStream();
   const streamToTransform = streamSwitch.createReadStream();
