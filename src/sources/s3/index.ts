@@ -17,7 +17,7 @@ AWS.config.update({
   },
 });
 
-export default class S3Resolver implements Source {
+export default class S3Source implements Source {
   public S3: any;
   public bucketName: string;
   public path: string;
@@ -64,5 +64,3 @@ export default class S3Resolver implements Source {
     return obj.createReadStream();
   }
 }
-
-module.exports = S3Resolver;
