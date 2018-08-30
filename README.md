@@ -1,5 +1,5 @@
 # [SpaceChop](https://spacechop.com) [![Build Status](https://travis-ci.org/spacechop/spacechop.svg?branch=master)](https://travis-ci.org/spacechop/spacechop) [![Docker](https://img.shields.io/badge/docker-spacechop/spacechop-blue.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![Docker Registry](https://img.shields.io/docker/pulls/spacechop/spacechop.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![](https://images.microbadger.com/badges/image/spacechop/spacechop.svg)](https://microbadger.com/images/spacechop/spacechop "Get your own image badge on microbadger.com")
-SpaceChop is a Docker container for processing your images through a HTTP requests.
+SpaceChop is a Docker container for processing your images through HTTP requests.
 
 **🔒 Secure** - Dont allow everyone to create arbitrary image transformations and overload your server.
 
@@ -56,7 +56,7 @@ docker-compose up -d
 docker-compose logs -f spacechop
 ```
 
-Go to `http://localhost:8080/t_200/c/c4/Photo_Wallet_product.jpg` in our browser and you should see an image fetched from Wikimedia and transformed with the above preset `t_200`. 
+Go to `http://localhost:8080/t_200/c/c4/Photo_Wallet_product.jpg` in your browser and you should see an image fetched from Wikimedia and transformed with the above preset `t_200`. 
 **You just successfully transfomed your first image using SpaceChop!**
 
 ## Getting started
