@@ -1,33 +1,18 @@
 # [SpaceChop](https://spacechop.com) [![Build Status](https://travis-ci.org/spacechop/spacechop.svg?branch=master)](https://travis-ci.org/spacechop/spacechop) [![Docker](https://img.shields.io/badge/docker-spacechop/spacechop-blue.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![Docker Registry](https://img.shields.io/docker/pulls/spacechop/spacechop.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![](https://images.microbadger.com/badges/image/spacechop/spacechop.svg)](https://microbadger.com/images/spacechop/spacechop "Get your own image badge on microbadger.com")
-SpaceChop is a fully-featured image processing microservice with integrations for remote sources in Amazon S3, Digital Ocean Spaces, Volume mounting, and more. It allows you to easily transform images through HTTP get requests. SpaceChop does not use any CDN, storage, database or caching, instead it relies on you to add this in front and behind the processing pipeline.
+SpaceChop is a Docker container for processing your images through HTTP requests.
+
+**🔒 Secure** - Dont allow everyone to create arbitrary image transformations and overload your server.
+
+**📦 Storage** - Store original and transformed images on the infrastructure you are already using. For example Amazon S3, HTTP server, or local volume.
+
+**👨‍💻 For developers** - Set up available transformations via yaml files.
 
 At [spacechop.com](https://spacechop.com), you can get for the hosted solution of SpaceChop which includes CDN, storage, caching, database, statistics and analytics for your service.
 
 To get started with SpaceChop, [**go to our documentation website**](https://spacechop.gitbook.io/spacechop/).
 
 ## Installation
-
-To install SpaceChop you need two files:
-
-`config.yml`
-```yaml
-paths:
-  - /:preset/:image(.*)
-sources:
-  - http:
-    root: http://commons.wikipedia.org/:image
-presets:
-  # fill 200x200 with type jpg and compress with quality 0.9
-  t_200:
-    steps:
-      - $fill:
-          width: 200
-          height: 200
-      - $format:
-          type: jpg
-      - $compress:
-          quality: 0.9
-```
+The recommended way to use SpaceChop is via docker-compose:
 
 `docker-compose.yml`
 ```yaml
@@ -42,6 +27,27 @@ services:
       - ./config.yml:/config.yml
 ```
 
+`config.yml`
+```yaml
+paths:
+  - /:preset/:image(.*)
+sources:
+  - http:
+      root: https://upload.wikimedia.org/wikipedia/commons/:image
+presets:
+  # fill 200x200 with type jpeg and compress with quality 0.9
+  t_200:
+    steps:
+      - $fill:
+          width: 200
+          height: 200
+      - $format:
+          type: jpeg
+      - $compress:
+          quality: 90
+
+```
+
 ```sh
 # start the service using docker-compose
 docker-compose up -d
@@ -49,6 +55,9 @@ docker-compose up -d
 # check the logs for help with your configuration and see what's happening
 docker-compose logs -f spacechop
 ```
+
+Go to `http://localhost:8080/t_200/c/c4/Photo_Wallet_product.jpg` in your browser and you should see an image fetched from Wikimedia and transformed with the above preset `t_200`. 
+**You just successfully transfomed your first image using SpaceChop!**
 
 ## Getting started
 
