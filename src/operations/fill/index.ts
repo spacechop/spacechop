@@ -2,12 +2,14 @@ import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { FillConfig } from './types';
+import { Gravity } from '../Gravity';
 
 export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
+  const gravity = <Gravity> config.gravity;
   return [
     '-',
     `-resize ${config.width}x${config.height}^`,
-    `-gravity ${magickGravityMap[config.gravity]}`,
+    `-gravity ${magickGravityMap[gravity]}`,
     `-extent ${config.width}x${config.height}`,
     `${state.type}:-`,
   ];
@@ -16,8 +18,8 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
   return {
     ...state,
-    width: config.width,
-    height: config.height,
+    width: <number> config.width,
+    height: <number> config.height,
   };
 };
 

@@ -1,4 +1,5 @@
 import * as t from 'runtypes';
+import validateParams from '../lib/validateParams';
 import PresetConfig from './PresetConfig';
 import Source from './Source';
 import Storage from './Storage';
@@ -16,8 +17,8 @@ const Config = t.Record({
   sources: t.Array(Source),
   presets: t.Dictionary(PresetConfig, 'string'),
 }).And(t.Partial({
-  storage: Storage
-}))
+  storage: Storage,
+})).withConstraint(validateParams);
 
 export type Config = t.Static<typeof Config>;
 export default Config;

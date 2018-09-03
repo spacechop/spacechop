@@ -1,8 +1,9 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from '../operation';
 import { FormatConfig } from './types';
+import { Format as IFormat } from './../../types/Format';
 
-export const magickOptions = (config: FormatConfig, state: ImageDefinition): string[] => {
+export const magickOptions = (config: FormatConfig, _: ImageDefinition): string[] => {
   return [
     'convert',
     '-',
@@ -10,9 +11,10 @@ export const magickOptions = (config: FormatConfig, state: ImageDefinition): str
   ];
 };
 export const transformState = (config: FormatConfig, state: ImageDefinition): ImageDefinition => {
+  const type = <IFormat> config.type;
   return {
     ...state,
-    type: config.type,
+    type
   };
 };
 

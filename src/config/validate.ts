@@ -5,7 +5,7 @@ export const validate = (config) => {
   try {
     Config.check(config);
   } catch (err) {
-    throw new Error(`${err.key}: ${err.message}`);
+    throw new Error(`${err.key ? `${err.key}: ` : ''}${err.message}`);
   }
 };
 

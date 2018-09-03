@@ -2,7 +2,7 @@ import { createReadStream } from 'fs';
 import path from 'path';
 import transform from '../..';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { Operation } from '../../../types/Operation';
+import { Step } from '../../../types/Step';
 import assetsFolder from './../../../test/assets/dirname';
 
 expect.extend({ toMatchImageSnapshot });
@@ -13,7 +13,7 @@ describe('Transform 2 operations', () => {
   };
 
   describe('$crop $format $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $crop: {
         width: 400,
         height: 400,
@@ -35,7 +35,7 @@ describe('Transform 2 operations', () => {
   });
 
   describe('$crop $compress $strip', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $crop: {
         width: 400,
         height: 400,
@@ -56,7 +56,7 @@ describe('Transform 2 operations', () => {
   });
 
   describe('$fill $format $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fill: {
         width: 400,
         height: 400,
@@ -78,7 +78,7 @@ describe('Transform 2 operations', () => {
   });
 
   describe('$fill $compress $strip', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fill: {
         width: 400,
         height: 400,
@@ -99,7 +99,7 @@ describe('Transform 2 operations', () => {
   });
 
   describe('$fit $format $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fit: {
         width: 400,
         height: 400,
@@ -120,7 +120,7 @@ describe('Transform 2 operations', () => {
   });
 
   describe('$fit $compress $strip', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fit: {
         width: 400,
         height: 400,

@@ -1,6 +1,9 @@
 import * as t from 'runtypes';
-import Operation from './Operation';
+import Step from './Step';
 
-export default t.Record({
-  steps: t.Array(Operation),
+const PresetConfig = t.Record({
+  steps: t.Array(Step),
 });
+
+export type PresetConfig = t.Static<typeof PresetConfig>;
+export default PresetConfig;

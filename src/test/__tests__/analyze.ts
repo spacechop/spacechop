@@ -2,7 +2,6 @@ import path from 'path';
 import extractPathParams from '../../lib/extractPathParams';
 import instantiateSource from '../../sources/lib/instantiate-source';
 import { Config } from '../../types/Config';
-import { Mime } from '../../types/Format';
 import { requestHandler } from './../../spacechop';
 import assetsFolder from './../assets/dirname';
 import { Request, Response } from './../utils/expressMocks';
@@ -42,15 +41,15 @@ describe('Headers', () => {
     });
 
     // asset filename => asset content-type
-    const tests: { [key: string]: Mime} = {
-      'grid.jpg': 'image/jpeg',
-      'grid.png': 'image/png',
-      'grid.gif': 'image/gif',
-      'grid.webp': 'image/webp',
-      'grid-interlaced.png': 'image/png',
-      'grid-no-exif.jpg': 'image/jpeg',
-      'animated.gif': 'image/gif',
-      'animated.png': 'image/png',
+    const tests: { [key: string]: any } = {
+      'grid.jpg': 'jpeg',
+      'grid.png': 'png',
+      'grid.gif': 'gif',
+      'grid.webp': 'webp',
+      'grid-interlaced.png': 'png',
+      'grid-no-exif.jpg': 'jpeg',
+      'animated.gif': 'gif',
+      'animated.png': 'png',
     };
 
     for (const asset of Object.keys(tests)) {
@@ -58,8 +57,13 @@ describe('Headers', () => {
       it(`should set contentType = ${contentType} for asset ${asset}`, async () => {
         request.setParams(0, 't_original');
         request.setParams(1, asset);
+        request.setQuery('analyze');
         await handler(request, response);
-        expect(response.set).toBeCalledWith('Content-Type', contentType);
+        expect(response.json).toBeCalledWith(
+          expect.objectContaining({
+            type: contentType,
+          }),
+        );
       });
     }
   });
