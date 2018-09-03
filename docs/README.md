@@ -24,5 +24,3 @@ The docs for SpaceChop are mainly written using the React, but most of the examp
 4. **RECIPES:** Learn about and understand common patterns.
 5. **API:** Full API details for SpaceChop operations.
 
-
-
