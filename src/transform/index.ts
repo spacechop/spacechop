@@ -1,6 +1,6 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
-import { Operation } from '../types/Operation';
+import { Step } from '../types/Step';
 import ImageDefinition from './../imagedef';
 import analyze from './../imagedef/analyze';
 import StreamSwitch from './../lib/stream-switch';
@@ -16,7 +16,7 @@ export interface TransformationResult {
 
 export const buildTransformation = async (
   stream: Stream,
-  steps: Operation[],
+  steps: Step[],
 ) => {
   // initialize steps
   const { pipeline, requirements } = initializePipeline(steps);
@@ -26,11 +26,11 @@ export const buildTransformation = async (
   return simulateTransformation(pipeline, definition);
 };
 
-export default async (input: Stream, steps: Operation[]): Promise<TransformationResult> => {
+export default async (input: Stream, steps: Step[]): Promise<TransformationResult> => {
   const streamSwitch = new StreamSwitch(input);
   const streamToAnalyze = streamSwitch.createReadStream();
   const streamToTransform = streamSwitch.createReadStream();
-  
+
   // build command from pipeline and image state
   const { commands, state } = await buildTransformation(streamToAnalyze, steps);
 
@@ -38,7 +38,7 @@ export default async (input: Stream, steps: Operation[]): Promise<Transformation
   if (steps.length === 0) {
     return { stream: streamToTransform, definition: state };
   }
-  
+
   // Spawn new worker to work through the commands.
   const finalCommand = joinCommands(commands);
   const stream = spawn('sh', ['-c', finalCommand]);

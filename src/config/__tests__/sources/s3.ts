@@ -32,7 +32,7 @@ describe('validate s3 source', () => {
           secret_access_key: 'secret_access_key',
           region: 'region',
           bucket_name: 'bucket_name',
-          path: '',
+          path: ':image',
         },
       }],
       presets: {},

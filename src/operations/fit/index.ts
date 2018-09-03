@@ -1,4 +1,5 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import parseNumber from '../../lib/parseNumber';
 import Operation from './../operation';
 import { FitConfig } from './types';
 
@@ -16,17 +17,17 @@ export const transformState = (config: FitConfig, state: ImageDefinition): Image
   let { width, height } = config;
   if (width && !height) {
     // calculate height to keep aspect ratio.
-    const scale = width / state.width;
+    const scale = parseNumber(width) / state.width;
     height = state.height * scale;
   } else if (!width && height) {
     // calculate width to keep aspect ratio.
-    const scale = height / state.height;
+    const scale = parseNumber(height) / state.height;
     width = state.width * scale;
   }
   return {
     ...state,
-    width,
-    height,
+    width: parseNumber(width),
+    height: parseNumber(height),
   };
 };
 

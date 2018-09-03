@@ -22,7 +22,7 @@ describe('should validate config.yml', () => {
   it('should now throw on valid config', () => {
     const config = {
       paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
+      sources: [{ http: { root: 'http://localhost/:image' } }],
       presets: {
         t_200: {
           steps: [{

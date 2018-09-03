@@ -20,9 +20,9 @@ describe('validate s3 storage', () => {
         secret_access_key: '',
         region: '',
         bucket_name: '',
-        path: '',
-      }}, 
-      presets: {}
+        path: ':image',
+      } },
+      presets: {},
     };
     expect(() => validate(config)).toThrowErrorMatchingSnapshot();
   });
@@ -36,7 +36,7 @@ describe('validate s3 storage', () => {
           secret_access_key: 'secret_access_key',
           region: 'region',
           bucket_name: 'bucket_name',
-          path: '',
+          path: ':image',
         },
       }],
       presets: {},
