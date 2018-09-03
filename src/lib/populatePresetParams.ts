@@ -9,10 +9,14 @@ export default (
 ): Step[] => {
   return steps.map((step: Step) => {
     const name = Object.keys(step)[0];
-    const config: StepConfig = Object.keys(step[name]).reduce((acc, key) => ({
-      ...acc,
-      [key]: params[key] || step[name][key],
-    }), {});
+    const config: StepConfig = Object.keys(step[name]).reduce((acc, key) => {
+      const value = step[name][key];
+      const param = value.from_path;
+      return ({
+        ...acc,
+        [key]: params[param] || value,
+      });
+    }, {});
     return { [name]: config };
   });
 };
