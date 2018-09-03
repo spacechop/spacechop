@@ -1,5 +1,4 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import parseNumber from '../../lib/parseNumber';
 import Operation from './../operation';
 import { FitConfig } from './types';
 
@@ -14,20 +13,22 @@ export const magickOptions = (config: FitConfig, state: ImageDefinition): string
 };
 
 export const transformState = (config: FitConfig, state: ImageDefinition): ImageDefinition => {
-  let { width, height } = config;
+  let width = config.width as number;
+  let height = config.height as number;
+
   if (width && !height) {
     // calculate height to keep aspect ratio.
-    const scale = parseNumber(width) / state.width;
+    const scale = width / state.width;
     height = state.height * scale;
   } else if (!width && height) {
     // calculate width to keep aspect ratio.
-    const scale = parseNumber(height) / state.height;
+    const scale = height / state.height;
     width = state.width * scale;
   }
   return {
     ...state,
-    width: parseNumber(width),
-    height: parseNumber(height),
+    width,
+    height,
   };
 };
 

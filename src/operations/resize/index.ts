@@ -1,5 +1,4 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import parseNumber from '../../lib/parseNumber';
 import Operation from './../operation';
 import { ResizeConfig } from './types';
 
@@ -12,10 +11,12 @@ export const magickOptions = (config: ResizeConfig, state: ImageDefinition): str
 };
 
 export const transformState = (config: ResizeConfig, state: ImageDefinition): ImageDefinition => {
+  const width = config.width as number;
+  const height = config.height as number;
   return {
     ...state,
-    width: parseNumber(config.width),
-    height: parseNumber(config.height),
+    width,
+    height
   };
 };
 
