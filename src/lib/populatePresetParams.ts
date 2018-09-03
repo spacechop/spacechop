@@ -45,5 +45,7 @@ export default (
     return { [name]: config };
   });
 
+  // The check method will cast the step and throw an error if
+  // value is not of expected type
   return populatedSteps.map(StepType.check);
 };
