@@ -13,7 +13,7 @@ after_success: |
   bash <(curl -s https://codecov.io/bash)
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run spacechop build
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run spacechop npm run build:dry
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --abort-on-container-exit
 
