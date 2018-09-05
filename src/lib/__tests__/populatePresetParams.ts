@@ -9,7 +9,7 @@ describe('Populate preset step params', () => {
       expect(castValue('true')).toBe(true);
       expect(castValue('false')).toBe(false);
     });
-    
+
     it('should handle numbers', () => {
       expect(castValue('100')).toBe(100);
       expect(castValue('0')).toBe(0);
@@ -34,7 +34,7 @@ describe('Populate preset step params', () => {
         width: 'invalid',
       };
       expect(() => populatePresetParams(preset.steps, params)).toThrow();
-    })
+    });
   });
 
   describe('Casting of types', () => {
@@ -57,13 +57,33 @@ describe('Populate preset step params', () => {
       const steps = populatePresetParams(preset.steps, params);
       expect(steps).toEqual([{
         $crop: {
-          width: 100
-        }
-      }])
+          width: 100,
+        },
+      }]);
     });
   });
 
   describe('Basic', () => {
+    it('should handle non-path parameters', () => {
+      const preset: PresetConfig = {
+        steps: [{
+          $crop: {
+            width: 150,
+            height: 200,
+          },
+        }],
+      };
+      const params: Params =  {
+        preset: null,
+      };
+      const steps = populatePresetParams(preset.steps, params);
+      expect(steps).toEqual([{
+        $crop: {
+          width: 150,
+          height: 200,
+        },
+      }]);
+    });
     it('should populate params if mapping contain same names', () => {
       const preset: PresetConfig = {
         steps: [{
@@ -83,8 +103,8 @@ describe('Populate preset step params', () => {
         $crop: {
           width: 100,
           height: 200,
-        }
-      }])
+        },
+      }]);
     });
     it('should populate params if mapping contains different names', () => {
       const preset: PresetConfig = {
@@ -105,9 +125,9 @@ describe('Populate preset step params', () => {
         $crop: {
           width: 100,
           height: 200,
-        }
-      }])
+        },
+      }]);
     });
-  })
+  });
 
 });

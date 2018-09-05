@@ -4,7 +4,7 @@ import { Step } from '../types/Step';
 import { StepConfig } from '../types/StepConfig';
 
 
-// Casts passed value 
+// Casts passed value
 // Ex:
 // 'true' -> true
 // 'false' -> false
@@ -22,7 +22,7 @@ export const castValue = (value: string): boolean | number | string => {
     return maybeNumber;
   }
   return value;
-}
+};
 
 // Populate steps with params from request.
 export default (
@@ -33,14 +33,14 @@ export default (
     const name = Object.keys(step)[0];
     const config: StepConfig = Object.keys(step[name]).reduce((acc, key) => {
       let value = step[name][key];
-      if ('from_path' in value) {
-        const param_key = step[name][key].from_path;
-        value = castValue(params[param_key]);
+      if (typeof value === 'object' && 'from_path' in value) {
+        const paramKey = step[name][key].from_path;
+        value = castValue(params[paramKey]);
       }
       return {
         ...acc,
         [key]: value,
-      }
+      };
     }, {});
     return { [name]: config };
   });
