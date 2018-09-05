@@ -1,7 +1,8 @@
-import url from 'url';
 import request from 'request';
 import { Stream } from 'stream';
-import compilePath from './../compile-path';
+import url from 'url';
+import console from '../../lib/console';
+import compilePath from '../../lib/compile-path';
 import Source from './../source';
 
 export interface HttpSourceConfig {
@@ -16,10 +17,10 @@ export const buildUri = (input: string, params: {}) => {
   });
 };
 
-export default class HttpSource extends Source {
+export default class HttpSource implements Source {
   public config: HttpSourceConfig;
   constructor(config: HttpSourceConfig) {
-    super(config);
+    this.config = config;
   }
 
   public exists(params: {}): Promise<boolean> {
@@ -27,7 +28,9 @@ export default class HttpSource extends Source {
       const uri = buildUri(this.config.root, params);
       request.head(uri, (err, res) => {
         if (err) {
+          console.error('Communicating with HTTP source failed with following error:');
           console.error(err);
+          console.error('Is it correctly configured?');
           reject(err);
           return;
         }

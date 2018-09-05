@@ -12,6 +12,12 @@ import { StripConfig } from './../types';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Strip', () => {
+  describe('Requirements', () => {
+    it('should not have any requirements', () => {
+      const compress = new Strip({});
+      expect(compress.requirements()).toEqual([]);
+    });
+  });
   describe('Command', () => {
     const defaultConfig: StripConfig = {};
     const defaultState: ImageDefinition = {

@@ -1,16 +1,17 @@
+import console from '../lib/console';
 import Config from '../types/Config';
 
 export const validate = (config) => {
   try {
     Config.check(config);
   } catch (err) {
-    throw new Error(`${err.key}: ${err.message}`);
+    throw new Error(`${err.key ? `${err.key}: ` : ''}${err.message}`);
   }
 };
 
 let valid = true;
 
-export default (config) => {
+export default (config, throwError = false) => {
   try {
     validate(config);
     if (!valid) {
@@ -24,6 +25,9 @@ export default (config) => {
     console.error('--------------------------------');
     console.error(err.message);
     console.error('--------------------------------');
+    if (throwError) {
+      throw new Error(err);
+    }
   }
   return false;
 };

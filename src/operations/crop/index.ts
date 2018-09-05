@@ -2,21 +2,31 @@ import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { CropConfig } from './types';
+import { Gravity } from '../Gravity';
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
-  const width = config.width === undefined ? state.width : config.width;
-  const height = config.height === undefined ? state.height : config.height;
+  const width = config.width === undefined ? state.width : <number>config.width;
+  const height = config.height === undefined ? state.height : <number>config.height;
+  const gravity = <Gravity> config.gravity;
+
+  const geometry = `${width}x${height}+0+0`;
   return [
     '-',
-    `-gravity ${magickGravityMap[config.gravity]}`,
-    `-crop ${width}x${height}+0+0`,
+    `-gravity ${magickGravityMap[gravity]}`,
+    `-crop ${geometry}`,
+
+    // magick crop only changes the image size, but not the canvas's.
+    // using repage solves this.
+    // If repage was not used, the true image size (that is widthxheight) would still
+    // be the same, but the "projected" image would be correct size.
+    `-repage ${geometry}`,
     `${state.type}:-`,
   ];
 };
 
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
-  const width = config.width === undefined ? state.width : config.width;
-  const height = config.height === undefined ? state.height : config.height;
+  const width = config.width === undefined ? state.width : <number>config.width;
+  const height = config.height === undefined ? state.height : <number>config.height;
   return {
     ...state,
     width,
@@ -28,13 +38,13 @@ export const defaultConfig: CropConfig = {
   gravity: 'center',
 };
 
-export default class Crop extends Operation {
+export default class Crop implements Operation {
   public config: CropConfig;
   constructor(config: CropConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     if (this.config.gravity === 'face') {
       return [ DefinitionRequirement.FACES ];
     }

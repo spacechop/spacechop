@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should load config.yml invalid config should throw on bad yaml 1`] = `
+"Could not load /src/app/config/__tests__/assets/bad.yml:
+
+YAMLException: end of the stream or a document separator is expected at line 1, column 4:
+    0: -
+       ^"
+`;
+
+exports[`should load config.yml invalid config should throw on empty 1`] = `
+"Could not load /src/app/config/__tests__/assets/empty.yml:
+
+Error: Configuration is empty, /src/app/config/__tests__/assets/empty.yml"
+`;
+
+exports[`should load config.yml invalid config should throw on missing file 1`] = `"Could not find /src/app/config/__tests__/assets/config.yml"`;
+
+exports[`should load config.yml valid config should return config 1`] = `
+Object {
+  "paths": Array [
+    "/images/:preset/:image",
+  ],
+  "presets": Object {
+    "t_720": Object {
+      "steps": Array [
+        Object {
+          "$crop": Object {
+            "gravity": "center",
+            "width": 720,
+          },
+        },
+        Object {
+          "$format": Object {
+            "type": "jpeg",
+          },
+        },
+        Object {
+          "$compress": Object {
+            "lossy": true,
+            "quality": 92,
+          },
+        },
+      ],
+    },
+  },
+  "sources": Array [
+    Object {
+      "s3": Object {
+        "access_key_id": "access_key_id",
+        "bucket_name": "bucket_name",
+        "path": "",
+        "region": "region",
+        "secret_access_key": "secret_access_key",
+      },
+    },
+    Object {
+      "http": Object {
+        "root": "https://example.com/images/:image",
+      },
+    },
+  ],
+}
+`;

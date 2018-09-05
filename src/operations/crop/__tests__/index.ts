@@ -1,14 +1,14 @@
-import path from 'path';
-import createTransformedStream from '../../../test/utils/createTransformedStream';
-import { allGravities, Gravity } from '../../Gravity';
 import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
-import toMatchImageSnapshot from './../../../test/utils/toMatchImageSnapshot';
 import Crop from './../index';
 import { CropConfig } from './../types';
-expect.extend({ toMatchImageSnapshot });
 
 describe('Crop', () => {
   describe('Requirements', () => {
+    it('should not have any requirements by default', () => {
+      const compress = new Crop({});
+      expect(compress.requirements()).toEqual([]);
+    });
+
     it('should require face detection if gravity = face', () => {
       const r = new Crop({ gravity: 'face' });
       const requirements = r.requirements();
@@ -167,162 +167,6 @@ describe('Crop', () => {
         const { command } = op.execute(defaultState);
         expect(command).toEqual(expect.stringMatching(/-gravity East/));
       });
-    });
-  });
-
-
-  describe('Image similarity', () => {
-    describe('width & height', () => {
-      const defaultConfig: CropConfig = { width: 50, height: 50 };
-      const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
-
-      const gridPathJPEG: string = path.join(__dirname, '../../../test/assets', 'grid.jpg');
-      const gridPathPNG: string = path.join(__dirname, '../../../test/assets', 'grid.png');
-      const gridPathPNGInterlaced: string = path.join(__dirname, '../../../test/assets', 'grid-interlaced.png');
-      const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
-
-      // Add fixtures for all gravities on grid image
-      for (const gravity of allGravities) {
-
-        // In grid image there are no faces so face gravity is useless.
-        if (gravity === 'face') { continue; }
-
-        it(`Gravity JPEG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(gridPathJPEG, operation, defaultState);
-          await expect(result).toMatchImageSnapshot({ extension: 'jpg'});
-        });
-
-        it(`Gravity PNG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNG,
-            operation,
-            { ...defaultState, type: 'png' },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity PNG interlaced ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNGInterlaced,
-            operation,
-            { ...defaultState, type: 'png', interlacing: true },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity GIF ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathGIF,
-            operation,
-            { ...defaultState, type: 'gif'},
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'gif'});
-        });
-      }
-    });
-
-    describe('width only', () => {
-      const defaultConfig: CropConfig = { width: 50 };
-      const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
-
-      const gridPathJPEG: string = path.join(__dirname, '../../../test/assets', 'grid.jpg');
-      const gridPathPNG: string = path.join(__dirname, '../../../test/assets', 'grid.png');
-      const gridPathPNGInterlaced: string = path.join(__dirname, '../../../test/assets', 'grid-interlaced.png');
-      const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
-
-      // Add fixtures for all gravities on grid image
-      for (const gravity of allGravities) {
-        if (gravity === 'face') { continue; }
-        it(`Gravity JPEG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(gridPathJPEG, operation, defaultState);
-          await expect(result).toMatchImageSnapshot({ extension: 'jpg'});
-        });
-
-        it(`Gravity PNG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNG,
-            operation,
-            { ...defaultState, type: 'png' },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity PNG interlaced ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNGInterlaced,
-            operation,
-            { ...defaultState, type: 'png', interlacing: true },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity GIF ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathGIF,
-            operation,
-            { ...defaultState, type: 'gif'},
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'gif'});
-        });
-      }
-    });
-
-    describe('height only', () => {
-      const defaultConfig: CropConfig = { height: 50 };
-      const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
-
-      const gridPathJPEG: string = path.join(__dirname, '../../../test/assets', 'grid.jpg');
-      const gridPathPNG: string = path.join(__dirname, '../../../test/assets', 'grid.png');
-      const gridPathPNGInterlaced: string = path.join(__dirname, '../../../test/assets', 'grid-interlaced.png');
-      const gridPathGIF: string = path.join(__dirname, '../../../test/assets', 'grid.gif');
-
-      // Add fixtures for all gravities on grid image
-      for (const gravity of allGravities) {
-        if (gravity === 'face') { continue; }
-        it(`Gravity JPEG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(gridPathJPEG, operation, defaultState);
-          await expect(result).toMatchImageSnapshot({ extension: 'jpg'});
-        });
-
-        it(`Gravity PNG ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNG,
-            operation,
-            { ...defaultState, type: 'png' },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity PNG interlaced ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathPNGInterlaced,
-            operation,
-            { ...defaultState, type: 'png', interlacing: true },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'png'});
-        });
-
-        it(`Gravity GIF ${gravity}`, async () => {
-          const operation = new Crop({ ...defaultConfig, gravity });
-          const result = createTransformedStream(
-            gridPathGIF,
-            operation,
-            { ...defaultState, type: 'gif' },
-          );
-          await expect(result).toMatchImageSnapshot({ extension: 'gif'});
-        });
-      }
     });
   });
 });

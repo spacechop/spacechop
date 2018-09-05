@@ -1,7 +1,7 @@
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { allGravities, Gravity } from '../../Gravity';
+import { allGravities } from '../../Gravity';
 import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
 import Fill from './../index';
 import { FillConfig } from './../types';
@@ -18,6 +18,11 @@ describe('Fill', () => {
       });
       const requirements = r.requirements();
       expect(requirements).toContain(DefinitionRequirement.FACES);
+    });
+
+    it('should not have any requirements by default', () => {
+      const compress = new Fill({ width: 200, height: 200 });
+      expect(compress.requirements()).toEqual([]);
     });
   });
 
@@ -87,7 +92,7 @@ describe('Fill', () => {
           new Fill({ ...defaultConfig, gravity }),
           defaultState,
         );
-        await expect(result).toMatchImageSnapshot({ extension: 'jpg' });
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
       });
 
 

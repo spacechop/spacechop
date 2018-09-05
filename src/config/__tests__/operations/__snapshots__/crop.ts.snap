@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should validate crop config should throw on invalid config require valid  1`] = `"presets.t_200.steps.[0].$crop: missing width or height"`;
+
+exports[`should validate crop config should throw on invalid config require valid width and height 1`] = `"presets.t_200.steps.[0].$crop.width: Expected number | { from_path: string; }, but was number"`;
+
+exports[`should validate crop config should throw on invalid config require valid width and height 2`] = `"presets.t_200.steps.[0].$crop.height: Expected number | { from_path: string; }, but was number"`;
+
+exports[`should validate crop config should throw on invalid config require width or height 1`] = `"presets.t_200.steps.[0].$crop: missing width or height"`;
+
+exports[`should validate operations no double operations in step 1`] = `"presets.t_200.steps.[0]: please only one operation per step"`;

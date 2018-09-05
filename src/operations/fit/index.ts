@@ -13,7 +13,9 @@ export const magickOptions = (config: FitConfig, state: ImageDefinition): string
 };
 
 export const transformState = (config: FitConfig, state: ImageDefinition): ImageDefinition => {
-  let { width, height } = config;
+  let width = config.width as number;
+  let height = config.height as number;
+
   if (width && !height) {
     // calculate height to keep aspect ratio.
     const scale = width / state.width;
@@ -33,13 +35,13 @@ export const transformState = (config: FitConfig, state: ImageDefinition): Image
 export const defaultConfig: FitConfig = {
 };
 
-export default class Crop extends Operation {
+export default class Crop implements Operation {
   public config: FitConfig;
   constructor(config: FitConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 

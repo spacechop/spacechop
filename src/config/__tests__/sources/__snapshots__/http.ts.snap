@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate http source should require valid http root url 1`] = `"sources.[0]: Expected { http: { root: string; }; } | { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; }; } | { volume: { root: string; }; }, but was object"`;
+
+exports[`validate http source should require valid source http 1`] = `"sources.[0]: Expected { http: { root: string; }; } | { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; }; } | { volume: { root: string; }; }, but was object"`;

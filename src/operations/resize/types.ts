@@ -1,8 +1,10 @@
 import * as t from 'runtypes';
+import Param from '../../types/Param';
+import PositiveNumber from '../PositiveNumber';
 
 const ResizeConfig = t.Record({
-  width: t.Number,
-  height: t.Number,
+  width: t.Union(PositiveNumber, Param),
+  height: t.Union(PositiveNumber, Param),
 });
 
 export type ResizeConfig = t.Static<typeof ResizeConfig>;

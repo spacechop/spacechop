@@ -11,10 +11,12 @@ export const magickOptions = (config: ResizeConfig, state: ImageDefinition): str
 };
 
 export const transformState = (config: ResizeConfig, state: ImageDefinition): ImageDefinition => {
+  const width = config.width as number;
+  const height = config.height as number;
   return {
     ...state,
-    width: config.width,
-    height: config.height,
+    width,
+    height
   };
 };
 
@@ -23,13 +25,13 @@ export const defaultConfig: ResizeConfig = {
   height: null,
 };
 
-export default class Crop extends Operation {
+export default class Crop implements Operation {
   public config: ResizeConfig;
   constructor(config: ResizeConfig) {
-    super({ ...defaultConfig, ...config });
+    this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): [DefinitionRequirement?] {
+  public requirements(): DefinitionRequirement[] {
     return [];
   }
 

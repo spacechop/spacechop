@@ -1,12 +1,16 @@
 import * as t from 'runtypes';
-import Gravity from './../Gravity';
+import Param from '../../types/Param';
+import PostiveNumber from '../PositiveNumber';
 
 const FitConfig = t.Partial({
-  width: t.Number,
-  height: t.Number,
-  gravity: Gravity,
+  width: t.Union(PostiveNumber, Param),
+  height: t.Union(PostiveNumber, Param),
+}).withConstraint((n) => {
+  if (!(n.width || n.height)) {
+    return 'missing width or height';
+  }
+  return true;
 });
-
 
 export type FitConfig = t.Static<typeof FitConfig>;
 export default FitConfig;
