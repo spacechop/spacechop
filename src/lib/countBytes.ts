@@ -1,6 +1,6 @@
-import { Readable } from 'stream';
+import { Stream } from 'stream';
 
-export default (stream: Readable): Promise<number> => {
+export default (stream: Stream): Promise<number> => {
   return new Promise((resolve) => {
     let bytes = 0;
     stream.on('data', (data) => {
