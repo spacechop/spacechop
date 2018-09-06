@@ -1,0 +1,27 @@
+paths: 
+  - /:preset/:image
+
+sources:
+  - http:
+      root: http://nginx/:image
+
+presets:
+  t_thumb:
+    steps:
+      - $fit:
+          width: 150
+          height: 150
+      - $compress:
+          quality: 92
+
+  t_720:
+    steps:
+      - $fit:
+          width: 720
+
+      - $format:
+          type: jpeg
+
+      - $compress:
+          quality: 92
+          lossy: true
