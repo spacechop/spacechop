@@ -1,7 +1,7 @@
 import { PassThrough, Stream } from 'stream';
-import { Mime } from '../types/Format';
 import extractStreamMeta from './extractStreamMeta';
 import isStreamPNGAnimation from './isStreamPNGAnimation';
+import { Mime } from '../types/Format';
 
 interface ImageMetaData {
   mimeType: Mime;
