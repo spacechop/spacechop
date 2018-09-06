@@ -18,13 +18,6 @@ interface ImageMetaData {
   animatedPNG?: boolean;
 }
 
-const wrapTime = (promise, tag) => {
-  return promise.then((d) => {
-    console.timeEnd(tag);
-    return d;
-  });
-};
-
 export default async (stream: Stream, requirements = []): Promise<ImageMetaData> => {
   // XXX in case of face detection, analyze image for faces
   const readStreams = [];
@@ -32,11 +25,9 @@ export default async (stream: Stream, requirements = []): Promise<ImageMetaData>
     readStreams[i] = new PassThrough();
     stream.pipe(readStreams[i]);
   }
-  console.time('extractStreamMeta');
-  console.time('isStreamPNGAnimation');
   const [meta, animatedPNG] = await Promise.all([
-    wrapTime(extractStreamMeta(readStreams[0]), 'extractStreamMeta'),
-    wrapTime(isStreamPNGAnimation(readStreams[1]), 'isStreamPNGAnimation'),
+    extractStreamMeta(readStreams[0]),
+    isStreamPNGAnimation(readStreams[1]),
   ]);
 
   const [{ image }, ...frames] = meta;
