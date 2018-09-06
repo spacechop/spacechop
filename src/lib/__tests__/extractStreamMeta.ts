@@ -16,6 +16,7 @@ describe('Extract stream meta', () => {
     delete meta.elapsedTime;
     delete meta.pixelsPerSecond;
     delete meta.userTime;
+    console.log(meta);
     expect(meta).toEqual(
       expect.objectContaining({
         mimeType: 'image/jpeg',

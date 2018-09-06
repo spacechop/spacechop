@@ -16,7 +16,7 @@ presets:
 
   t_720:
     steps:
-      - $crop:
+      - $fit:
           width: 720
 
       - $format:

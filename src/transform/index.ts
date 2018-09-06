@@ -19,8 +19,12 @@ export const buildTransformation = async (
   steps: Step[],
 ) => {
   // initialize steps
+  console.time('Initialize pipeline');
   const { pipeline, requirements } = initializePipeline(steps);
+  console.timeEnd('Initialize pipeline');
+  console.time('Analyze');
   const definition: ImageDefinition = await analyze(stream, requirements);
+  console.timeEnd('Analyze');
 
   // build command from pipeline and image state
   return simulateTransformation(pipeline, definition);

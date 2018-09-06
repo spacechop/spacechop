@@ -4,7 +4,12 @@ services:
     command: npm run develop
     volumes:
       - ./src:/src/app
-      - ./config.yml:/config.yml
+      - ./benchmarking/benchmarking-config.yml:/config.yml
     build:
       args:
         env: development
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./benchmarking/assets:/usr/share/nginx/html

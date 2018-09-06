@@ -2,10 +2,11 @@ import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
 
 export default async (stream: Stream): Promise<any> => new Promise((resolve, reject) => {
-  const proc = spawn('magick', ['-', 'json:']);
+  const proc = spawn('magick', ['-[1x1+0+0]', 'json:']);
   stream.pipe(proc);
   const buffer = [];
   proc.on('data', (chunk) => {
+    console.log('.extractmeta got data');
     buffer.push(chunk);
   });
   proc.on('error', (err) => reject(err));
