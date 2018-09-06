@@ -27,7 +27,6 @@ export const requestHandler = (
   sources: Source[],
   storage?: IStorage,
 ) => async (req: Request, res: Response) => {
-  console.time('Setup config etc');
   // Extract params from request (enables the use of dynamic named params (.*)).
   const params = extractParamValues(keys, req.params);
 
@@ -53,12 +52,9 @@ export const requestHandler = (
       return;
     }
   }
-  console.timeEnd('Setup config etc');
 
   // look through sources to fetch original source stream
-  console.time('Look through sources');
   const stream = await lookThroughSources(sources, params);
-  console.timeEnd('Look through sources');
 
   if (!stream) {
     res.status(404);
@@ -72,9 +68,7 @@ export const requestHandler = (
     const { state } = await buildTransformation(stream, steps);
     res.json(state);
   } else {
-    console.time('Transform');
     const { stream: transformed, definition } = await transform(stream, steps);
-    console.timeEnd('Transform');
     const contentType = formatToMime(definition.type);
     res.set('Content-Type', contentType);
     // Send image data through the worker which passes through to response.

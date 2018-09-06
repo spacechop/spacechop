@@ -8,7 +8,6 @@ export default async (stream: Stream): Promise<any> => new Promise((resolve, rej
   stream.pipe(proc);
   const buffer = [];
   proc.on('data', (chunk) => {
-    console.log('.extractmeta got data');
     buffer.push(chunk);
   });
   proc.on('error', (err) => reject(err));

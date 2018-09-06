@@ -1,5 +1,3 @@
-# /f/fd/ANGELO_Saison_1.png
-# /e/e8/Kalidasa_lanata-Kadavoor-2017-05-23-003.jpg
 docker pull williamyeh/wrk > /dev/null
 docker pull nginx > /dev/null
 docker build $(pwd)/../. -t spacechop-production
