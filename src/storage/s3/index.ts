@@ -1,10 +1,10 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
-import Storage from '../storage';
-import { S3StorageConfig } from './types';
 import compilePath from '../../lib/compile-path';
 import { Mime } from '../../types/Format';
+import Storage from '../storage';
+import { S3StorageConfig } from './types';
 
 const DEFAULT_ACL: S3StorageConfig['ACL'] = 'private';
 
@@ -28,7 +28,6 @@ export default class S3Storage implements Storage {
   public ACL: string;
   constructor(config: S3StorageConfig) {
     this.config = config;
-    
     let endpoint = null;
     if (config.endpoint) {
       endpoint = new AWS.Endpoint(config.endpoint);
@@ -37,7 +36,7 @@ export default class S3Storage implements Storage {
       accessKeyId: config.access_key_id,
       secretAccessKey: config.secret_access_key,
       region: config.region,
-      endpoint
+      endpoint,
     });
 
     this.bucketName = config.bucket_name;
@@ -75,12 +74,12 @@ export default class S3Storage implements Storage {
     return new Promise((resolve, reject) => {
       obj.on('error', (error) => {
         reject(error);
-      })
+      });
       obj.on('httpHeaders', (status, headers) => {
         // 300 is rather arbitrary, but 200 and 204 must be considered successful.
         if (status < 300) {
-          const contentType = <Mime>(headers['content-type'] || null)
-          resolve({ stream, contentType })
+          const contentType = (headers['content-type'] || null) as Mime;
+          resolve({ stream, contentType });
           return;
         }
 
@@ -91,12 +90,12 @@ export default class S3Storage implements Storage {
 
   public upload(params: any, stream: Stream, contentType: Mime): Promise<void> {
     const Key = compilePath(this.config.path, params);
-    const p : AWS.S3.PutObjectRequest = {
+    const p: AWS.S3.PutObjectRequest = {
       Bucket: this.bucketName,
       Key,
       Body: stream,
       ContentType: contentType,
-      ACL: this.ACL
+      ACL: this.ACL,
     };
 
     return new Promise((resolve, reject) => {

@@ -1,21 +1,20 @@
-import { S3StorageConfig } from "../types";
-import S3Storage from "..";
+import { createReadStream } from 'fs';
+import { join } from 'path';
+import S3Storage from '..';
+import { S3StorageConfig } from '../types';
 import assetsFolder from './../../../test/assets/dirname';
-import { createReadStream } from "fs";
-import { join } from "path";
 
 const mocks = {
-  headObject: jest.fn((params, cb) => { cb(null, false); }),
+  headObject: jest.fn((_, cb) => { cb(null, false); }),
 
   // mocking a successful upload
-  upload: jest.fn((params, cb) => { cb(null, {})}),
-
+  upload: jest.fn((_, cb) => { cb(null, {}); }),
 };
 
 jest.mock('aws-sdk', () => ({
   S3: jest.fn().mockImplementation(() => ({
     headObject: mocks.headObject,
-    upload: mocks.upload
+    upload: mocks.upload,
   })),
   Endpoint: jest.fn(),
   config: { update: jest.fn() },
@@ -27,7 +26,7 @@ const defaultConfig: S3StorageConfig = {
   region: 'nyc3',
   bucket_name: 'yyy',
   path: ':image',
-  endpoint: 'test.example.com'
+  endpoint: 'test.example.com',
 };
 describe('S3 storage', () => {
   describe('.upload', () => {
@@ -42,9 +41,9 @@ describe('S3 storage', () => {
       await storage.upload({ image: 'hej' }, stream, 'image/jpeg');
       expect(mocks.upload).toHaveBeenCalledWith(
         expect.objectContaining({
-          ContentType: 'image/jpeg'
+          ContentType: 'image/jpeg',
         }),
-        expect.anything()
+        expect.anything(),
       );
     });
   });

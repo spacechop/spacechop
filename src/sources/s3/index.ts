@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
-import Source from '../source';
 import compilePath from '../../lib/compile-path';
+import Source from '../source';
 import { S3SourceConfig } from './types';
 
 const agent = new Https.Agent({
@@ -25,10 +25,15 @@ export default class S3Source implements Source {
 
   constructor(config: S3SourceConfig) {
     this.config = config;
+    let endpoint = null;
+    if (config.endpoint) {
+      endpoint = new AWS.Endpoint(config.endpoint);
+    }
     this.S3 = new AWS.S3({
       accessKeyId: config.access_key_id,
       secretAccessKey: config.secret_access_key,
       region: config.region,
+      endpoint,
     });
 
     this.bucketName = config.bucket_name;
