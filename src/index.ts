@@ -1,5 +1,7 @@
+import cluster from 'cluster';
 import express from 'express';
 import fs from 'fs';
+import { cpus } from 'os';
 import loadConfig from './config';
 import setupRoutes from './spacechop';
 
@@ -17,14 +19,20 @@ app.use((req, res, next) => {
   router(req, res, next);
 });
 
+if (cluster.isMaster) {
+  const workers = cpus().length;
+  for (let i = 0; i < workers; i++) {
+    cluster.fork();
+  }
+} else {
+  // Re-Initialize routes when new config is loaded.
+  fs.watchFile('/config.yml', { interval: 1000 }, async () => {
+    console.info('Reloading config...');
+    router = express.Router();
+    config = loadConfig();
+    setupRoutes(config, router);
+  });
 
-// Re-Initialize routes when new config is loaded.
-fs.watchFile('/config.yml', { interval: 1000 }, async () => {
-  console.info('Reloading config...');
-  router = express.Router();
-  config = loadConfig();
-  setupRoutes(config, router);
-});
-
-// start listening on port.
-app.listen(3000, () => console.info('Listening on port 3000'));
+  // start listening on port.
+  app.listen(3000, () => console.info('Listening on port 3000'));
+}
