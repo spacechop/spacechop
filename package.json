@@ -24,8 +24,7 @@
     "probe-image-size": "~4.0.0",
     "request": "~2.88.0",
     "request-promise": "~4.2.2",
-    "runtypes": "~2.1.6",
-    "thunks": "^4.9.2"
+    "runtypes": "~2.1.6"
   },
   "devDependencies": {
     "@types/aws-sdk": "~2.7.0",
