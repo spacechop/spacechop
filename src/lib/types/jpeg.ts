@@ -15,22 +15,18 @@ export default (buffer): ImageDefinition => {
   let offset = 4;
   while (offset < buffer.length) {
     const i = buffer.readUInt16BE(offset);
-    if (offset + i > buffer.length) {
-      throw new TypeError('Corrupt JPG, exceeded buffer limits');
-    }
     // Every JPEG block must begin with a 0xFF
-    if (buffer[offset + i] !== 0xFF) {
-      throw new TypeError('Invalid JPG, marker table corrupted');
-    }
-    const next = buffer[offset + i + 1];
-    if (next === 0xC2) {
-      interlacing = true;
-    }
-    if (next === 0xC0 || next === 0xC1 || next === 0xC2) {
-      const j = offset + i + 2 + 2 + 1;
-      width = buffer.readUInt16BE(j, true);
-      height = buffer.readUInt16BE(j + 2, true);
-      break;
+    if (buffer[offset + i] === 0xFF) {
+      const next = buffer[offset + i + 1];
+      if (next === 0xC2) {
+        interlacing = true;
+      }
+      if (next === 0xC0 || next === 0xC1 || next === 0xC2) {
+        const j = offset + i + 2 + 2 + 1;
+        width = buffer.readUInt16BE(j, true);
+        height = buffer.readUInt16BE(j + 2, true);
+        break;
+      }
     }
     // move to the next block
     offset += i + 2;
