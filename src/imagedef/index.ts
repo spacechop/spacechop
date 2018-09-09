@@ -19,4 +19,6 @@ export default interface ImageDefinition {
   interlacing?: boolean;
   faces?: [ImageFaceBox?];
   animated?: boolean;
+  size?: number;
+  lossy?: boolean;
 }
