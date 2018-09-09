@@ -1,41 +1,9 @@
-import { PassThrough, Stream } from 'stream';
-import extractStreamMeta from './extractStreamMeta';
-import isStreamPNGAnimation from './isStreamPNGAnimation';
-import { Mime } from '../types/Format';
+import { Stream } from 'stream';
+import ImageDefinition from '../imagedef';
+import types from './types';
 
-interface ImageMetaData {
-  mimeType: Mime;
-  geometry: {
-    width: number,
-    height: number,
-  };
-  interlace: string;
-  channelDepth?: {
-    alpha?: number,
-  };
-  alpha?: string;
-  animatedGIF?: boolean;
-  animatedPNG?: boolean;
-}
-
-export default async (stream: Stream, requirements = []): Promise<ImageMetaData> => {
+export default async (stream: Stream, _ = []): Promise<ImageDefinition> => {
   // XXX in case of face detection, analyze image for faces
-  const readStreams = [];
-  for (let i = 0; i < 2; i++) {
-    readStreams[i] = new PassThrough();
-    stream.pipe(readStreams[i]);
-  }
-  const [meta, animatedPNG] = await Promise.all([
-    extractStreamMeta(readStreams[0]),
-    isStreamPNGAnimation(readStreams[1]),
-  ]);
-
-  const [{ image }, ...frames] = meta;
-  const animatedGIF = frames.length > 0;
-
-  return {
-    ...image,
-    animatedGIF,
-    animatedPNG,
-  };
+  const info = types(stream);
+  return Promise.resolve(info);
 };
