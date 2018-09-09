@@ -6,11 +6,10 @@ const S3SourceConfig = t.Record({
     region: t.String.withConstraint((n) => n && n.length > 0),
     bucket_name: t.String.withConstraint((n) => n && n.length > 0),
     path: t.String,
-});
+}).And(t.Partial({
+  endpoint: t.String,
+}));
 
 
 export type S3SourceConfig = t.Static<typeof S3SourceConfig>;
 export default S3SourceConfig;
-
-
-
