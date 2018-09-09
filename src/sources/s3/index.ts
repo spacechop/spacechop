@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
-import Source from '../source';
 import compilePath from '../../lib/compile-path';
+import Source from '../source';
 import { S3SourceConfig } from './types';
 
 const agent = new Https.Agent({

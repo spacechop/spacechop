@@ -112,6 +112,15 @@ describe('ImageDefinition', () => {
         height: 100,
         animated: false,
       }, {
+        source: 'rose-alpha.webp',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 400,
+        height: 301,
+        animated: false,
+      }, {
         source: 'lossy-vp8.webp',
         alpha: false,
         interlacing: false,
