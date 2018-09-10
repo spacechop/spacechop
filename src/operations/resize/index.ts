@@ -16,7 +16,7 @@ export const transformState = (config: ResizeConfig, state: ImageDefinition): Im
   return {
     ...state,
     width,
-    height
+    height,
   };
 };
 

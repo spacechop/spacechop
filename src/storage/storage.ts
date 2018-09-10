@@ -1,9 +1,9 @@
 import { Stream } from 'stream';
 import { Mime } from '../types/Format';
 
-export type StorageStreamResult = {
-  stream: Stream,
-  contentType?: Mime
+export interface StorageStreamResult {
+  stream: Stream;
+  contentType?: Mime;
 }
 
 export default interface Storage {

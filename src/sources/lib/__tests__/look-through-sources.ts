@@ -1,13 +1,13 @@
-import lookThroughSources from './../look-through-sources';
 import Source from './../../source';
+import lookThroughSources from './../look-through-sources';
 
 describe('lookThroughSources', () => {
   it('should return null if image does not exist in source', async () => {
     const sources: Source[] = [
       {
         exists: jest.fn(() => Promise.resolve(false)),
-        stream: jest.fn(() => Promise.resolve())
-      }
+        stream: jest.fn(() => Promise.resolve()),
+      },
     ];
 
     const result = await lookThroughSources(sources, {});
@@ -17,12 +17,12 @@ describe('lookThroughSources', () => {
     const sources: Source[] = [
       {
         exists: jest.fn(() => Promise.resolve(true)),
-        stream: jest.fn(() => Promise.resolve())
+        stream: jest.fn(() => Promise.resolve()),
       },
       {
         exists: jest.fn(() => Promise.resolve(false)),
-        stream: jest.fn(() => Promise.resolve())
-      }
+        stream: jest.fn(() => Promise.resolve()),
+      },
     ];
 
     await lookThroughSources(sources, {});
@@ -31,4 +31,4 @@ describe('lookThroughSources', () => {
     expect(sources[1].exists).not.toHaveBeenCalled();
   });
 
-})
+});

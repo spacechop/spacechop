@@ -1,6 +1,6 @@
 import { Storage } from './../../types/Storage';
-import IStorage from './../storage';
 import Storages from './../index';
+import IStorage from './../storage';
 
 export default (storage: Storage): IStorage => {
   const name = Object.keys(storage)[0];

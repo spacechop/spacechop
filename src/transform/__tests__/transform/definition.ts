@@ -1,7 +1,7 @@
 import { createReadStream } from 'fs';
 import path from 'path';
-import assetsFolder from '../../../test/assets/dirname';
 import transform from '../..';
+import assetsFolder from '../../../test/assets/dirname';
 
 describe('Headers', () => {
   const img = path.join(assetsFolder, 'grid.jpg');

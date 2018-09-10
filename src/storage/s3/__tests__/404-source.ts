@@ -1,5 +1,5 @@
-import { S3StorageConfig } from "../types";
-import S3Storage from "..";
+import S3Storage from '..';
+import { S3StorageConfig } from '../types';
 
 jest.mock('aws-sdk', () => ({
   S3: jest.fn().mockImplementation(() => ({
@@ -14,17 +14,17 @@ jest.mock('aws-sdk', () => ({
       return {
         // getObject should return an EventEmitter but the only thing we are interested in
         // here is the httpHeaders event
-        on: jest.fn((event, cb) => {
+        on: jest.fn((event, cb2) => {
           if (event === 'httpHeaders') {
-            cb(404, {});
+            cb2(404, {});
             return;
           }
         }),
         createReadStream: jest.fn(() => {
           const { PassThrough } =  require('stream');
           return new PassThrough();
-        })
-      }
+        }),
+      };
     }),
   })),
   Endpoint: jest.fn(),
@@ -39,21 +39,21 @@ const defaultConfig: S3StorageConfig = {
   path: ':image',
 };
 describe('S3 storage - image exists', () => {
-  describe('.exists', () => {    
+  describe('.exists', () => {
     it('should resolve to false', async () => {
       const storage = new S3Storage(defaultConfig);
       const result = await storage.exists({ image: 'hej' });
       expect(result).toBe(false);
     });
   });
-  
+
   describe('.stream', () => {
     it('should reject', async () => {
       const storage = new S3Storage(defaultConfig);
       let errorThrown;
       try {
         await storage.stream({ image: 'hej' });
-      } catch(err) {
+      } catch (err) {
         errorThrown = err;
       }
       expect(errorThrown).toBeDefined();

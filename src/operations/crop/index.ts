@@ -1,13 +1,13 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { CropConfig } from './types';
-import { Gravity } from '../Gravity';
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
-  const width = config.width === undefined ? state.width : <number>config.width;
-  const height = config.height === undefined ? state.height : <number>config.height;
-  const gravity = <Gravity> config.gravity;
+  const width = config.width === undefined ? state.width : config.width as number;
+  const height = config.height === undefined ? state.height : config.height as number;
+  const gravity = config.gravity as Gravity;
 
   const geometry = `${width}x${height}+0+0`;
   return [
@@ -25,8 +25,8 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
-  const width = config.width === undefined ? state.width : <number>config.width;
-  const height = config.height === undefined ? state.height : <number>config.height;
+  const width = config.width === undefined ? state.width : config.width as number;
+  const height = config.height === undefined ? state.height : config.height as number;
   return {
     ...state,
     width,
