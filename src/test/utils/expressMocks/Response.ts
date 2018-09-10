@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import { Request as MockRequest } from 'jest-express/lib/request';
 import { Response as MockResponse } from 'jest-express/lib/response';
 
 
@@ -23,5 +22,3 @@ export class Response extends MockResponse implements EventEmitter {
   public eventNames() { return []; }
   public listenerCount() { return 0; }
 }
-
-export class Request extends MockRequest {}

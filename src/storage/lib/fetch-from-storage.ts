@@ -1,11 +1,11 @@
-import Storage from "../storage";
-import { Mime } from "../../types/Format";
-import { Stream } from "stream";
+import { Stream } from 'stream';
+import { Mime } from '../../types/Format';
+import Storage from '../storage';
 
-export type StorageFetchResult = {
-  stream: Stream,
-  contentType?: Mime
-};
+export interface StorageFetchResult {
+  stream: Stream;
+  contentType?: Mime;
+}
 
 export default async (storage: Storage, params: any): Promise<StorageFetchResult> => {
   const exists = await storage.exists(params);

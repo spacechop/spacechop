@@ -4,13 +4,13 @@ describe('requestAsyncWrapper', () => {
     const res = jest.fn();
     const req = jest.fn();
     const fn = jest.fn();
-    
-    const wrapped = requestAsyncWrapper(fn, () => {});
+
+    const wrapped = requestAsyncWrapper(fn, () => { return; });
     wrapped(req, res);
 
     expect(fn).toBeCalledWith(req, res);
   });
-  
+
   it('should call errorHandler if fn rejects', async () => {
     const res = jest.fn();
     const req = jest.fn();
@@ -19,7 +19,7 @@ describe('requestAsyncWrapper', () => {
     const errorHandler = jest.fn();
     const wrapped = requestAsyncWrapper(fn, () => errorHandler);
     await wrapped(req, res);
-  
+
     expect(errorHandler).toHaveBeenCalledWith(error);
   });
 });
