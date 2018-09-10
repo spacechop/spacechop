@@ -28,6 +28,7 @@ export const requestHandler = (
   sources: Source[],
   storage?: IStorage,
 ) => async (req: Request, res: Response) => {
+  // Create trace instance.
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
   const params = extractParamValues(keys, req.params);
