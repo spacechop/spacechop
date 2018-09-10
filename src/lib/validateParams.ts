@@ -7,7 +7,10 @@ export default (config) => {
   const params = {};
   for (const path of paths) {
     for (const param of extract(path)) {
-      params[param.name] = 0;
+      // Skip numerically indexed params to allow non capturing groups.
+      if (!/^[\d]+$/.test('' + param.name)) {
+        params[param.name] = 0;
+      }
     }
   }
 
