@@ -1,16 +1,18 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { CropConfig } from './types';
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
-  const width = config.width === undefined ? state.width : config.width;
-  const height = config.height === undefined ? state.height : config.height;
+  const width = config.width === undefined ? state.width : config.width as number;
+  const height = config.height === undefined ? state.height : config.height as number;
+  const gravity = config.gravity as Gravity;
 
   const geometry = `${width}x${height}+0+0`;
   return [
     '-',
-    `-gravity ${magickGravityMap[config.gravity]}`,
+    `-gravity ${magickGravityMap[gravity]}`,
     `-crop ${geometry}`,
 
     // magick crop only changes the image size, but not the canvas's.
@@ -23,8 +25,8 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
-  const width = config.width === undefined ? state.width : config.width;
-  const height = config.height === undefined ? state.height : config.height;
+  const width = config.width === undefined ? state.width : config.width as number;
+  const height = config.height === undefined ? state.height : config.height as number;
   return {
     ...state,
     width,

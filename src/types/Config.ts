@@ -1,6 +1,8 @@
 import * as t from 'runtypes';
+import validateParams from '../lib/validateParams';
 import PresetConfig from './PresetConfig';
 import Source from './Source';
+import Storage from './Storage';
 
 // Test to make sure :preset exists in path.
 const pattern = /^\/.*:preset(\([^)]+\))?([^\w)]*?$|\/.*)/i;
@@ -14,7 +16,9 @@ const Config = t.Record({
   ).withConstraint((n) => n && n.length > 0 || 'Requires at least one path'),
   sources: t.Array(Source),
   presets: t.Dictionary(PresetConfig, 'string'),
-});
+}).And(t.Partial({
+  storage: Storage,
+})).withConstraint(validateParams);
 
 export type Config = t.Static<typeof Config>;
 export default Config;

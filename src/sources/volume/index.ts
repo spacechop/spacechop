@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Stream } from 'stream';
 import url from 'url';
-import compilePath from './../compile-path';
+import compilePath from '../../lib/compile-path';
 import Source from './../source';
 
 export interface VolumeSourceConfig {

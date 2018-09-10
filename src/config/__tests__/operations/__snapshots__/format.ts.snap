@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should validate format config should throw on invalid config require type 1`] = `"presets.t_200.steps.[0].$format.type: Expected \\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\", but was undefined"`;
+exports[`should validate format config should throw on invalid config require type 1`] = `"presets.t_200.steps.[0].$format.type: Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\") | { from_path: string; }, but was undefined"`;
 
-exports[`should validate format config should throw on invalid config require valid format type 1`] = `"presets.t_200.steps.[0].$format.type: Expected \\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\", but was string"`;
+exports[`should validate format config should throw on invalid config require valid format type 1`] = `"presets.t_200.steps.[0].$format.type: Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\") | { from_path: string; }, but was string"`;
 
 exports[`should validate operations no double operations in step 1`] = `"presets.t_200.steps.[0]: please only one operation per step"`;

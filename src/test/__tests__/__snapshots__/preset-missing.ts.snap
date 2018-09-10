@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preset missing should set status 404 1`] = `
+Array [
+  "Could not find preset",
+]
+`;

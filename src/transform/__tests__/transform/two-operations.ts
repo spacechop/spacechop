@@ -2,7 +2,7 @@ import { createReadStream } from 'fs';
 import path from 'path';
 import transform from '../..';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { Operation } from '../../../types/Operation';
+import { Step } from '../../../types/Step';
 import assetsFolder from './../../../test/assets/dirname';
 
 expect.extend({ toMatchImageSnapshot });
@@ -13,7 +13,7 @@ describe('Transform 2 operations', () => {
   };
 
   describe('$crop $format', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $crop: {
         width: 400,
         height: 400,
@@ -25,14 +25,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
   describe('$crop $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $crop: {
         width: 400,
         height: 400,
@@ -44,14 +44,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
   describe('$fill $format', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fill: {
         width: 400,
         height: 400,
@@ -63,14 +63,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
   describe('$fill $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fill: {
         width: 400,
         height: 400,
@@ -82,14 +82,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
   describe('$fit $format', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fit: {
         width: 400,
         height: 400,
@@ -100,14 +100,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'webp' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'webp' });
     });
   });
 
   describe('$fit $compress', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $fit: {
         width: 400,
         height: 400,
@@ -118,14 +118,14 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 
   describe('$crop $strip', () => {
-    const steps: Operation[] = [
+    const steps: Step[] = [
       { $crop: {
         width: 400,
         height: 400,
@@ -136,9 +136,9 @@ describe('Transform 2 operations', () => {
     ];
     it('should match snapshot', async () => {
       const input = createReadStream(assets.cat);
-      const out = await transform(input, steps);
+      const { stream } = await transform(input, steps);
 
-      await expect(out).toMatchImageSnapshot({ extension: 'jpeg' });
+      await expect(stream).toMatchImageSnapshot({ extension: 'jpeg' });
     });
   });
 });

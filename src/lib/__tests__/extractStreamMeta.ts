@@ -8,7 +8,7 @@ describe('Extract stream meta', () => {
   const stream = fs.createReadStream(filename);
 
   it('should extract meta data from image', async () => {
-    const meta = await extractStreamMeta(stream);
+    const [{ image: meta }] = await extractStreamMeta(stream);
     // ignore file properties in extraction.
     delete meta.properties['date:create'];
     delete meta.properties['date:modify'];

@@ -3,7 +3,11 @@ import { Config } from '../types/Config';
 import load from './load';
 import validate from './validate';
 
-export default (filename = '/config.yml'): Config => {
+const {
+  CONFIG_PATH = '/config.yml',
+} = process.env;
+
+export default (filename = CONFIG_PATH): Config => {
   try {
     const config = load(filename);
     if (config && validate(config)) {

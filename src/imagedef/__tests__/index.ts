@@ -1,8 +1,11 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import ImageDefinition from '..';
+import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
 import { Format } from '../../types/Format';
 import analyze from '../analyze';
+
+expect.extend({ toMatchImageSnapshot });
 
 describe('ImageDefinition', () => {
   describe('Analyze', () => {
@@ -16,48 +19,164 @@ describe('ImageDefinition', () => {
         type: Format,
         width: number,
         height: number
-      }> = [
-        {
-          source: 'grid.jpg',
-          alpha: false,
-          interlacing: false,
-          root: assets,
-          type: 'jpeg',
-          width: 100,
-          height: 100,
-        }, {
-          source: 'grid-no-exif.jpg',
-          alpha: false,
-          interlacing: false,
-          root: assets,
-          type: 'jpeg',
-          width: 100,
-          height: 100,
-        }, {
-          source: 'grid.png',
-          alpha: true,
-          interlacing: false,
-          root: assets,
-          type: 'png',
-          width: 100,
-          height: 100,
-        }, {
-          source: 'grid.gif',
-          alpha: false,
-          interlacing: false,
-          root: assets,
-          type: 'gif',
-          width: 100,
-          height: 100,
-        }, {
-          source: 'grid.webp',
-          alpha: false,
-          interlacing: false,
-          root: assets,
-          type: 'webp',
-          width: 100,
-          height: 100,
-        },
+        animated: boolean,
+        lossy?: boolean,
+      }> = [{
+        source: 'grid.jpg',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'jpeg',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid-no-exif.jpg',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'jpeg',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid-interlaced.jpg',
+        alpha: false,
+        interlacing: true,
+        root: assets,
+        type: 'jpeg',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid.png',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'png',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'cat.png',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'png',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'cat-interlaced.png',
+        alpha: true,
+        interlacing: true,
+        root: assets,
+        type: 'png',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'cat-no-alpha.png',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'png',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid.gif',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'gif',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid.webp',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'grid-lossy.webp',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'rose-alpha.webp',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 400,
+        height: 301,
+        animated: false,
+      }, {
+        source: 'lossy-vp8.webp',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 550,
+        height: 368,
+        animated: false,
+      }, {
+        source: 'grid-interlaced.gif',
+        alpha: false,
+        interlacing: true,
+        root: assets,
+        type: 'gif',
+        width: 100,
+        height: 100,
+        animated: false,
+      }, {
+        source: 'animated.gif',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'gif',
+        width: 100,
+        height: 100,
+        animated: true,
+      }, {
+        source: 'animated.png',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'png',
+        width: 100,
+        height: 100,
+        animated: true,
+      }, {
+        source: 'animated.webp',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 320,
+        height: 240,
+        animated: true,
+        lossy: false,
+      }, {
+        source: 'animated-alpha.webp',
+        alpha: true,
+        interlacing: false,
+        root: assets,
+        type: 'webp',
+        width: 200,
+        height: 200,
+        animated: true,
+        lossy: false,
+      },
       ];
 
       // create a test for all file types
@@ -67,22 +186,27 @@ describe('ImageDefinition', () => {
         height,
         alpha,
         interlacing,
+        animated,
         type,
         root,
       } of sources) {
-        it(`should return valid ImageDefinition for ${source}`, async () => {
+        describe(`analyze ImageDefinition for ${source}`, () => {
           const expected: ImageDefinition = {
             width,
             height,
             type,
             alpha,
             interlacing,
+            animated,
           };
           const stream = createReadStream(path.join(__dirname, root, source));
-          const recieved = await analyze(stream, []);
-          expect(recieved).toEqual(
-            expect.objectContaining(expected),
-          );
+
+          it('should return valid ImageDefinition', async () => {
+            const recieved = await analyze(stream, []);
+            expect(recieved).toEqual(
+              expect.objectContaining(expected),
+            );
+          });
         });
       }
     });

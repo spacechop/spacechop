@@ -12,8 +12,8 @@ describe('Transform', () => {
   it('should return original image if empty array of steps is given', async () => {
     const p = path.join(assetsFolder, 'grid.png');
     const source = createReadStream(p);
-    const target = await transform(source, []);
-    const sim = await imageSimilarity(target, p);
+    const { stream } = await transform(source, []);
+    const sim = await imageSimilarity(stream, p);
 
     expect(sim).toBe(1);
   });
@@ -25,8 +25,8 @@ describe('Transform', () => {
     const steps = [
       { $crop: { width: 720 } },
     ];
-    const target = await transform(source, steps);
-    const numBytes = await countBytes(target);
+    const { stream } = await transform(source, steps);
+    const numBytes = await countBytes(stream);
     expect(numBytes).toBeGreaterThan(0);
   });
 });

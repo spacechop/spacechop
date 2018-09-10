@@ -1,45 +1,99 @@
+import { Request, Response } from 'express';
 import pathToRegex from 'path-to-regexp';
-import { Readable } from 'stream';
-import Log from './log';
-import Sources from './sources';
-import transform from './transform';
+import console from './lib/console';
+import extractParamValues from './lib/extractParamValues';
+import populatePresetParams from './lib/populatePresetParams';
+import asyncWrapper from './lib/requestAsyncWrapper';
+import StreamSwitch from './lib/stream-switch';
+import instantiateSource from './sources/lib/instantiate-source';
+import lookThroughSources from './sources/lib/look-through-sources';
+import Source from './sources/source';
+import fetchFromStorage from './storage/lib/fetch-from-storage';
+import instantiateStorage from './storage/lib/instantiate-storage';
+import uploadToStorage from './storage/lib/upload-to-storage';
+import IStorage from './storage/storage';
+import Trace from './trace';
+import transform, { buildTransformation } from './transform';
 import { Config } from './types/Config';
-import { Source } from './types/Source';
+import { formatToMime } from './types/Format';
 
-const asyncWrapper = (fn) => (req, res) => {
-  Promise
-    .resolve(fn(req, res))
-    .catch(handleError(res));
-};
-
-const handleError = (res) => (error) => {
+export const handleError = (res) => (error) => {
   console.error(error);
   res.status(500);
   res.end(error.message);
 };
 
-// Extract named parameters from request.
-const extractParams = (params, values) => {
-  return params.reduce((acc, param, i) => Object.assign(acc, {
-    [param.name]: values[i],
-  }), {});
-};
+export const requestHandler = (
+  config: Config, keys,
+  sources: Source[],
+  storage?: IStorage,
+) => async (req: Request, res: Response) => {
+  const trace = new Trace();
+  // Extract params from request (enables the use of dynamic named params (.*)).
+  const params = extractParamValues(keys, req.params);
+  trace.log('url', req.originalUrl);
+  trace.log('params', params);
 
-const lookThroughSources = async (sources, params): Promise<{ stream: Readable, source: Source }> => {
-  for (const source of sources) {
-    const name = Object.keys(source)[0];
-    const props = source[name];
+  // find the right preset steps to use
+  const preset = config.presets[params.preset];
 
-    // initialize source instance with config.
-    const instance = new Sources[name](props);
-    if (await instance.exists(params)) {
-      return {
-        stream: instance.stream(params),
-        source,
-      };
+  if (!preset) {
+    res.status(404);
+    res.end('Could not find preset');
+    trace.error('preset', 'Could not find preset');
+    return;
+  } else {
+    trace.log('preset', preset);
+  }
+
+  // populate steps with params.
+  const steps = populatePresetParams(preset.steps, params);
+  trace.log('steps', steps);
+
+  // check if transformation is already done and exists in storage
+  if (storage) {
+    const fromCache = await fetchFromStorage(storage, params);
+    // It exists in cache
+    if (fromCache && fromCache.contentType) {
+      res.set('Content-Type', fromCache.contentType);
+      fromCache.stream.pipe(res);
+      return;
     }
   }
-  return null;
+
+  // look through sources to fetch original source stream
+  const stream = await lookThroughSources(sources, params);
+
+  if (!stream) {
+    res.status(404);
+    res.end('Could not find image');
+    trace.error('image', 'Could not find image');
+    return;
+  }
+
+  // Only analyze image after pipeline
+  const onlyAnalyze = 'analyze' in req.query;
+  if (onlyAnalyze) {
+    const { state } = await buildTransformation(stream, steps);
+    trace.log('analyze', state);
+    res.json(state);
+  } else {
+    const { stream: transformed, definition } = await transform(stream, steps);
+    trace.log('definition', definition);
+    const contentType = formatToMime(definition.type);
+    res.set('Content-Type', contentType);
+    // Send image data through the worker which passes through to response.
+
+    let streamToRespondWith = transformed;
+    if (config.storage) {
+      const streamSwitch = new StreamSwitch(transformed);
+      streamToRespondWith = streamSwitch.createReadStream();
+      const streamToCache = streamSwitch.createReadStream();
+      uploadToStorage(storage, params, streamToCache, contentType);
+    }
+    streamToRespondWith.pipe(res);
+    streamToRespondWith.on('end', () => trace.end());
+  }
 };
 
 export default (config: Config, server) => {
@@ -47,56 +101,15 @@ export default (config: Config, server) => {
     return;
   }
   // extract paths from config to listen in on.
-  const { sources, paths = ['/*'] } = config;
+  const { paths = ['/*'] } = config;
 
+  const storage = !!config.storage ? instantiateStorage(config.storage) : null;
+  const sources = config.sources.map(instantiateSource);
   // listen on all paths.
   paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
-    server.get(pattern, asyncWrapper(async (req, res) => {
-      const stdlog = new Log();
-      // Extract params from request (enables the use of dynamic named params (.*)).
-      const params = extractParams(keys, req.params);
-      stdlog.log('request', req.originalUrl);
-
-      // find the right preset steps to use
-      const preset = config.presets[params.preset];
-
-      if (!preset) {
-        res.status(404);
-        res.end('Could not find preset');
-        stdlog.log(404, 'Could not find preset');
-        stdlog.end();
-        return;
-      } else {
-        stdlog.log('found preset', { [params.preset]: preset });
-      }
-
-      // look through sources to fetch original source stream
-      stdlog.time('found image');
-      const { stream, source } = await lookThroughSources(sources, params);
-
-      if (!stream) {
-        res.status(404);
-        res.end('Could not find image');
-        stdlog.clearTime('found image in source');
-        stdlog.log(404, 'Could not find image');
-        stdlog.end();
-        return;
-      } else {
-        stdlog.time('found image');
-        stdlog.log('in source', source);
-      }
-
-      stdlog.time('transform');
-      const transformed = await transform(stream, preset.steps);
-
-      // Send image data through the worker which passes through to response.
-      transformed.pipe(res);
-      transformed.on('end', () => {
-        stdlog.time('transform');
-        stdlog.end();
-      });
-    }));
+    const handler = requestHandler(config, keys, sources, storage);
+    server.get(pattern, asyncWrapper(handler, handleError));
   });
 };
