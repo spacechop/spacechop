@@ -19,25 +19,11 @@ exports[`Serialize should handle number negative 1`] = `"-1"`;
 
 exports[`Serialize should handle number undefined 1`] = `"undefined"`;
 
-exports[`Serialize should handle object default 1`] = `
-"{
-  \\"a\\": 1,
-  \\"b\\": 2
-}"
-`;
+exports[`Serialize should handle object default 1`] = `"{\\"a\\":1,\\"b\\":2}"`;
 
 exports[`Serialize should handle object empty 1`] = `"{}"`;
 
-exports[`Serialize should handle object nested 1`] = `
-"{
-  \\"a\\": 1,
-  \\"b\\": 2,
-  \\"c\\": {
-    \\"a\\": 1,
-    \\"b\\": 1
-  }
-}"
-`;
+exports[`Serialize should handle object nested 1`] = `"{\\"a\\":1,\\"b\\":2,\\"c\\":{\\"a\\":1,\\"b\\":1}}"`;
 
 exports[`Serialize should handle object null 1`] = `"null"`;
 
