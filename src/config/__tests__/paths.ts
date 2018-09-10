@@ -135,6 +135,22 @@ describe('validate paths', () => {
     expect(() => validate(config)).not.toThrow();
   });
 
+  it('should not throw on non capture groups in path', () => {
+    const config: Config = {
+      paths: ['/:preset/:image([^.]+).(.*)'],
+      sources: [{ volume: { root: '/src/app/test/assets/:image' } }],
+      presets: { t_200: {
+        steps: [{
+          $resize: {
+            width: 200,
+            height: 200,
+          },
+        }],
+      } },
+    };
+    expect(() => validate(config)).not.toThrow();
+  });
+
   it('should not throw on valid config', () => {
     const defaultConfig = {
       paths: ['/:preset/:image'],
