@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "~2.311.0",
+    "aws-sdk": "~2.312.0",
     "cluster": "^0.7.7",
     "duplex-child-process": "~1.0.0",
     "express": "~4.16.3",
