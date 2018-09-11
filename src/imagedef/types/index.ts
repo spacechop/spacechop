@@ -21,6 +21,7 @@ export default (stream: Stream): Promise<ImageDefinition> => {
         .then((definition) => {
           if (definition) {
             resolve(definition);
+            asyncBuffer.destroy();
           }
         })
         .catch(reject);
