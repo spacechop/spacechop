@@ -1,7 +1,7 @@
 import Operations from './../operations';
 
 export default (steps) => {
-  let requirements = {};
+  let requirements = [];
   const preparedSteps = steps.map((step) => {
     const name = Object.keys(step)[0];
     const props = step[name];
@@ -15,10 +15,10 @@ export default (steps) => {
     // initialize operation instance with config.
     const instance = new Operations[name](props);
     // prepare requirements from steps
-    requirements = {
+    requirements = [
       ...requirements,
       ...instance.requirements(),
-    };
+    ];
     return instance;
   });
 

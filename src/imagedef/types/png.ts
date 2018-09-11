@@ -1,4 +1,5 @@
 import ImageDefinition from '../../imagedef';
+import AsyncBuffer from '../../lib/asyncBuffer';
 
 /**
  * @see http://en.wikipedia.org/wiki/Portable_Network_Graphics
@@ -16,7 +17,9 @@ import ImageDefinition from '../../imagedef';
  * 1A  A byte that stops display of the file under DOS when the command type has been used—the end-of-file character
  * 0A  A Unix-style line ending (LF) to detect Unix-DOS line ending conversion.
  */
-export default (buffer): ImageDefinition => {
+export default async (aBuffer: AsyncBuffer): Promise<ImageDefinition> => {
+  await aBuffer.waitForSize(48);
+  const buffer = aBuffer.buffer;
   if (buffer.length < 16 ||
       buffer[0] !== 0x89 ||
       // PNG

@@ -1,4 +1,5 @@
 import ImageDefinition from '../../imagedef';
+import AsyncBuffer from '../../lib/asyncBuffer';
 
 /**
  * @see https://developers.google.com/speed/webp/docs/riff_container
@@ -26,8 +27,11 @@ import ImageDefinition from '../../imagedef';
 // const ANMF = new Uint8Array([
 //   0x41, 0x4e, 0x4d, 0x46,
 // ]);
-export default (buffer): ImageDefinition => {
-  if (buffer.length < 12 ||
+export default async (aBuffer: AsyncBuffer): Promise<ImageDefinition> => {
+  await aBuffer.waitForSize(12);
+  const buffer = aBuffer.buffer;
+
+  if ((aBuffer.ended && aBuffer.buffer.length < 12) ||
     buffer.slice(0, 4).toString() !== 'RIFF' ||
     buffer.slice(8, 12).toString() !== 'WEBP') {
     return;
@@ -43,23 +47,28 @@ export default (buffer): ImageDefinition => {
   let alpha = false;
 
   let offset = 12;
-  while (offset + 8 < buffer.length) {
-    const chunkType = buffer.slice(offset, offset + 4).toString();
-    const chunkSize = buffer.readUInt32LE(offset + 4);
+  let i = 0;
+  while (i++ < 1000000) {
+    await aBuffer.waitForSize(offset + 16);
+    if (aBuffer.ended && aBuffer.buffer.length < offset + 8) {
+      break;
+    }
+    const chunkType = aBuffer.buffer.slice(offset, offset + 4).toString();
+    const chunkSize = aBuffer.buffer.readUInt32LE(offset + 4);
     switch (chunkType) {
       case 'VP8 ': {
         // 3 bytes - "Uncompressed Data Chunk"
         // 3 bytes - VP8 intraframe start code
-        const horizontalSizeCode = buffer.readUInt16LE(offset + 8 + 3 + 3);
+        const horizontalSizeCode = aBuffer.buffer.readUInt16LE(offset + 8 + 3 + 3);
         width = horizontalSizeCode & 0x3fff; // tslint:disable-line
-        const verticalSizeCode = buffer.readUInt16LE(offset + 8 + 3 + 5);
+        const verticalSizeCode = aBuffer.buffer.readUInt16LE(offset + 8 + 3 + 5);
         height = verticalSizeCode & 0x3fff; // tslint:disable-line
         break;
       }
       case 'VP8L': {
         // 1 byte - One byte signature 0x2f.
         lossy = true;
-        const bits = buffer.readUInt32LE(offset + 8 + 1);
+        const bits = aBuffer.buffer.readUInt32LE(offset + 8 + 1);
         width = (bits & 0x3FFF) + 1; // tslint:disable-line
         height = ((bits >> 14) & 0x3fff) + 1; // tslint:disable-line
         alpha = !!((bits >> 28) & 0x01); // tslint:disable-line
@@ -78,11 +87,11 @@ export default (buffer): ImageDefinition => {
         // 24 bits - Reserved (3)
         // 24 bits - Canvas Width (actual canvas width should add 1 to read value)
         // 24 bits - Canvas Height (actual canvas height should add 1 to read value)
-        const bits = buffer.readUInt8(offset + 8);
+        const bits = aBuffer.buffer.readUInt8(offset + 8);
         alpha = !!((bits >> 4) & 0x01); // tslint:disable-line
         animated = !!((bits >> 1) & 0x01); // tslint:disable-line
-        width = buffer.readUInt16LE(offset + 8 + 4) + 1;
-        height = buffer.readUInt16LE(offset + 8 + 7) + 1;
+        width = aBuffer.buffer.readUInt16LE(offset + 8 + 4) + 1;
+        height = aBuffer.buffer.readUInt16LE(offset + 8 + 7) + 1;
         break;
       }
       // case 'ANIM':
