@@ -11,11 +11,13 @@ export default class AsyncBuffer {
   public ended: boolean;
   private error: any;
   private waiting: Waiting[];
+  private stream: any;
 
   constructor(stream: Stream) {
     this.buffer = Buffer.alloc(0);
     this.waiting = [];
     this.ended = false;
+    this.stream = stream;
 
     stream.on('data', (chunk) => {
       this.buffer = Buffer.concat([this.buffer, chunk]);
@@ -32,6 +34,10 @@ export default class AsyncBuffer {
     });
   }
 
+  public destroy() {
+    this.stream.pause();
+    this.stream.destroy();
+  }
   public waitForSize(size: number) {
     if (this.ended) {
       return Promise.resolve();
