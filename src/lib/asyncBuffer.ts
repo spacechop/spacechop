@@ -38,6 +38,12 @@ export default class AsyncBuffer {
     this.stream.pause();
     this.stream.destroy();
   }
+  /**
+   * Wait until @param size bytes have been buffered.
+   * If the stream does not contain that many bytes, it will resolve when
+   * stream ends.
+   * @param size
+   */
   public waitForSize(size: number) {
     if (this.ended) {
       return Promise.resolve();
