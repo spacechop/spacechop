@@ -38,12 +38,6 @@ const bufferingStream = ({length = 100, slices = 10, interval = 5} = {}) => {
 
 
 describe('AsyncBuffer', () => {
-  it('should immediately start buffering the stream', () => {
-    const stream = bufferingStream();
-    const tmp = new AsyncBuffer(stream);
-    expect(stream._readableState.flowing).toBe(true);
-  });
-
   describe('.waitForSize', () => {
     it('should resolve when requested size is less than actual', async () => {
       expect.assertions(1);
