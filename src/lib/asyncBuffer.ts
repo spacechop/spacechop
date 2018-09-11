@@ -44,6 +44,15 @@ export default class AsyncBuffer {
     });
   }
 
+  public waitUntilEnd() {
+    if (this.ended) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      this.waiting.push({resolve, reject, size: -1 });
+    });
+  }
+
   private resolveWaiting() {
     this.waiting = this.waiting.filter((waiting) => {
       if (this.error) {
@@ -55,7 +64,7 @@ export default class AsyncBuffer {
         return false;
       }
 
-      if (this.buffer.length >= waiting.size) {
+      if (waiting.size !== -1 && this.buffer.length >= waiting.size) {
         waiting.resolve();
         return false;
       }

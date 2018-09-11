@@ -13,21 +13,17 @@ const tests = [
   isWEBP,
 ];
 
-export default (stream: Stream): Promise<any> => {
+export default (stream: Stream): Promise<ImageDefinition> => {
   const asyncBuffer = new AsyncBuffer(stream);
-  return isWEBP(asyncBuffer);
-  // const chunks = [];
-  // stream.on('data', (chunk) => {
-  //   chunks.push(chunk);
-  // });
-  // stream.on('end', async () => {
-  //   const buffer = Buffer.concat(chunks);
-  //   for (const test of tests) {
-  //     const result: ImageDefinition = test(buffer);
-  //     if (result) {
-  //       resolve(result);
-  //       break;
-  //     }
-  //   }
-  // });
+  return new Promise((resolve, reject) => {
+    tests.map((test) => {
+      test(asyncBuffer)
+        .then((definition) => {
+          if (definition) {
+            resolve(definition);
+          }
+        })
+        .catch(reject);
+    });
+  });
 };

@@ -39,87 +39,89 @@ export default async (aBuffer: AsyncBuffer): Promise<ImageDefinition> => {
 
   // uint32: A 32-bit, little-endian, unsigned integer.
   // The file size in the header is the total size of the chunks that follow plus 4 bytes for the 'WEBP' FourCC.
-  const size = buffer.readUInt32LE(4);
-  let lossy = false;
-  let animated = false;
-  let width = null;
-  let height = null;
-  let alpha = false;
 
-  let offset = 12;
-  let i = 0;
-  while (i++ < 1000000) {
-    await aBuffer.waitForSize(offset + 16);
-    if (aBuffer.ended && aBuffer.buffer.length < offset + 8) {
-      break;
+  // Wait until chunkType (4 bytes) and chunkSize (4 bytes) have been buffered
+  let offset = 12; // WEBP HEADER
+  await aBuffer.waitForSize(offset + 4);
+  const chunkType = aBuffer.buffer.slice(offset, offset + 4).toString();
+  offset += (4 + 4); // ChunkType and ChunkSize (each 4 bytes)
+
+  if (chunkType === 'VP8 ') {
+    await aBuffer.waitForSize(offset + 10);
+    if (aBuffer.ended && aBuffer.buffer.length < offset + 10) {
+      // The file is broken
+      return;
     }
-    const chunkType = aBuffer.buffer.slice(offset, offset + 4).toString();
-    const chunkSize = aBuffer.buffer.readUInt32LE(offset + 4);
-    switch (chunkType) {
-      case 'VP8 ': {
-        // 3 bytes - "Uncompressed Data Chunk"
-        // 3 bytes - VP8 intraframe start code
-        const horizontalSizeCode = aBuffer.buffer.readUInt16LE(offset + 8 + 3 + 3);
-        width = horizontalSizeCode & 0x3fff; // tslint:disable-line
-        const verticalSizeCode = aBuffer.buffer.readUInt16LE(offset + 8 + 3 + 5);
-        height = verticalSizeCode & 0x3fff; // tslint:disable-line
-        break;
-      }
-      case 'VP8L': {
-        // 1 byte - One byte signature 0x2f.
-        lossy = true;
-        const bits = aBuffer.buffer.readUInt32LE(offset + 8 + 1);
-        width = (bits & 0x3FFF) + 1; // tslint:disable-line
-        height = ((bits >> 14) & 0x3fff) + 1; // tslint:disable-line
-        alpha = !!((bits >> 28) & 0x01); // tslint:disable-line
-        break;
-      }
-      case 'VP8X': {
-        // 80 bits
-        //
-        // 2 bits - Reserved (1)
-        // 1 bit - ICC Profile flag
-        // 1 bit - Alpha flag
-        // 1 bit - EXIF metadata flag
-        // 1 bit - XMP metadata flag
-        // 1 bit - Animation flag
-        // 1 bit - Reserved (2)
-        // 24 bits - Reserved (3)
-        // 24 bits - Canvas Width (actual canvas width should add 1 to read value)
-        // 24 bits - Canvas Height (actual canvas height should add 1 to read value)
-        const bits = aBuffer.buffer.readUInt8(offset + 8);
-        alpha = !!((bits >> 4) & 0x01); // tslint:disable-line
-        animated = !!((bits >> 1) & 0x01); // tslint:disable-line
-        width = aBuffer.buffer.readUInt16LE(offset + 8 + 4) + 1;
-        height = aBuffer.buffer.readUInt16LE(offset + 8 + 7) + 1;
-        break;
-      }
-      // case 'ANIM':
-      //   break;
-      case 'ANMF':
-        animated = true;
-        break;
-      case 'ALPH':
-        alpha = true;
-        break;
-      // case 'ICCP':
-      //   break;
-      // case 'EXIF':
-      //   break;
-      // case 'XMP':
-      //   break;
-    }
-    offset += chunkSize + 8;
+    const horizontalSizeCode = aBuffer.buffer.readUInt16LE(offset + 6);
+    const width = horizontalSizeCode & 0x3fff; // tslint:disable-line
+    const verticalSizeCode = aBuffer.buffer.readUInt16LE(offset + 8);
+    const height = verticalSizeCode & 0x3fff; // tslint:disable-line
+    return {
+      type: 'webp',
+      width,
+      height,
+      lossy: true,
+      alpha: false,
+      animated: false,
+      interlacing: false,
+    };
   }
 
-  return {
-    width,
-    height,
-    type: 'webp',
-    alpha,
-    animated,
-    interlacing: false,
-    lossy,
-    size: size + 8,
-  };
+  if (chunkType === 'VP8L') {
+    // 1 byte - One byte signature 0x2f.
+    await aBuffer.waitForSize(offset + 5);
+    if (aBuffer.ended && aBuffer.buffer.length < offset + 5) {
+      // The file is broken
+      return;
+    }
+    const bits = aBuffer.buffer.readUInt32LE(offset + 1);
+    const width = (bits & 0x3FFF) + 1; // tslint:disable-line
+    const height = ((bits >> 14) & 0x3fff) + 1; // tslint:disable-line
+    const alpha = !!((bits >> 28) & 0x01); // tslint:disable-line
+    return {
+      type: 'webp',
+      width,
+      height,
+      lossy: true,
+      alpha,
+      animated: false,
+      interlacing: false,
+    };
+  }
+
+  if (chunkType === 'VP8X') {
+    // 80 bits
+    // 2 bits - Reserved (1)
+    // 1 bit - ICC Profile flag
+    // 1 bit - Alpha flag
+    // 1 bit - EXIF metadata flag
+    // 1 bit - XMP metadata flag
+    // 1 bit - Animation flag
+    // 1 bit - Reserved (2)
+    // 24 bits - Reserved (3)
+    // 24 bits - Canvas Width (actual canvas width should add 1 to read value)
+    // 24 bits - Canvas Height (actual canvas height should add 1 to read value)
+    await aBuffer.waitForSize(offset + 10);
+    if (aBuffer.ended && aBuffer.buffer.length < offset + 10) {
+      // The file is broken
+      return;
+    }
+    const bits = aBuffer.buffer.readUInt8(offset);
+    const alpha = !!((bits >> 4) & 0x01); // tslint:disable-line
+    const animated = !!((bits >> 1) & 0x01); // tslint:disable-line
+    const width = aBuffer.buffer.readUInt16LE(offset + 4) + 1;
+    const height = aBuffer.buffer.readUInt16LE(offset + 7) + 1;
+
+    return {
+      type: 'webp',
+      width,
+      height,
+      alpha,
+      animated,
+      lossy: false,
+      interlacing: false,
+    };
+  }
+
+  return;
 };
