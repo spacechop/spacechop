@@ -37,6 +37,7 @@ export default class AsyncBuffer {
   public destroy() {
     this.stream.pause();
     this.stream.destroy();
+    this.buffer = null;
   }
   /**
    * Wait until @param size bytes have been buffered.
