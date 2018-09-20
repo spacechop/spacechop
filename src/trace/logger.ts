@@ -2,6 +2,7 @@ import winston, { format } from 'winston';
 
 const { combine, timestamp, json } = format;
 
+// By default log level is set to `info`.
 // Override log level by setting `LOG_LEVEL` environment variable.
 // In test environment only error logs will be emitted.
 const logLevel = 'LOG_LEVEL' in process.env
