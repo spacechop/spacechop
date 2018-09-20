@@ -49,7 +49,7 @@ A storage provider is the _S3 Storage_ which will upload the image to your S3 bu
 storage:
   s3:
     bucket_name: 'my-images'
-    path: 'transformed/:preset/:image'
+    path: 'transformed/:preset/:image.:hash'
 ```
 
 Again, we make use of parameters to describe where the transformation should be stored.
