@@ -12,9 +12,6 @@ const serialize = (message: any) => {
     }
     return message;
   }
-  if (message instanceof Array) {
-    return message.map(serialize).join('\n');
-  }
   return JSON.stringify(message);
 };
 
