@@ -20,6 +20,16 @@ export default class Trace {
     });
   }
 
+  public warn(label, ...message: any[]) {
+    logger.log({
+      level: 'warn',
+      label,
+      message: serialize(message),
+      data: message,
+      uuid: this.uuid,
+    });
+  }
+
   public error(label, ...message: any[]) {
     logger.log({
       level: 'error',

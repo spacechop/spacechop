@@ -41,7 +41,7 @@ export const requestHandler = (
   if (!preset) {
     res.status(404);
     res.end('Could not find preset');
-    trace.error('preset', 'Could not find preset');
+    trace.warn('preset', 'Could not find preset');
     return;
   } else {
     trace.log('preset', preset);
@@ -68,7 +68,7 @@ export const requestHandler = (
   if (!stream) {
     res.status(404);
     res.end('Could not find image');
-    trace.error('image', 'Could not find image');
+    trace.warn('image', 'Could not find image');
     return;
   }
 

@@ -2,8 +2,16 @@ import winston, { format } from 'winston';
 
 const { combine, timestamp, json } = format;
 
+// Override log level by setting `LOG_LEVEL` environment variable.
+// In test environment only error logs will be emitted.
+const logLevel = 'LOG_LEVEL' in process.env
+  ? process.env.LOG_LEVEL
+  : process.env.NODE_ENV === 'test'
+    ? 'error'
+    : 'info';
+
 const logger = winston.createLogger({
-  level: 'info',
+  level: logLevel,
   format: combine(
     timestamp(),
     json(),
