@@ -8,6 +8,7 @@ import StreamSwitch from './lib/stream-switch';
 import instantiateSource from './sources/lib/instantiate-source';
 import lookThroughSources from './sources/lib/look-through-sources';
 import Source from './sources/source';
+import hash from './storage/hash';
 import fetchFromStorage from './storage/lib/fetch-from-storage';
 import instantiateStorage from './storage/lib/instantiate-storage';
 import uploadToStorage from './storage/lib/upload-to-storage';
@@ -50,10 +51,19 @@ export const requestHandler = (
   // populate steps with params.
   const steps = populatePresetParams(preset.steps, params);
   trace.log('steps', steps);
+  if (storage) {
+    params.hash = hash(steps);
+  }
 
   // check if transformation is already done and exists in storage
   if (storage) {
     const fromCache = await fetchFromStorage(storage, params);
+
+    if ('analyze' in req.query) {
+      const { state } = await buildTransformation(fromCache.stream, []);
+      res.json(state);
+      return;
+    }
     // It exists in cache
     if (fromCache && fromCache.contentType) {
       res.set('Content-Type', fromCache.contentType);

@@ -2,12 +2,15 @@ import extract from './extractPathParams';
 
 export default (config) => {
   const errors = [];
-  const { paths, sources, presets } = config;
+  const { paths, sources, presets, storage} = config;
   // Extract path params.
   const params = {};
   for (const path of paths) {
     for (const param of extract(path)) {
-      params[param.name] = 0;
+      // Skip numerically indexed params to allow non capturing groups.
+      if (!/^[\d]+$/.test('' + param.name)) {
+        params[param.name] = 0;
+      }
     }
   }
 
@@ -18,7 +21,7 @@ export default (config) => {
     for (const key of Object.keys(source[name])) {
       if (source[name][key].length > 0) {
         const sourceParams = extract(source[name][key]);
-        for (const param of  sourceParams) {
+        for (const param of sourceParams) {
           if (typeof params[param.name] !== 'number') {
             errors.push(`source[${i}].${name}.${key}: Missing param "${param.name}" in paths`);
           } else {
@@ -45,6 +48,28 @@ export default (config) => {
           }
         }
       }
+    }
+  }
+
+  // If storage is defined it should make use of the `:hash` parameter
+  // in the configuration. It could be in any of the keys, but it must
+  // be in at least one.
+  if (storage) {
+    const name = Object.keys(storage)[0];
+    const strg = storage[name];
+    let seenHashUsage = false;
+    for (const key of Object.keys(strg)) {
+      if (strg[key].length > 0) {
+        const storageParams = extract(strg[key]);
+        for (const param of storageParams) {
+          if (param.name === 'hash') {
+            seenHashUsage = true;
+          }
+        }
+      }
+    }
+    if (!seenHashUsage) {
+      errors.push(`storage.${name}: Missing usage of parameter ":hash"`);
     }
   }
 

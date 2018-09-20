@@ -27,7 +27,7 @@ describe('validate s3 storage', () => {
     expect(() => validate(config)).toThrowErrorMatchingSnapshot();
   });
 
-  it('should not throw on valid source', () => {
+  it('should not throw on valid storage', () => {
     const config = {
       paths: ['/:preset/:image'],
       sources: [{
@@ -40,6 +40,15 @@ describe('validate s3 storage', () => {
         },
       }],
       presets: {},
+      storage: {
+        s3: {
+          access_key_id: 'access_key_id',
+          secret_access_key: 'secret_access_key',
+          region: 'region',
+          bucket_name: 'bucket_name',
+          path: ':image.:hash',
+        },
+      },
     };
     expect(() => validate(config)).not.toThrow();
   });
