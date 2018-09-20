@@ -13,6 +13,7 @@ import fetchFromStorage from './storage/lib/fetch-from-storage';
 import instantiateStorage from './storage/lib/instantiate-storage';
 import uploadToStorage from './storage/lib/upload-to-storage';
 import IStorage from './storage/storage';
+import Trace from './trace';
 import transform, { buildTransformation } from './transform';
 import { Config } from './types/Config';
 import { formatToMime } from './types/Format';
@@ -28,8 +29,12 @@ export const requestHandler = (
   sources: Source[],
   storage?: IStorage,
 ) => async (req: Request, res: Response) => {
+  // Create trace instance.
+  const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
   const params = extractParamValues(keys, req.params);
+  trace.log('url', req.originalUrl);
+  trace.log('params', params);
 
   // find the right preset steps to use
   const preset = config.presets[params.preset];
@@ -37,11 +42,15 @@ export const requestHandler = (
   if (!preset) {
     res.status(404);
     res.end('Could not find preset');
+    trace.warn('preset', 'Could not find preset');
     return;
+  } else {
+    trace.log('preset', preset);
   }
 
   // populate steps with params.
   const steps = populatePresetParams(preset.steps, params);
+  trace.log('steps', steps);
   if (storage) {
     params.hash = hash(steps);
   }
@@ -69,6 +78,7 @@ export const requestHandler = (
   if (!stream) {
     res.status(404);
     res.end('Could not find image');
+    trace.warn('image', 'Could not find image');
     return;
   }
 
@@ -76,9 +86,11 @@ export const requestHandler = (
   const onlyAnalyze = 'analyze' in req.query;
   if (onlyAnalyze) {
     const { state } = await buildTransformation(stream, steps);
+    trace.log('analyze', state);
     res.json(state);
   } else {
     const { stream: transformed, definition } = await transform(stream, steps);
+    trace.log('definition', definition);
     const contentType = formatToMime(definition.type);
     res.set('Content-Type', contentType);
     // Send image data through the worker which passes through to response.
@@ -91,6 +103,7 @@ export const requestHandler = (
       uploadToStorage(storage, params, streamToCache, contentType);
     }
     streamToRespondWith.pipe(res);
+    streamToRespondWith.on('end', () => trace.end());
   }
 };
 
