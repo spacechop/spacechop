@@ -8,7 +8,6 @@ apk add --no-cache imagemagick openblas
 
 # Install build dependencies.
 apk --no-cache add -t .build-deps \
-  openblas-dev \
   autoconf \
   automake \
   build-base \
@@ -25,6 +24,7 @@ apk --no-cache add -t .build-deps \
   make \
   nasm \
   pkgconf \
+  openblas-dev
   clang
 
 # Custom dlib face detection with landmarks (facedetect).
@@ -32,10 +32,10 @@ git clone https://github.com/davisking/dlib.git /usr/share/dlib
 mkdir -p /usr/share/dlib/app
 mv /bin/CMakeLists.txt /usr/share/dlib/app/CMakeLists.txt
 mv /bin/facedetect.cpp /usr/share/dlib/app/facedetect.cpp
-curl -O http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-bzip2 -d shape_predictor_68_face_landmarks.dat.bz2
+# curl -O http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
+# bzip2 -d shape_predictor_68_face_landmarks.dat.bz2
 mkdir -p /usr/share/dlib/build/
-mv shape_predictor_68_face_landmarks.dat /bin/shape_predictor_68_face_landmarks.dat
+# mv shape_predictor_68_face_landmarks.dat /bin/shape_predictor_68_face_landmarks.dat
 cd /usr/share/dlib/build
 cmake \
   -O0 -j3 \

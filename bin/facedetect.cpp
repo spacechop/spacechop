@@ -38,14 +38,13 @@
 
 
 #include <dlib/image_processing/frontal_face_detector.h>
-// #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
 #include <dlib/image_io.h>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <ctime>
-
+#include <stdio.h>
 using namespace dlib;
 using namespace std;
 
@@ -54,7 +53,6 @@ using namespace std;
 string makeFaceVectorRectanglesToJSON(const std::vector<rectangle>& detected_faces) {
   std::ostringstream json;
   json << "[";
-  // for i, face_rect in enumerate(detected_faces) {
   for (int i = 0; i < detected_faces.size(); i++){
     rectangle face_rect = detected_faces[i];
     json << "{";
@@ -103,25 +101,25 @@ int main(int argc, char** argv)
 {
     try
     {
-        // if (argc == 1)
-        // {
-        //     cout << "Give some image files as arguments to this program." << endl;
-        //     return 0;
-        // }
+        if (argc == 1)
+        {
+            cout << "Give some image files as arguments to this program." << endl;
+            return 0;
+        }
 
         frontal_face_detector detector = get_frontal_face_detector();
         // image_window win;
-        shape_predictor sp;
-        deserialize("/bin/shape_predictor_68_face_landmarks.dat") >> sp;
+        // shape_predictor sp;
+        // deserialize("/bin/shape_predictor_68_face_landmarks.dat") >> sp;
 
-        string input = "";
+        // string input = "";
         // cout << "Please enter an image:\n>";
-        getline(cin, input);
+        // getline(cin, input);
 
-        // cout << "processing image " << input << endl;
+        // cout << "processing image " << argv[1] << endl;
         clock_t t0 = clock();
         array2d<unsigned char> img;
-        load_image(img, input);
+        load_image(img, argv[1]);
         clock_t t1 = clock();
         // Make the image bigger by a factor of two.  This is useful since
         // the face detector looks for faces that are about 80 by 80 pixels
@@ -146,19 +144,20 @@ int main(int argc, char** argv)
         json << "[";
         for (int i = 0; i < detected_faces.size(); i++) {
           const rectangle face_rect = detected_faces[i];
-          const full_object_detection shape = sp(img, face_rect);
+          // const full_object_detection shape = sp(img, face_rect);
           const string face = makeFaceRectanglesToJSON(face_rect);
-          const string features = makeFaceFeaturesShapeToJSON(shape);
+          // const string features = makeFaceFeaturesShapeToJSON(shape);
           json << "{";
-          json << "\"face\":" << face << ",";
-          json << "\"features\":" << features;
+          // json << "\"face\":" << face << ",";
+          json << "\"face\":" << face;
+          // json << "\"features\":" << features;
           json << "}";
           if (i < detected_faces.size() - 1) {
             json << ",";
           }
           // cout << "number of parts: "<< shape.num_parts() << endl;
-          //cout << "pixel position of first part:  " << shape.part(0) << endl;
-          //cout << "pixel position of second part: " << shape.part(1) << endl;
+          // cout << "pixel position of first part:  " << shape.part(0) << endl;
+          // cout << "pixel position of second part: " << shape.part(1) << endl;
           // if (shape.num_parts() == 5) {
           //   cout << "{x: " << shape.part(0) << ",y:"<< shape.part(1) << "}" << endl;
           //   cout << "{x: " << shape.part(1) << ",y:"<< shape.part(4) << "}" << endl;
@@ -243,6 +242,19 @@ int main(int argc, char** argv)
         //
         //     return 0;
         // }
+
+        // remove flag, used to remove the file (argv[1]) after usage.
+        for(int i = 0; i < argc; ++i) {
+          if (std::string(argv[i]) == "-rm") {
+            if (remove(argv[1]) != 0) {
+              perror( "Error deleting file" );
+            }
+            // else {
+            //   puts( "File successfully deleted" );
+            // }
+          }
+        }
+        return 0;
     }
     catch (exception& e)
     {
