@@ -61,9 +61,10 @@ describe('Configured storage', () => {
       request.setParams(1, 'grid.png');
       await handler(request, response);
     });
-    it('should check storage', () => {
-      expect(storage.exists).toHaveBeenCalled();
-      expect(storage.stream).toHaveBeenCalled();
+
+    it('should check storage (with hash parameters)', () => {
+      expect(storage.exists).toHaveBeenCalledWith(expect.objectContaining({ hash: expect.any(String) }));
+      expect(storage.stream).toHaveBeenCalledWith(expect.objectContaining({ hash: expect.any(String) }));
     });
     it('should not check source', () => {
       expect(sources[0].exists).not.toHaveBeenCalled();
@@ -105,15 +106,20 @@ describe('Configured storage', () => {
       request.setParams(1, 'grid.png');
       await handler(request, response);
     });
-    it('should check storage', () => {
-      expect(storage.exists).toHaveBeenCalled();
+    it('should check storage (with hash parameter)', () => {
+      expect(storage.exists).toHaveBeenCalledWith(expect.objectContaining({ hash: expect.any(String) }));
     });
     it('should check source', () => {
       expect(sources[0].exists).toHaveBeenCalled();
       expect(sources[0].stream).toHaveBeenCalled();
     });
-    it('should call storage .upload', () => {
-      expect(storage.upload).toHaveBeenCalled();
+    it('should call storage .upload (with hash parameter)', () => {
+      expect(storage.upload).toHaveBeenCalledWith(
+        expect.objectContaining({ hash: expect.any(String) }),
+        // stream
+        expect.anything(),
+        // contentType
+        expect.anything());
     });
   });
 });
