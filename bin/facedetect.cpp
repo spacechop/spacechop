@@ -112,7 +112,7 @@ int main(int argc, char** argv)
         frontal_face_detector detector = get_frontal_face_detector();
         // image_window win;
         shape_predictor sp;
-        deserialize("/usr/share/dlib/build/shape_predictor_68_face_landmarks.dat") >> sp;
+        deserialize("/bin/shape_predictor_68_face_landmarks.dat") >> sp;
 
         string input = "";
         // cout << "Please enter an image:\n>";
