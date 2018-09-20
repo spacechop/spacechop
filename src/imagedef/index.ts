@@ -17,8 +17,9 @@ export default interface ImageDefinition {
   type: Format;
   alpha?: boolean;
   interlacing?: boolean;
-  faces?: [ImageFaceBox?];
+  faces?: ImageFaceBox[];
   animated?: boolean;
   size?: number;
   lossy?: boolean;
+  original?: ImageDefinition;
 }

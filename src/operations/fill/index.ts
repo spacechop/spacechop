@@ -1,4 +1,5 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { scaleFace } from '../../lib/facedetect';
 import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
@@ -16,10 +17,13 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
+  const scale = state.width > state.height ?
+    state.width / (config.width as number) : state.height / (config.height as number);
   return {
     ...state,
     width: config.width as number,
     height: config.height as number,
+    ...state.faces && { faces: state.faces.map(scaleFace(scale)) },
   };
 };
 

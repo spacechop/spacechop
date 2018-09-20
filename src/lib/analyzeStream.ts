@@ -1,9 +1,25 @@
 import { Stream } from 'stream';
-import ImageDefinition from '../imagedef';
+import ImageDefinition, { DefinitionRequirement, ImageFaceBox } from '../imagedef';
+import facedetect from './facedetect';
+import StreamSwitch from './stream-switch';
 import types from './types';
 
-export default async (stream: Stream, _ = []): Promise<ImageDefinition> => {
-  // XXX in case of face detection, analyze image for faces
-  const info = types(stream);
-  return Promise.resolve(info);
+export default async (stream: Stream, requirements: DefinitionRequirement[] = []): Promise<ImageDefinition> => {
+  const streamSwitch = new StreamSwitch(stream);
+  const streamToAnalyzeTypes = streamSwitch.createReadStream();
+  const info = await types(streamToAnalyzeTypes);
+  // in case of face detection, analyze image for faces
+  for (const i in requirements) {
+    if (requirements[i] === DefinitionRequirement.FACES) {
+      const streamToAnalyzeFaces = streamSwitch.createReadStream();
+      const faces = await facedetect(streamToAnalyzeFaces, info);
+      if (faces.length > 0) {
+        info.faces = faces;
+      }
+    }
+  }
+  return {
+    ...info,
+    original: info,
+  };
 };
