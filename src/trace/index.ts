@@ -3,7 +3,7 @@ import logger from './logger';
 import serialize from './serialize';
 
 export default class Trace {
-  private uuid: number;
+  private uuid: string;
   private start: [number, number];
   public constructor() {
     this.uuid = uuid();
