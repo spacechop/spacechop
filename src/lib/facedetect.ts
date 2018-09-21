@@ -2,17 +2,7 @@ import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
 import uuid from 'uuid/v1';
 import ImageDefinition, { ImageFaceBox } from '../imagedef';
-
-export const scaleFace = (
-  scale: number,
-) => (face: ImageFaceBox): ImageFaceBox => {
-  return {
-    x: Math.round(face.x / scale),
-    y: Math.round(face.y / scale),
-    width: Math.round(face.width / scale),
-    height: Math.round(face.height / scale),
-  };
-};
+import scaleFace from './scaleFace';
 
 export default (
   streamToAnalyze: Stream,
