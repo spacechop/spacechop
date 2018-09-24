@@ -12,8 +12,8 @@ export default (
     const faceCenterX = face.x + face.width / 2;
     const faceCenterY = face.y + face.height / 2;
     // Just move face enough without exceeding the bleed.
-    const centerX = state.width / 2;
-    const centerY = state.height / 2;
+    const centerX = width / 2;
+    const centerY = height / 2;
     const xMin = (width - state.width);
     const xMax = (state.width - width);
     const xDelta = faceCenterX - centerX;

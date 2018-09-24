@@ -9,7 +9,6 @@ import { CropConfig } from './types';
 
 const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
   let translate;
-  let clip;
   if (config.gravity === 'face') {
     translate = getLargestFaceGravityTranslation(
       config.width as number,
@@ -21,19 +20,10 @@ const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
       },
       state.faces || [],
     );
-    const clipVertical = config.width ? (state.width - (config.width as number)) / 2 : 0;
-    const clipHorizontal = config.height ? (state.height - (config.height as number)) / 2 : 0;
-    clip = {
-      top: clipVertical,
-      left: clipHorizontal,
-      right: clipHorizontal,
-      bottom: clipVertical,
-    };
   }
 
   return {
     translate,
-    clip,
   };
 };
 
@@ -61,7 +51,7 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
   const width = config.width === undefined ? state.width : config.width as number;
   const height = config.height === undefined ? state.height : config.height as number;
-  const { translate, clip } = gravityTransform(config, state);
+  const { translate } = gravityTransform(config, state);
   return {
     ...state,
     width,
@@ -69,7 +59,6 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
     ...state.faces && {
       faces: state.faces.map(transformFace([
         ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
-        ...clip ? [{ translate: { x: -clip.left, y: -clip.top } }] : [],
       ])),
     },
   };

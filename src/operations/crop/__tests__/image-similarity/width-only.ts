@@ -17,12 +17,34 @@ describe('Image similarity - width only', () => {
     png: path.join(assetsFolder, 'grid.png'),
     png_interlaced: path.join(assetsFolder, 'grid-interlaced.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
+    face: path.join(assetsFolder, 'face.jpg'),
   };
 
   // Add fixtures for all gravities on grid image
   for (const gravity of allGravities) {
     // no faces in grid image so test is not needed
-    if (gravity === 'face') { continue; }
+    if (gravity === 'face') {
+      it(`Gravity JPEG ${gravity}`, async () => {
+        const operation = new Crop({
+          width: 400,
+          gravity,
+        });
+        const state: ImageDefinition = {
+          width: 650,
+          height: 819,
+          type: 'jpeg',
+          faces: [{
+            x: 206,
+            y: 242,
+            width: 321,
+            height: 321,
+          }],
+        };
+        const result = createTransformedStream(paths.face, operation, state);
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
+      });
+      continue;
+    }
 
     it(`Gravity JPEG ${gravity}`, async () => {
       const operation = new Crop({ ...defaultConfig, gravity });
