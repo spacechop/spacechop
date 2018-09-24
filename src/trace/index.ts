@@ -49,7 +49,7 @@ export default class Trace {
       level: 'info',
       label: 'time',
       uuid: this.uuid,
-      message: serialize(['total time: ', milliseconds]),
+      message: `total time: ${milliseconds}`,
       data: milliseconds,
     });
   }

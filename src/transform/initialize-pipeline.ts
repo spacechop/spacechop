@@ -1,6 +1,14 @@
+import { DefinitionRequirement } from '../imagedef';
 import Operations from './../operations';
 
-export default (steps) => {
+interface InitalizedPipeline {
+  pipeline: any;
+  requirements: {
+    [K in DefinitionRequirement]?: boolean;
+  };
+}
+
+export default (steps): InitalizedPipeline => {
   let requirements = {};
   const preparedSteps = steps.map((step) => {
     const name = Object.keys(step)[0];

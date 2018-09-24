@@ -25,7 +25,7 @@ export default (
     try {
       const data = JSON.parse(buffer);
       const scale = Math.min(1, info.width > info.height ? 1000 / info.width : 1000 / info.height);
-      resolve(data.map(({ face }) => scaleFace(scale)(face)));
+      resolve(data.map(({ face }) => scaleFace({ scale })(face)));
     } catch (err) {
       reject(err);
     }

@@ -1,4 +1,5 @@
 import { Format } from '../types/Format';
+import { DefinitionRequirement } from '../types/Requirements';
 
 export interface ImageFaceBox {
   x: number;
@@ -7,9 +8,7 @@ export interface ImageFaceBox {
   height: number;
 }
 
-export enum DefinitionRequirement {
-  FACES = 'faces',
-}
+export type DefinitionRequirement = DefinitionRequirement;
 
 export default interface ImageDefinition {
   width: number;

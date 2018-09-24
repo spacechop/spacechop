@@ -2,7 +2,7 @@ import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import { allGravities } from '../../Gravity';
-import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
+import ImageDefinition from './../../../imagedef';
 import Fill from './../index';
 import { FillConfig } from './../types';
 
@@ -17,7 +17,7 @@ describe('Fill', () => {
         gravity: 'face',
       });
       const requirements = r.requirements();
-      expect(requirements).toContain(DefinitionRequirement.FACES);
+      expect(requirements).toContain('faces');
     });
 
     it('should not have any requirements by default', () => {
@@ -71,7 +71,6 @@ describe('Fill', () => {
     });
   });
 
-
   describe('Image similarity', () => {
     const defaultConfig: FillConfig = { width: 50, height: 25 };
     const defaultState: ImageDefinition = { width: 100, height: 100, type: 'jpeg' };
@@ -94,7 +93,6 @@ describe('Fill', () => {
         );
         await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
       });
-
 
       it(`Gravity PNG ${gravity}`, async () => {
         const result = createTransformedStream(

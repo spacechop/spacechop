@@ -1,4 +1,5 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import transformFace from '../../lib/transformFace';
 import Operation from './../operation';
 import { ResizeConfig } from './types';
 
@@ -13,10 +14,15 @@ export const magickOptions = (config: ResizeConfig, state: ImageDefinition): str
 export const transformState = (config: ResizeConfig, state: ImageDefinition): ImageDefinition => {
   const width = config.width as number;
   const height = config.height as number;
+  const scaleX = state.width / width;
+  const scaleY = state.height / height;
   return {
     ...state,
     width,
     height,
+    ...state.faces && {
+      faces: state.faces.map(transformFace([{ scale: { scaleX, scaleY } }])),
+    },
   };
 };
 

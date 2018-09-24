@@ -1,5 +1,6 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
+import { Requirements } from '../types/Requirements';
 import { Step } from '../types/Step';
 import ImageDefinition from './../imagedef';
 import analyze from './../imagedef/analyze';
@@ -17,9 +18,15 @@ export interface TransformationResult {
 export const buildTransformation = async (
   stream: Stream,
   steps: Step[],
+  presetRequirements?: Requirements,
 ) => {
   // initialize steps
-  const { pipeline, requirements } = initializePipeline(steps);
+  const {
+    pipeline,
+    requirements: pipelineRequirements,
+  } = initializePipeline(steps);
+  // Merge default preset requirements with pipeline requirements.
+  const requirements = Object.assign({}, presetRequirements, pipelineRequirements);
   const definition: ImageDefinition = await analyze(stream, requirements);
 
   // build command from pipeline and image state

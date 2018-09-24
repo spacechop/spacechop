@@ -1,14 +1,8 @@
 import { ImageFaceBox } from '../imagedef';
-import scaleFace from './scaleFace';
-import translateFace from './translateFace';
+import scaleFace, { ScaleFace } from './scaleFace';
+import translateFace, { TranslateFace } from './translateFace';
 
-type ScaleFace = number;
-interface TranslateFace {
-  x: number;
-  y: number;
-}
-
-interface FaceTransform {
+export interface FaceTransform {
   scale?: ScaleFace;
   translate?: TranslateFace;
 }

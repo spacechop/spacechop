@@ -1,5 +1,10 @@
 import { ImageFaceBox } from '../imagedef';
 
+export interface TranslateFace {
+  x: number;
+  y: number;
+}
+
 export default (translate: {
   x: number,
   y: number,

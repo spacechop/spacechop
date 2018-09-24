@@ -1,4 +1,4 @@
-import ImageDefinition, { DefinitionRequirement } from './../../../imagedef';
+import ImageDefinition from './../../../imagedef';
 import Crop from './../index';
 import { CropConfig } from './../types';
 
@@ -12,7 +12,7 @@ describe('Crop', () => {
     it('should require face detection if gravity = face', () => {
       const r = new Crop({ gravity: 'face' });
       const requirements = r.requirements();
-      expect(requirements).toContain(DefinitionRequirement.FACES);
+      expect(requirements).toContain('faces');
     });
   });
 

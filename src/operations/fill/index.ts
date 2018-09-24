@@ -21,7 +21,7 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
         width: state.width / scale,
         height: state.height / scale,
       },
-      (state.faces || []).map(scaleFace(scale)),
+      (state.faces || []).map(scaleFace({ scale })),
     );
   }
 
@@ -52,7 +52,7 @@ export const transformState = (config: FillConfig, state: ImageDefinition): Imag
     height: config.height as number,
     ...state.faces && {
       faces: state.faces.map(transformFace([
-        { scale },
+        { scale: { scale } },
         { translate: { x: -translate.x, y: -translate.y } },
       ])),
     },
@@ -73,7 +73,7 @@ export default class Fill implements Operation {
 
   public requirements(): DefinitionRequirement[] {
     if (this.config.gravity === 'face') {
-      return [ DefinitionRequirement.FACES ];
+      return ['faces'];
     }
     return [];
   }

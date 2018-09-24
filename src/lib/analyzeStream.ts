@@ -10,7 +10,7 @@ export default async (stream: Stream, requirements: DefinitionRequirement[] = []
   const info = await types(streamToAnalyzeTypes);
   // in case of face detection, analyze image for faces
   for (const i in requirements) {
-    if (requirements[i] === DefinitionRequirement.FACES) {
+    if (requirements[i] === 'faces') {
       const streamToAnalyzeFaces = streamSwitch.createReadStream();
       const faces = await facedetect(streamToAnalyzeFaces, info);
       if (faces.length > 0) {
