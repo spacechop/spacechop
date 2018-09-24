@@ -1,5 +1,5 @@
+import { DefinitionRequirement } from '../types/DefinitionRequirement';
 import { Format } from '../types/Format';
-import { DefinitionRequirement } from '../types/Requirements';
 
 export interface ImageFaceBox {
   x: number;

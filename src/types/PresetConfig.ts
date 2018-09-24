@@ -1,11 +1,11 @@
 import * as t from 'runtypes';
-import Requirements from './Requirements';
+import DefinitionRequirement from './DefinitionRequirement';
 import Step from './Step';
 
 const PresetConfig = t.Record({
   steps: t.Array(Step),
 }).And(t.Partial({
-  requirements: t.Array(Requirements),
+  detect: t.Array(DefinitionRequirement),
 }));
 
 export type PresetConfig = t.Static<typeof PresetConfig>;

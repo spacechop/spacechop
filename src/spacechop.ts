@@ -85,11 +85,11 @@ export const requestHandler = (
   // Only analyze image after pipeline
   const onlyAnalyze = 'analyze' in req.query;
   if (onlyAnalyze) {
-    const { state } = await buildTransformation(stream, steps);
+    const { state } = await buildTransformation(stream, steps, preset.detect);
     trace.log('analyze', state);
     res.json(state);
   } else {
-    const { stream: transformed, definition } = await transform(stream, steps);
+    const { stream: transformed, definition } = await transform(stream, steps, preset.detect);
     trace.log('definition', definition);
     const contentType = formatToMime(definition.type);
     res.set('Content-Type', contentType);

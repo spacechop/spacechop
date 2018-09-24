@@ -4,7 +4,7 @@ import Operations from './../operations';
 interface InitalizedPipeline {
   pipeline: any;
   requirements: {
-    [K in DefinitionRequirement]?: boolean;
+    [key: number]: DefinitionRequirement[],
   };
 }
 
@@ -30,5 +30,8 @@ export default (steps): InitalizedPipeline => {
     return instance;
   });
 
-  return { pipeline: preparedSteps, requirements };
+  return {
+    pipeline: preparedSteps,
+    requirements,
+  };
 };
