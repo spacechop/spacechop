@@ -21,8 +21,8 @@ const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
       },
       state.faces || [],
     );
-    const clipVertical = (state.width - (config.width as number)) / 2;
-    const clipHorizontal = (state.height - (config.height as number)) / 2;
+    const clipVertical = config.width ? (state.width - (config.width as number)) / 2 : 0;
+    const clipHorizontal = config.height ? (state.height - (config.height as number)) / 2 : 0;
     clip = {
       top: clipVertical,
       left: clipHorizontal,
@@ -68,8 +68,8 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
     height,
     ...state.faces && {
       faces: state.faces.map(transformFace([
-        { translate: { x: -translate.x, y: -translate.y } },
-        { translate: { x: -clip.top, y: -clip.left } },
+        ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
+        ...clip ? [{ translate: { x: -clip.left, y: -clip.top } }] : [],
       ])),
     },
   };

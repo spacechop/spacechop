@@ -9,25 +9,37 @@ import Operation from './../operation';
 import { FillConfig } from './types';
 
 const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
+  const width = config.width as number;
+  const height = config.height as number;
   const scale = state.width < state.height ?
-    state.width / (config.width as number) : state.height / (config.height as number);
+    state.width / width : state.height / height;
   let translate;
+  let clip;
   if (config.gravity === 'face') {
+    const widthBefore = state.width / scale;
+    const heightBefore = state.height / scale;
     translate = getLargestFaceGravityTranslation(
-      config.width as number,
-      config.height as number,
+      width,
+      height,
       {
         ...state,
-        width: state.width / scale,
-        height: state.height / scale,
+        width: widthBefore,
+        height: heightBefore,
       },
       (state.faces || []).map(scaleFace({ scale })),
     );
+    clip = {
+      top: ((heightBefore - height) / 2) + translate.y,
+      left: ((widthBefore - width) / 2) + translate.x,
+      right: ((widthBefore - width) / 2) + translate.x,
+      bottom: ((heightBefore - height) / 2) + translate.y,
+    };
   }
 
   return {
     scale,
     translate,
+    clip,
   };
 };
 
@@ -45,7 +57,7 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
-  const { translate, scale } = gravityTransform(config, state);
+  const { translate, scale, clip } = gravityTransform(config, state);
   return {
     ...state,
     width: config.width as number,
@@ -53,7 +65,8 @@ export const transformState = (config: FillConfig, state: ImageDefinition): Imag
     ...state.faces && {
       faces: state.faces.map(transformFace([
         { scale: { scale } },
-        { translate: { x: -translate.x, y: -translate.y } },
+        ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
+        ...clip ? [{ translate: { x: -clip.left, y: -clip.top } }] : [],
       ])),
     },
   };

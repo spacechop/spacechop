@@ -10,8 +10,8 @@ export default (translate: {
   y: number,
 }) => (face: ImageFaceBox): ImageFaceBox => {
   return {
-    x: face.x + translate.x,
-    y: face.y + translate.y,
+    x: Math.round(face.x + translate.x),
+    y: Math.round(face.y + translate.y),
     width: face.width,
     height: face.height,
   };
