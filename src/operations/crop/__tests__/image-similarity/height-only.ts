@@ -17,7 +17,7 @@ describe('Image similarity - height only', () => {
     png: path.join(assetsFolder, 'grid.png'),
     png_interlaced: path.join(assetsFolder, 'grid-interlaced.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
-    face: path.join(assetsFolder, 'face.jpg'),
+    face: path.join(assetsFolder, 'small-face.jpg'),
   };
 
   // Add fixtures for all gravities on grid image
@@ -26,18 +26,18 @@ describe('Image similarity - height only', () => {
     if (gravity === 'face') {
       it(`Gravity JPEG ${gravity}`, async () => {
         const operation = new Crop({
-          height: 400,
+          height: 50,
           gravity,
         });
         const state: ImageDefinition = {
-          width: 650,
-          height: 819,
+          width: 100,
+          height: 126,
           type: 'jpeg',
           faces: [{
-            x: 206,
-            y: 242,
-            width: 321,
-            height: 321,
+            x: 27,
+            y: 32,
+            width: 52,
+            height: 52,
           }],
         };
         const result = createTransformedStream(paths.face, operation, state);
