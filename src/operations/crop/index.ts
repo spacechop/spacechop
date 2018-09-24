@@ -28,8 +28,10 @@ const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
 };
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
-  const width = config.width === undefined ? state.width : config.width as number;
-  const height = config.height === undefined ? state.height : config.height as number;
+  const width = config.width === undefined ||
+    config.width > state.width ? state.width : config.width as number;
+  const height = config.height === undefined ||
+    config.height > state.height ? state.height : config.height as number;
   const gravity = config.gravity as Gravity;
   const { translate } = gravityTransform(config, state);
   const offset = getMagickOffset(translate);
@@ -49,8 +51,10 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
-  const width = config.width === undefined ? state.width : config.width as number;
-  const height = config.height === undefined ? state.height : config.height as number;
+  const width = config.width === undefined ||
+    config.width > state.width ? state.width : config.width as number;
+  const height = config.height === undefined ||
+    config.height > state.height ? state.height : config.height as number;
   const { translate } = gravityTransform(config, state);
   return {
     ...state,
