@@ -8,11 +8,13 @@ import Operation from './../operation';
 import { CropConfig } from './types';
 
 const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
+  const width = config.width as number;
+  const height = config.height as number;
   let translate;
   if (config.gravity === 'face') {
     translate = getLargestFaceGravityTranslation(
-      config.width as number,
-      config.height as number,
+      width,
+      height,
       {
         ...state,
         width: state.width,
@@ -55,7 +57,7 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
     config.width > state.width ? state.width : config.width as number;
   const height = config.height === undefined ||
     config.height > state.height ? state.height : config.height as number;
-  const { translate } = gravityTransform(config, state);
+  const { translate } = gravityTransform({ ...config, width, height }, state);
   return {
     ...state,
     width,

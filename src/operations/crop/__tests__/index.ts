@@ -115,6 +115,114 @@ describe('Crop', () => {
         );
       });
     });
+
+    describe('update faces', () => {
+      describe('width and height', () => {
+        const defaultConfig: CropConfig = {
+          width: 200,
+          height: 200,
+          gravity: 'face',
+        };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should update position on face', () => {
+          const op = new Crop(defaultConfig);
+          const { state } = op.execute(defaultState);
+          expect(state).toEqual(
+            expect.objectContaining({
+              width: 200,
+              height: 200,
+              faces: expect.arrayContaining([
+                expect.objectContaining({
+                  x: 50,
+                  y: 50,
+                  width: 100,
+                  height: 100,
+                }),
+              ]),
+            }),
+          );
+        });
+      });
+
+      describe('height only', () => {
+        const defaultConfig: CropConfig = { height: 200, gravity: 'face' };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should update position on face', () => {
+          const op = new Crop(defaultConfig);
+          const { state } = op.execute(defaultState);
+          expect(state).toEqual(
+            expect.objectContaining({
+              width: 400,
+              height: 200,
+              faces: expect.arrayContaining([
+                expect.objectContaining({
+                  x: 200,
+                  y: 50,
+                  width: 100,
+                  height: 100,
+                }),
+              ]),
+            }),
+          );
+        });
+      });
+
+      describe('width only', () => {
+        const defaultConfig: CropConfig = { width: 200, gravity: 'face' };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should update position on face', () => {
+          const op = new Crop(defaultConfig);
+          const { state } = op.execute(defaultState);
+          expect(state).toEqual(
+            expect.objectContaining({
+              width: 200,
+              height: 400,
+              faces: expect.arrayContaining([
+                expect.objectContaining({
+                  x: 50,
+                  y: 200,
+                  width: 100,
+                  height: 100,
+                }),
+              ]),
+            }),
+          );
+        });
+      });
+    });
   });
 
   describe('Command', () => {
@@ -166,6 +274,99 @@ describe('Crop', () => {
         const op = new Crop({ ...defaultConfig, gravity: 'east'});
         const { command } = op.execute(defaultState);
         expect(command).toEqual(expect.stringMatching(/-gravity East/));
+      });
+    });
+
+    describe('face crop', () => {
+      describe('width & height', () => {
+        const defaultConfig: CropConfig = {
+          width: 200,
+          height: 200,
+          gravity: 'face',
+        };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should set correct width, height and offset', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-crop 200x200\+150\+150/));
+        });
+
+        it('should set correct gravity', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+        });
+      });
+
+      describe('height only', () => {
+        const defaultConfig: CropConfig = {
+          height: 200,
+          gravity: 'face',
+        };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should set correct width, height and offset', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-crop 400x200\+0\+150/));
+        });
+
+        it('should set correct gravity', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+        });
+      });
+
+      describe('width only', () => {
+        const defaultConfig: CropConfig = {
+          width: 200,
+          gravity: 'face',
+        };
+        const defaultState: ImageDefinition = {
+          height: 400,
+          width: 400,
+          type: 'jpeg',
+          faces: [{
+            x: 200,
+            y: 200,
+            width: 100,
+            height: 100,
+          }],
+        };
+
+        it('should set correct width, height and offset', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-crop 200x400\+150\+0/));
+        });
+
+        it('should set correct gravity', () => {
+          const op = new Crop(defaultConfig);
+          const { command } = op.execute(defaultState);
+          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+        });
       });
     });
   });
