@@ -14,7 +14,6 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
   const scale = state.width < state.height ?
     state.width / width : state.height / height;
   let translate;
-  let clip;
   if (config.gravity === 'face') {
     const widthBefore = state.width / scale;
     const heightBefore = state.height / scale;
@@ -28,18 +27,11 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
       },
       (state.faces || []).map(scaleFace({ scale })),
     );
-    clip = {
-      top: ((heightBefore - height) / 2) + translate.y,
-      left: ((widthBefore - width) / 2) + translate.x,
-      right: ((widthBefore - width) / 2) + translate.x,
-      bottom: ((heightBefore - height) / 2) + translate.y,
-    };
   }
 
   return {
     scale,
     translate,
-    clip,
   };
 };
 
@@ -57,7 +49,7 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
-  const { translate, scale, clip } = gravityTransform(config, state);
+  const { translate, scale } = gravityTransform(config, state);
   return {
     ...state,
     width: config.width as number,
@@ -66,7 +58,6 @@ export const transformState = (config: FillConfig, state: ImageDefinition): Imag
       faces: state.faces.map(transformFace([
         { scale: { scale } },
         ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
-        ...clip ? [{ translate: { x: -clip.left, y: -clip.top } }] : [],
       ])),
     },
   };

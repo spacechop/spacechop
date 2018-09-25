@@ -86,3 +86,6 @@ apk --update add --no-cache \
 
 apk --no-cache add libpng libstdc++ file
 apk -- del .build-deps
+
+# cleanup /tmp
+cd /tmp && rm -rf *
