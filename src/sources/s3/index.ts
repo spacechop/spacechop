@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
 import compilePath from '../../lib/compile-path';
+import hashKey from '../../lib/hashKey';
 import Source from '../source';
 import { S3SourceConfig } from './types';
 
@@ -38,6 +39,10 @@ export default class S3Source implements Source {
 
     this.bucketName = config.bucket_name;
     this.path = config.path;
+  }
+
+  public key(params: any): string {
+    return hashKey(compilePath(this.config.path, params));
   }
 
   public exists(params: any): Promise<boolean> {

@@ -3,16 +3,19 @@ import cluster from 'cluster';
 import express from 'express';
 import { cpus } from 'os';
 import loadConfig from './config';
+import monitor from './monitor';
 import setupRoutes from './spacechop';
 
 // read initial config.
 let config = loadConfig();
 // create server.
 const app = express();
+app.disable('x-powered-by');
+
 // create and setup router.
 let router = express.Router();
 // Setup routes for the SpaceChop service.
-setupRoutes(config, router);
+setupRoutes(config, router, monitor);
 // Enable reloading of routes runtime by using a simple router that we switch out.
 app.use((req, res, next) => {
   // pass through requests to the router.
@@ -42,7 +45,11 @@ if (cluster.isMaster) {
     console.info('Reloading config...');
     router = express.Router();
     config = loadConfig();
-    setupRoutes(config, router);
+    setupRoutes(config, router, monitor);
+  });
+
+  app.get('/_health', (_, res) => {
+    res.end(monitor.getMetrics());
   });
 
   // start listening on port.

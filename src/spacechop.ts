@@ -38,14 +38,16 @@ export const respond = async (response: Response, stream: Stream, mime: Mime, co
       // since it is confusing.
       // response.set('Transfer-Encoding', '');
       response.end(buffer);
-      resolve();
+      resolve(buffer.length);
       return;
     }
 
     response.set('Transfer-Encoding', 'chunked');
+    let size = 0;
     stream.pipe(response);
     stream.on('error', reject);
-    stream.on('end', resolve);
+    stream.on('data', (chunk) => { size += chunk.length; });
+    stream.on('end', () => resolve(size));
     return;
   });
 };
@@ -54,7 +56,9 @@ export const requestHandler = (
   config: Config, keys,
   sources: Source[],
   storage?: IStorage,
+  monitor?: any,
 ) => async (req: Request, res: Response) => {
+  const handle = monitor.monitorResponse(res);
   // Create trace instance.
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
@@ -71,6 +75,7 @@ export const requestHandler = (
     trace.warn('preset', 'Could not find preset');
     return;
   } else {
+    res.set('X-Preset', params.preset);
     trace.log('preset', preset);
   }
 
@@ -93,6 +98,7 @@ export const requestHandler = (
         return;
       }
 
+      res.set('X-Cache', 'HIT');
       await respond(res, fromCache.stream, fromCache.contentType, config);
       trace.end();
       return;
@@ -100,13 +106,16 @@ export const requestHandler = (
   }
 
   // look through sources to fetch original source stream
-  const stream = await lookThroughSources(sources, params);
+  const { stream, key } = await lookThroughSources(sources, params);
 
   if (!stream) {
     res.status(404);
     res.end('Could not find image');
     trace.warn('image', 'Could not find image');
     return;
+  } else {
+    res.set('X-Key', key);
+    trace.log('original', key);
   }
 
   // Only analyze image after pipeline
@@ -121,6 +130,7 @@ export const requestHandler = (
       const { stream: transformed, definition } = await transform(stream, steps);
       trace.log('definition', definition);
       const contentType = formatToMime(definition.type);
+      res.set('X-Cache', 'MISS');
 
       // Send image data through the worker which passes through to response.
       let streamToRespondWith = transformed;
@@ -130,15 +140,17 @@ export const requestHandler = (
         const streamToCache = streamSwitch.createReadStream();
         uploadToStorage(storage, params, streamToCache, contentType);
       }
-      await respond(res, streamToRespondWith, contentType, config);
+      const size = await respond(res, streamToRespondWith, contentType, config);
+      trace.log('size', size);
       trace.end();
+      handle.close(size);
     } catch (err) {
       trace.warn('error', err);
     }
   }
 };
 
-export default (config: Config, server) => {
+export default (config: Config, server, monitor) => {
   if (!config) {
     return;
   }
@@ -151,7 +163,7 @@ export default (config: Config, server) => {
   paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
-    const handler = requestHandler(config, keys, sources, storage);
+    const handler = requestHandler(config, keys, sources, storage, monitor);
     server.get(pattern, asyncWrapper(handler, handleError));
   });
 };
