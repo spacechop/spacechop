@@ -42,10 +42,17 @@ describe('Configured storage', () => {
         stream: jest.fn(),
       },
     ];
-    const mockedStorageResponse = { stream: new PassThrough(), contentType: 'image/jpeg' };
     const storage = {
       exists: jest.fn(() => Promise.resolve(true)),
-      stream: jest.fn(() => Promise.resolve(mockedStorageResponse)),
+      stream: jest.fn(() => {
+        const stream = new PassThrough();
+        stream.push(Buffer.from('some-data'));
+        stream.push(null);
+        return Promise.resolve({
+          stream,
+          contentType: 'image/jpeg',
+        });
+      }),
       upload: jest.fn(),
     };
 
@@ -71,7 +78,7 @@ describe('Configured storage', () => {
       expect(sources[0].stream).not.toHaveBeenCalled();
     });
     it('should set content type as returned from storage', () => {
-      expect(response.set).toBeCalledWith('Content-Type', mockedStorageResponse.contentType);
+      expect(response.set).toBeCalledWith('Content-Type', 'image/jpeg');
     });
     it('should not call storage .upload', () => {
       expect(storage.upload).not.toHaveBeenCalled();

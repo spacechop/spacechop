@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import pathToRegex from 'path-to-regexp';
+import { Stream } from 'stream';
 import console from './lib/console';
 import extractParamValues from './lib/extractParamValues';
 import populatePresetParams from './lib/populatePresetParams';
 import asyncWrapper from './lib/requestAsyncWrapper';
 import StreamSwitch from './lib/stream-switch';
+import streamToBuffer from './lib/streamToBuffer';
 import instantiateSource from './sources/lib/instantiate-source';
 import lookThroughSources from './sources/lib/look-through-sources';
 import Source from './sources/source';
@@ -16,12 +18,36 @@ import IStorage from './storage/storage';
 import Trace from './trace';
 import transform, { buildTransformation } from './transform';
 import { Config } from './types/Config';
-import { formatToMime } from './types/Format';
+import { formatToMime, Mime } from './types/Format';
 
 export const handleError = (res) => (error) => {
   console.error(error);
   res.status(500);
   res.end(error.message);
+};
+
+export const respond = async (response: Response, stream: Stream, mime: Mime, config: Config) => {
+  return new Promise(async (resolve, reject) => {
+    response.set('Content-Type', mime);
+
+    if (config.disableChunkedEncoding) {
+      const buffer = await streamToBuffer(stream);
+      response.set('Content-Length', `${buffer.length}`);
+      // If content-length is set node will not set the transfer-encoding
+      // so next line is not neccesary but leaving it here
+      // since it is confusing.
+      // response.set('Transfer-Encoding', '');
+      response.end(buffer);
+      resolve();
+      return;
+    }
+
+    response.set('Transfer-Encoding', 'chunked');
+    stream.pipe(response);
+    stream.on('error', reject);
+    stream.on('end', resolve);
+    return;
+  });
 };
 
 export const requestHandler = (
@@ -66,8 +92,8 @@ export const requestHandler = (
     }
     // It exists in cache
     if (fromCache && fromCache.contentType) {
-      res.set('Content-Type', fromCache.contentType);
-      fromCache.stream.pipe(res);
+      await respond(res, fromCache.stream, fromCache.contentType, config);
+      trace.end();
       return;
     }
   }
@@ -88,13 +114,13 @@ export const requestHandler = (
     const { state } = await buildTransformation(stream, steps);
     trace.log('analyze', state);
     res.json(state);
+    trace.end();
   } else {
     const { stream: transformed, definition } = await transform(stream, steps);
     trace.log('definition', definition);
     const contentType = formatToMime(definition.type);
-    res.set('Content-Type', contentType);
-    // Send image data through the worker which passes through to response.
 
+    // Send image data through the worker which passes through to response.
     let streamToRespondWith = transformed;
     if (config.storage) {
       const streamSwitch = new StreamSwitch(transformed);
@@ -102,8 +128,8 @@ export const requestHandler = (
       const streamToCache = streamSwitch.createReadStream();
       uploadToStorage(storage, params, streamToCache, contentType);
     }
-    streamToRespondWith.pipe(res);
-    streamToRespondWith.on('end', () => trace.end());
+    await respond(res, streamToRespondWith, contentType, config);
+    trace.end();
   }
 };
 
