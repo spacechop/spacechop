@@ -18,6 +18,7 @@ const Config = t.Record({
   presets: t.Dictionary(PresetConfig, 'string'),
 }).And(t.Partial({
   storage: Storage,
+  disableChunkedEncoding: t.Boolean,
 })).withConstraint(validateParams);
 
 export type Config = t.Static<typeof Config>;
