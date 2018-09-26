@@ -299,13 +299,13 @@ describe('Crop', () => {
         it('should set correct width, height and offset', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-crop 200x200\+150\+150/));
+          expect(command).toEqual(expect.stringMatching(/-crop 200x200\+50\+50/));
         });
 
         it('should set correct gravity', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+          expect(command).toEqual(expect.stringMatching(/-gravity Center/));
         });
       });
 
@@ -329,13 +329,13 @@ describe('Crop', () => {
         it('should set correct width, height and offset', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-crop 400x200\+0\+150/));
+          expect(command).toEqual(expect.stringMatching(/-crop 400x200\+0\+50/));
         });
 
         it('should set correct gravity', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+          expect(command).toEqual(expect.stringMatching(/-gravity Center/));
         });
       });
 
@@ -359,13 +359,13 @@ describe('Crop', () => {
         it('should set correct width, height and offset', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-crop 200x400\+150\+0/));
+          expect(command).toEqual(expect.stringMatching(/-crop 200x400\+50\+0/));
         });
 
         it('should set correct gravity', () => {
           const op = new Crop(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+          expect(command).toEqual(expect.stringMatching(/-gravity Center/));
         });
       });
     });

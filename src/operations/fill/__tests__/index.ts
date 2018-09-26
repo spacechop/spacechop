@@ -289,13 +289,13 @@ describe('Fill', () => {
           const op = new Fill(defaultConfig);
           const { command } = op.execute(defaultState);
           expect(command).toEqual(expect.stringMatching(/-resize 200x200\^/));
-          expect(command).toEqual(expect.stringMatching(/-extent 200x200\+25\+0/));
+          expect(command).toEqual(expect.stringMatching(/-extent 200x200\-25\+0/));
         });
 
         it('should set correct gravity', () => {
           const op = new Fill(defaultConfig);
           const { command } = op.execute(defaultState);
-          expect(command).toEqual(expect.stringMatching(/-gravity NorthWest/));
+          expect(command).toEqual(expect.stringMatching(/-gravity Center/));
         });
       });
     });
