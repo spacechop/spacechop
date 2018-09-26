@@ -6,6 +6,18 @@ export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): 
   return [
     'mozjpeg',
     `-quality ${config.quality}`,
+    '|',
+    'magick',
+    '-',
+    '-sampling-factor',
+    '4:2:0',
+    '-strip',
+    `-quality ${config.quality}`,
+    '-interlace',
+    'JPEG',
+    '-colorspace',
+    'sRGB',
+    `${state.type}:-`,
   ];
 };
 

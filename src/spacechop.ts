@@ -116,20 +116,24 @@ export const requestHandler = (
     res.json(state);
     trace.end();
   } else {
-    const { stream: transformed, definition } = await transform(stream, steps);
-    trace.log('definition', definition);
-    const contentType = formatToMime(definition.type);
+    try {
+      const { stream: transformed, definition } = await transform(stream, steps);
+      trace.log('definition', definition);
+      const contentType = formatToMime(definition.type);
 
-    // Send image data through the worker which passes through to response.
-    let streamToRespondWith = transformed;
-    if (config.storage) {
-      const streamSwitch = new StreamSwitch(transformed);
-      streamToRespondWith = streamSwitch.createReadStream();
-      const streamToCache = streamSwitch.createReadStream();
-      uploadToStorage(storage, params, streamToCache, contentType);
+      // Send image data through the worker which passes through to response.
+      let streamToRespondWith = transformed;
+      if (config.storage) {
+        const streamSwitch = new StreamSwitch(transformed);
+        streamToRespondWith = streamSwitch.createReadStream();
+        const streamToCache = streamSwitch.createReadStream();
+        uploadToStorage(storage, params, streamToCache, contentType);
+      }
+      await respond(res, streamToRespondWith, contentType, config);
+      trace.end();
+    } catch (err) {
+      trace.warn('error', err);
     }
-    await respond(res, streamToRespondWith, contentType, config);
-    trace.end();
   }
 };
 

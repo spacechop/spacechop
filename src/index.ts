@@ -24,6 +24,15 @@ if (cluster.isMaster) {
   for (let i = 0; i < workers; i++) {
     cluster.fork();
   }
+
+  // Catching errors and creating new workers.
+  cluster.on('exit', (worker, code, signal) => {
+    console.info(
+      'worker %d died (%s). restarting...',
+      worker.process.pid, signal || code,
+    );
+    cluster.fork();
+  });
 } else {
   // Re-Initialize routes when new config is loaded.
   fs.watchFile('/config.yml', { interval: 1000 }, async () => {

@@ -2,7 +2,7 @@ import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
 import { StripConfig } from './types';
 
-export const exiftoolOptions = (config: StripConfig, state: ImageDefinition): string[] => {
+export const exiftoolOptions = (config: StripConfig): string[] => {
   return [
     'exiftool',
     '-all=',
@@ -33,7 +33,7 @@ export default class Strip implements Operation {
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
-    const options = exiftoolOptions(this.config, state);
+    const options = exiftoolOptions(this.config);
     return {
       state: transformState(this.config, state),
       command: options.join(' '),
