@@ -19,16 +19,15 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
     return { scale };
   }
 
-  const largestFace = getLargestFace(state.faces);
+  const largestFace = scaleFace({ scale })(getLargestFace(state.faces));
+  const newSize = { width, height };
+  const scaledSize = {
+    width: Math.round(state.width / scale),
+    height: Math.round(state.height / scale),
+  };
 
-  const translate = translationForCenteringOnFace(
-    { width, height },
-    {
-      width: state.width / scale,
-      height: state.height / scale,
-    },
-    scaleFace({ scale})(largestFace),
-  );
+  const translate = translationForCenteringOnFace(newSize, scaledSize, largestFace);
+
   return { scale, translate };
 };
 

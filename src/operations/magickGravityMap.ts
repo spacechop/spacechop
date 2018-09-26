@@ -8,5 +8,5 @@ export const magickGravityMap = {
   southwest: 'SouthWest',
   west: 'West',
   northwest: 'NorthWest',
-  face: 'NorthWest',
+  face: 'Center',
 };

@@ -1,5 +1,5 @@
 import { Stream } from 'stream';
-import ImageDefinition, { DefinitionRequirement, ImageFaceBox } from '../imagedef';
+import ImageDefinition, { DefinitionRequirement } from '../imagedef';
 import facedetect from './face-detection/detect';
 import StreamSwitch from './stream-switch';
 import types from './types';
