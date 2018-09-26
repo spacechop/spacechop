@@ -1,6 +1,6 @@
+import chokidar from 'chokidar';
 import cluster from 'cluster';
 import express from 'express';
-import fs from 'fs';
 import { cpus } from 'os';
 import loadConfig from './config';
 import setupRoutes from './spacechop';
@@ -35,7 +35,10 @@ if (cluster.isMaster) {
   });
 } else {
   // Re-Initialize routes when new config is loaded.
-  fs.watchFile('/config.yml', { interval: 1000 }, async () => {
+  chokidar.watch('/config.yml', {
+    usePolling: true,
+    interval: 1000,
+  }).on('all', async () => {
     console.info('Reloading config...');
     router = express.Router();
     config = loadConfig();
