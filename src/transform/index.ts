@@ -51,6 +51,7 @@ export default async (
   // Spawn new worker to work through the commands.
   const finalCommand = joinCommands(commands);
   const stream = spawn('sh', ['-c', finalCommand]);
+  stream.on('error', (err) => { throw err; });
   streamToTransform.pipe(stream);
   return { stream, definition: state };
 };
