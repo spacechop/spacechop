@@ -1,5 +1,5 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import transformFace from '../../lib/transformFace';
+import transformFace from '../../lib/face-detection/transformFace';
 import Operation from './../operation';
 import { ResizeConfig } from './types';
 

@@ -1,11 +1,14 @@
-import { ImageFaceBox } from '../imagedef';
+import { ImageFaceBox } from '../../imagedef';
 
 export interface ScaleFace {
   scale?: number;
   scaleX?: number;
   scaleY?: number;
 }
-
+/**
+ * Scales the position and size of an image.
+ * Supports scaling in only one axis as well as both.
+ */
 export default (scaling: ScaleFace) => (face: ImageFaceBox): ImageFaceBox => {
   const {
     scale = 1,

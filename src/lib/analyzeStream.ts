@@ -1,6 +1,6 @@
 import { Stream } from 'stream';
 import ImageDefinition, { DefinitionRequirement, ImageFaceBox } from '../imagedef';
-import facedetect from './facedetect';
+import facedetect from './face-detection/detect';
 import StreamSwitch from './stream-switch';
 import types from './types';
 
@@ -20,6 +20,5 @@ export default async (stream: Stream, requirements: DefinitionRequirement[] = []
   }
   return {
     ...info,
-    original: info,
   };
 };

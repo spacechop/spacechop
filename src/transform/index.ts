@@ -17,15 +17,15 @@ export interface TransformationResult {
 export const buildTransformation = async (
   stream: Stream,
   steps: Step[],
-  detect: DefinitionRequirement[] = [],
 ) => {
   // initialize steps
   const {
     pipeline,
     requirements,
   } = initializePipeline(steps);
+
   const definition: ImageDefinition =
-    await analyze(stream, {...requirements, ...detect });
+    await analyze(stream, requirements);
 
   // build command from pipeline and image state
   return simulateTransformation(pipeline, definition);
@@ -34,7 +34,6 @@ export const buildTransformation = async (
 export default async (
   input: Stream,
   steps: Step[],
-  detect: DefinitionRequirement[] = [],
 ): Promise<TransformationResult> => {
   const streamSwitch = new StreamSwitch(input);
   const streamToAnalyze = streamSwitch.createReadStream();
@@ -42,7 +41,7 @@ export default async (
 
   // build command from pipeline and image state
   const { commands, state } =
-    await buildTransformation(streamToAnalyze, steps, detect);
+    await buildTransformation(streamToAnalyze, steps);
 
   // do nothing when no steps.
   if (steps.length === 0) {

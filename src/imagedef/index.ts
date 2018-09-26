@@ -16,9 +16,12 @@ export default interface ImageDefinition {
   type: Format;
   alpha?: boolean;
   interlacing?: boolean;
+
+  // Is only set if facedetection is done
+  // ie. when an operation requries centering on face
   faces?: ImageFaceBox[];
+
   animated?: boolean;
   size?: number;
   lossy?: boolean;
-  original?: ImageDefinition;
 }

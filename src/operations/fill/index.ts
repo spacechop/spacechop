@@ -1,8 +1,9 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import getLargestFaceGravityTranslation from '../../lib/getLargestFaceGravityTranslation';
-import getMagickOffset from '../../lib/getMagickOffset';
-import scaleFace from '../../lib/scaleFace';
-import transformFace from '../../lib/transformFace';
+import getLargestFace from '../../lib/face-detection/getLargestFace';
+import scaleFace from '../../lib/face-detection/scaleFace';
+import transformFace from '../../lib/face-detection/transformFace';
+import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
+import getMagickOffset from '../getMagickOffset';
 import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
@@ -13,26 +14,22 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
   const height = config.height as number;
   const scale = state.width < state.height ?
     state.width / width : state.height / height;
-  let translate;
-  if (config.gravity === 'face') {
-    const widthBefore = state.width / scale;
-    const heightBefore = state.height / scale;
-    translate = getLargestFaceGravityTranslation(
-      width,
-      height,
-      {
-        ...state,
-        width: widthBefore,
-        height: heightBefore,
-      },
-      (state.faces || []).map(scaleFace({ scale })),
-    );
+
+  if (config.gravity !== 'face' || !state.faces || state.faces.length === 0) {
+    return { scale };
   }
 
-  return {
-    scale,
-    translate,
-  };
+  const largestFace = getLargestFace(state.faces);
+
+  const translate = translationForCenteringOnFace(
+    { width, height },
+    {
+      width: state.width / scale,
+      height: state.height / scale,
+    },
+    scaleFace({ scale})(largestFace),
+  );
+  return { scale, translate };
 };
 
 export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
@@ -50,16 +47,19 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
   const { translate, scale } = gravityTransform(config, state);
+
+  let faces = state.faces;
+  if (state.faces) {
+    faces = state.faces.map(transformFace([
+      { scale: { scale } },
+      ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
+    ]));
+  }
   return {
     ...state,
     width: config.width as number,
     height: config.height as number,
-    ...state.faces && {
-      faces: state.faces.map(transformFace([
-        { scale: { scale } },
-        ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
-      ])),
-    },
+    faces,
   };
 };
 

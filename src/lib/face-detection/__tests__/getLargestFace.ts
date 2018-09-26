@@ -1,4 +1,4 @@
-import { ImageFaceBox } from '../../imagedef';
+import { ImageFaceBox } from '../../../imagedef';
 import getLargestFace from '../getLargestFace';
 
 describe('getLargestFace', () => {

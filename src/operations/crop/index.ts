@@ -1,7 +1,9 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
-import getLargestFaceGravityTranslation from '../../lib/getLargestFaceGravityTranslation';
-import getMagickOffset from '../../lib/getMagickOffset';
-import transformFace from '../../lib/transformFace';
+import getLargestFace from '../../lib/face-detection/getLargestFace';
+import transformFace from '../../lib/face-detection/transformFace';
+import translateFace from '../../lib/face-detection/translateFace';
+import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
+import getMagickOffset from '../getMagickOffset';
 import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
@@ -10,23 +12,20 @@ import { CropConfig } from './types';
 const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
   const width = config.width as number;
   const height = config.height as number;
-  let translate;
-  if (config.gravity === 'face') {
-    translate = getLargestFaceGravityTranslation(
-      width,
-      height,
-      {
-        ...state,
-        width: state.width,
-        height: state.height,
-      },
-      state.faces || [],
-    );
+
+  if (config.gravity !== 'face' || !state.faces || state.faces.length === 0) {
+    return null;
   }
 
-  return {
-    translate,
-  };
+  const largestFace = getLargestFace(state.faces);
+
+  const translate = translationForCenteringOnFace(
+    { width, height },
+    { width: state.width, height: state.height },
+    largestFace,
+  );
+
+  return translate;
 };
 
 export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
@@ -35,7 +34,7 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
   const height = config.height === undefined ||
     config.height > state.height ? state.height : config.height as number;
   const gravity = config.gravity as Gravity;
-  const { translate } = gravityTransform(config, state);
+  const translate = gravityTransform(config, state);
   const offset = getMagickOffset(translate);
   const geometry = `${width}x${height}${offset}`;
   return [
@@ -57,16 +56,18 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
     config.width > state.width ? state.width : config.width as number;
   const height = config.height === undefined ||
     config.height > state.height ? state.height : config.height as number;
-  const { translate } = gravityTransform({ ...config, width, height }, state);
+  const translate = gravityTransform({ ...config, width, height }, state);
+
+  let faces = state.faces;
+  if (state.faces && translate) {
+    faces = state.faces.map(translateFace({ x: -translate.x, y: -translate.y }));
+  }
+
   return {
     ...state,
     width,
     height,
-    ...state.faces && {
-      faces: state.faces.map(transformFace([
-        ...translate ? [{ translate: { x: -translate.x, y: -translate.y } }] : [],
-      ])),
-    },
+    faces,
   };
 };
 
