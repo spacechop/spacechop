@@ -9,7 +9,7 @@ import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { FillConfig } from './types';
 
-const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
+const gravityTransform = (config: FillConfig, state: ImageDefinition, gravity: Gravity) => {
   const width = config.width as number;
   const height = config.height as number;
   const scale = state.width < state.height ?
@@ -19,22 +19,23 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition) => {
     return { scale };
   }
 
-  const largestFace = getLargestFace(state.faces);
+  const largestFace = scaleFace({ scale })(getLargestFace(state.faces));
+  const newSize = { width, height };
+  const scaledSize = {
+    width: Math.round(state.width / scale),
+    height: Math.round(state.height / scale),
+  };
 
   const translate = translationForCenteringOnFace(
-    { width, height },
-    {
-      width: state.width / scale,
-      height: state.height / scale,
-    },
-    scaleFace({ scale})(largestFace),
+    newSize, scaledSize, largestFace, gravity,
   );
+
   return { scale, translate };
 };
 
 export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
   const gravity = config.gravity as Gravity;
-  const { translate } = gravityTransform(config, state);
+  const { translate } = gravityTransform(config, state, 'center');
   const offset = getMagickOffset(translate);
   return [
     '-',
@@ -46,7 +47,7 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: FillConfig, state: ImageDefinition): ImageDefinition => {
-  const { translate, scale } = gravityTransform(config, state);
+  const { translate, scale } = gravityTransform(config, state, 'northwest');
 
   let faces = state.faces;
   if (state.faces) {

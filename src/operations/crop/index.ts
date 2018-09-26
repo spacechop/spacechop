@@ -9,7 +9,7 @@ import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { CropConfig } from './types';
 
-const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
+const gravityTransform = (config: CropConfig, state: ImageDefinition, gravity: Gravity) => {
   const width = config.width as number;
   const height = config.height as number;
 
@@ -23,6 +23,7 @@ const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
     { width, height },
     { width: state.width, height: state.height },
     largestFace,
+    gravity,
   );
 
   return translate;
@@ -34,7 +35,8 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
   const height = config.height === undefined ||
     config.height > state.height ? state.height : config.height as number;
   const gravity = config.gravity as Gravity;
-  const translate = gravityTransform(config, state);
+  // calculate translation of faces from center.
+  const translate = gravityTransform(config, state, 'center');
   const offset = getMagickOffset(translate);
   const geometry = `${width}x${height}${offset}`;
   return [
@@ -56,7 +58,8 @@ export const transformState = (config: CropConfig, state: ImageDefinition): Imag
     config.width > state.width ? state.width : config.width as number;
   const height = config.height === undefined ||
     config.height > state.height ? state.height : config.height as number;
-  const translate = gravityTransform({ ...config, width, height }, state);
+  // calculate translation of faces from northwest.
+  const translate = gravityTransform({ ...config, width, height }, state, 'northwest');
 
   let faces = state.faces;
   if (state.faces && translate) {
