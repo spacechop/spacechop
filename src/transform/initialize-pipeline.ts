@@ -1,8 +1,18 @@
+import { DefinitionRequirement } from '../imagedef';
+import Operation from '../operations/operation';
+import { Step } from '../types/Step';
 import Operations from './../operations';
 
-export default (steps) => {
+interface InitalizedPipeline {
+  pipeline: Operation[];
+  requirements: {
+    [key: number]: DefinitionRequirement[],
+  };
+}
+
+export default (steps: Step[]): InitalizedPipeline => {
   let requirements = {};
-  const preparedSteps = steps.map((step) => {
+  const preparedSteps = steps.map((step: Step): Operation => {
     const name = Object.keys(step)[0];
     const props = step[name];
 
@@ -13,7 +23,7 @@ export default (steps) => {
       );
     }
     // initialize operation instance with config.
-    const instance = new Operations[name](props);
+    const instance: Operation = new Operations[name](props);
     // prepare requirements from steps
     requirements = {
       ...requirements,
@@ -22,5 +32,8 @@ export default (steps) => {
     return instance;
   });
 
-  return { pipeline: preparedSteps, requirements };
+  return {
+    pipeline: preparedSteps,
+    requirements,
+  };
 };

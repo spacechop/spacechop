@@ -1,4 +1,5 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import transformFace from '../../lib/face-detection/transformFace';
 import Operation from './../operation';
 import { FitConfig } from './types';
 
@@ -15,20 +16,27 @@ export const magickOptions = (config: FitConfig, state: ImageDefinition): string
 export const transformState = (config: FitConfig, state: ImageDefinition): ImageDefinition => {
   let width = config.width as number;
   let height = config.height as number;
+  let scale = 1;
 
   if (width && !height) {
     // calculate height to keep aspect ratio.
-    const scale = width / state.width;
+    scale = width / state.width;
     height = state.height * scale;
   } else if (!width && height) {
     // calculate width to keep aspect ratio.
-    const scale = height / state.height;
+    scale = height / state.height;
     width = state.width * scale;
+  } else {
+    scale = state.width > state.height ?
+      state.width / (config.width as number) : state.height / (config.height as number);
   }
   return {
     ...state,
     width,
     height,
+    ...state.faces && {
+      faces: state.faces.map(transformFace([{ scale: { scale } }])),
+    },
   };
 };
 

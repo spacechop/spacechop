@@ -1,5 +1,6 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
+import { DefinitionRequirement } from '../types/DefinitionRequirement';
 import { Step } from '../types/Step';
 import ImageDefinition from './../imagedef';
 import analyze from './../imagedef/analyze';
@@ -7,7 +8,6 @@ import StreamSwitch from './../lib/stream-switch';
 import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';
-
 
 export interface TransformationResult {
   stream: Stream;
@@ -19,20 +19,29 @@ export const buildTransformation = async (
   steps: Step[],
 ) => {
   // initialize steps
-  const { pipeline, requirements } = initializePipeline(steps);
-  const definition: ImageDefinition = await analyze(stream, requirements);
+  const {
+    pipeline,
+    requirements,
+  } = initializePipeline(steps);
+
+  const definition: ImageDefinition =
+    await analyze(stream, requirements);
 
   // build command from pipeline and image state
   return simulateTransformation(pipeline, definition);
 };
 
-export default async (input: Stream, steps: Step[]): Promise<TransformationResult> => {
+export default async (
+  input: Stream,
+  steps: Step[],
+): Promise<TransformationResult> => {
   const streamSwitch = new StreamSwitch(input);
   const streamToAnalyze = streamSwitch.createReadStream();
   const streamToTransform = streamSwitch.createReadStream();
 
   // build command from pipeline and image state
-  const { commands, state } = await buildTransformation(streamToAnalyze, steps);
+  const { commands, state } =
+    await buildTransformation(streamToAnalyze, steps);
 
   // do nothing when no steps.
   if (steps.length === 0) {

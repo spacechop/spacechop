@@ -23,8 +23,8 @@ export default (buffer): ImageDefinition => {
       }
       if (next === 0xC0 || next === 0xC1 || next === 0xC2) {
         const j = offset + i + 2 + 2 + 1;
-        width = buffer.readUInt16BE(j, true);
-        height = buffer.readUInt16BE(j + 2, true);
+        width = buffer.readUInt16BE(j + 2, true);
+        height = buffer.readUInt16BE(j, true);
         break;
       }
     }

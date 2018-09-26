@@ -1,6 +1,6 @@
 import { createReadStream } from 'fs';
 import path from 'path';
-import ImageDefinition from '..';
+import ImageDefinition, { ImageFaceBox } from '..';
 import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
 import { Format } from '../../types/Format';
 import analyze from '../analyze';
@@ -21,6 +21,7 @@ describe('ImageDefinition', () => {
         height: number
         animated: boolean,
         lossy?: boolean,
+        faces?: ImageFaceBox[],
       }> = [{
         source: 'grid.jpg',
         alpha: false,
@@ -176,8 +177,23 @@ describe('ImageDefinition', () => {
         height: 200,
         animated: true,
         lossy: false,
-      },
-      ];
+      }, {
+        source: 'small-face.jpg',
+        alpha: false,
+        interlacing: false,
+        root: assets,
+        type: 'jpeg',
+        width: 100,
+        height: 126,
+        animated: false,
+        lossy: false,
+        faces: [{
+          x: 27,
+          y: 32,
+          width: 52,
+          height: 52,
+        }],
+      }];
 
       // create a test for all file types
       for (const {
@@ -189,6 +205,7 @@ describe('ImageDefinition', () => {
         animated,
         type,
         root,
+        faces,
       } of sources) {
         describe(`analyze ImageDefinition for ${source}`, () => {
           const expected: ImageDefinition = {
@@ -198,11 +215,12 @@ describe('ImageDefinition', () => {
             alpha,
             interlacing,
             animated,
+            ...faces && { faces },
           };
           const stream = createReadStream(path.join(__dirname, root, source));
 
           it('should return valid ImageDefinition', async () => {
-            const recieved = await analyze(stream, []);
+            const recieved = await analyze(stream, faces ? ['faces'] : []);
             expect(recieved).toEqual(
               expect.objectContaining(expected),
             );

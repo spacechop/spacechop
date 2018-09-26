@@ -1,3 +1,4 @@
+import { DefinitionRequirement } from '../types/DefinitionRequirement';
 import { Format } from '../types/Format';
 
 export interface ImageFaceBox {
@@ -7,9 +8,7 @@ export interface ImageFaceBox {
   height: number;
 }
 
-export enum DefinitionRequirement {
-  FACES = 'faces',
-}
+export type DefinitionRequirement = DefinitionRequirement;
 
 export default interface ImageDefinition {
   width: number;
@@ -17,7 +16,11 @@ export default interface ImageDefinition {
   type: Format;
   alpha?: boolean;
   interlacing?: boolean;
-  faces?: [ImageFaceBox?];
+
+  // Is only set if facedetection is done
+  // ie. when an operation requries centering on face
+  faces?: ImageFaceBox[];
+
   animated?: boolean;
   size?: number;
   lossy?: boolean;

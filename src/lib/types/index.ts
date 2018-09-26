@@ -12,7 +12,7 @@ const tests = [
   isWEBP,
 ];
 
-export default (stream: Stream): Promise<any> => new Promise((resolve) => {
+export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolve) => {
   const chunks = [];
   stream.on('data', (chunk) => {
     chunks.push(chunk);

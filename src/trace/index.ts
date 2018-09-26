@@ -3,7 +3,7 @@ import logger from './logger';
 import serialize from './serialize';
 
 export default class Trace {
-  private uuid: number;
+  private uuid: string;
   private start: [number, number];
   public constructor() {
     this.uuid = uuid();
@@ -49,7 +49,7 @@ export default class Trace {
       level: 'info',
       label: 'time',
       uuid: this.uuid,
-      message: serialize(['total time: ', milliseconds]),
+      message: `total time: ${milliseconds}`,
       data: milliseconds,
     });
   }

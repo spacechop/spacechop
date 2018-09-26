@@ -1,15 +1,42 @@
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import getLargestFace from '../../lib/face-detection/getLargestFace';
+import transformFace from '../../lib/face-detection/transformFace';
+import translateFace from '../../lib/face-detection/translateFace';
+import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
+import getMagickOffset from '../getMagickOffset';
 import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { CropConfig } from './types';
 
-export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
-  const width = config.width === undefined ? state.width : config.width as number;
-  const height = config.height === undefined ? state.height : config.height as number;
-  const gravity = config.gravity as Gravity;
+const gravityTransform = (config: CropConfig, state: ImageDefinition) => {
+  const width = config.width as number;
+  const height = config.height as number;
 
-  const geometry = `${width}x${height}+0+0`;
+  if (config.gravity !== 'face' || !state.faces || state.faces.length === 0) {
+    return null;
+  }
+
+  const largestFace = getLargestFace(state.faces);
+
+  const translate = translationForCenteringOnFace(
+    { width, height },
+    { width: state.width, height: state.height },
+    largestFace,
+  );
+
+  return translate;
+};
+
+export const magickOptions = (config: CropConfig, state: ImageDefinition): string[] => {
+  const width = config.width === undefined ||
+    config.width > state.width ? state.width : config.width as number;
+  const height = config.height === undefined ||
+    config.height > state.height ? state.height : config.height as number;
+  const gravity = config.gravity as Gravity;
+  const translate = gravityTransform(config, state);
+  const offset = getMagickOffset(translate);
+  const geometry = `${width}x${height}${offset}`;
   return [
     '-',
     `-gravity ${magickGravityMap[gravity]}`,
@@ -25,12 +52,22 @@ export const magickOptions = (config: CropConfig, state: ImageDefinition): strin
 };
 
 export const transformState = (config: CropConfig, state: ImageDefinition): ImageDefinition => {
-  const width = config.width === undefined ? state.width : config.width as number;
-  const height = config.height === undefined ? state.height : config.height as number;
+  const width = config.width === undefined ||
+    config.width > state.width ? state.width : config.width as number;
+  const height = config.height === undefined ||
+    config.height > state.height ? state.height : config.height as number;
+  const translate = gravityTransform({ ...config, width, height }, state);
+
+  let faces = state.faces;
+  if (state.faces && translate) {
+    faces = state.faces.map(translateFace({ x: -translate.x, y: -translate.y }));
+  }
+
   return {
     ...state,
     width,
     height,
+    faces,
   };
 };
 
@@ -46,7 +83,7 @@ export default class Crop implements Operation {
 
   public requirements(): DefinitionRequirement[] {
     if (this.config.gravity === 'face') {
-      return [ DefinitionRequirement.FACES ];
+      return ['faces'];
     }
     return [];
   }

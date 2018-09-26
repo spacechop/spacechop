@@ -40,5 +40,17 @@ describe('validate presets', () => {
       },
     };
     expect(() => validate(config)).toThrowErrorMatchingSnapshot();
+
+    config = {
+      paths: ['/:preset/:image'],
+      sources: [{ http: { root: 'http://localhost' } }],
+      presets: {
+        t_200: {
+          detect: ['face'],
+          steps: [{}],
+        },
+      },
+    };
+    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
   });
 });

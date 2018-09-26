@@ -17,17 +17,39 @@ describe('Image similarity - height only', () => {
     png: path.join(assetsFolder, 'grid.png'),
     png_interlaced: path.join(assetsFolder, 'grid-interlaced.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
+    face: path.join(assetsFolder, 'small-face.jpg'),
   };
 
   // Add fixtures for all gravities on grid image
   for (const gravity of allGravities) {
     // no faces in grid image so test is not needed
-    if (gravity === 'face') { continue; }
+    if (gravity === 'face') {
+      it(`Gravity JPEG ${gravity}`, async () => {
+        const operation = new Crop({
+          height: 50,
+          gravity,
+        });
+        const state: ImageDefinition = {
+          width: 100,
+          height: 126,
+          type: 'jpeg',
+          faces: [{
+            x: 27,
+            y: 32,
+            width: 52,
+            height: 52,
+          }],
+        };
+        const result = createTransformedStream(paths.face, operation, state);
+        await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
+      });
+      continue;
+    }
 
     it(`Gravity JPEG ${gravity}`, async () => {
       const operation = new Crop({ ...defaultConfig, gravity });
       const result = createTransformedStream(paths.jpeg, operation, defaultState);
-      await expect(result).toMatchImageSnapshot({ extension: 'jpeg'});
+      await expect(result).toMatchImageSnapshot({ extension: 'jpeg' });
     });
 
     it(`Gravity PNG ${gravity}`, async () => {
@@ -37,7 +59,7 @@ describe('Image similarity - height only', () => {
         operation,
         { ...defaultState, type: 'png' },
       );
-      await expect(result).toMatchImageSnapshot({ extension: 'png'});
+      await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
 
     it(`Gravity PNG interlaced ${gravity}`, async () => {
@@ -47,7 +69,7 @@ describe('Image similarity - height only', () => {
         operation,
         { ...defaultState, type: 'png', interlacing: true },
       );
-      await expect(result).toMatchImageSnapshot({ extension: 'png'});
+      await expect(result).toMatchImageSnapshot({ extension: 'png' });
     });
 
     it(`Gravity GIF ${gravity}`, async () => {
@@ -57,7 +79,7 @@ describe('Image similarity - height only', () => {
         operation,
         { ...defaultState, type: 'gif'},
       );
-      await expect(result).toMatchImageSnapshot({ extension: 'gif'});
+      await expect(result).toMatchImageSnapshot({ extension: 'gif' });
     });
   }
 });
