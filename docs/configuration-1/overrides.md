@@ -1,0 +1,31 @@
+# Overrides
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">disableChunkedEncoding</td>
+      <td style="text-align:left">
+        <p>Disables sending a chunked response, and instead buffers all data in memory
+          and sends it all at the same time. Also means that header <code>Content-Length</code> will
+          be set.</p>
+        <p></p>
+        <p><b>Type: </b>boolean</p>
+        <p><b>Default</b>: false</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+  </tbody>
+</table>
