@@ -144,21 +144,74 @@ Examples to be added
 
 ## Format
 
-{% hint style="info" %}
-To be added
-{% endhint %}
+Changes the format of the image. Conversion is implemented between all of SpaceChops supported formats.
 
-## Compress
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">type</td>
+      <td style="text-align:left">
+        <p><b>Type: </b>string</p>
+        <p><b>Required</b>
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>## Compress
 
-{% hint style="info" %}
-To be added
-{% endhint %}
+Compresses the image \(but does not strip metadata\). If used together with Format, Compress should be placed after Format as it depends on the filetype.
 
-## Strip
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">quality</td>
+      <td style="text-align:left">
+        <p><b>Type</b>: number</p>
+        <p><b>Default: </b>100</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">lossy</td>
+      <td style="text-align:left">
+        <p><b>Type: </b>boolean</p>
+        <p><b>Default:</b> false</p>
+      </td>
+    </tr>
+  </tbody>
+</table>## Strip
 
-{% hint style="info" %}
-To be added
-{% endhint %}
+Strips the image of all EXIF data.
 
-
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">icc_profile</td>
+      <td style="text-align:left">
+        <p>Should the ICC Profile be kept
+          <br />
+        </p>
+        <p><b>Type: </b>boolean</p>
+        <p><b>Default: </b>true</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
