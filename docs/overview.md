@@ -1,6 +1,6 @@
 # Overview
 
-![](.gitbook/assets/sc-overview.png)
+![](.gitbook/assets/sc-overview%20%281%29.png)
 
 **Paths**  
 A path is an URL pattern that will be accepted by SpaceChop. The pattern will consist of a set of parameters that will be extracted from the URL using [path-to-regex](https://github.com/pillarjs/path-to-regexp).
@@ -21,10 +21,10 @@ sources:
       root: https://example.com/assets/:image
 ```
 
-You can see here that we used the parameter image to define the path from where  original image should be fetched. So if the `image = 'cat.jpg'` the original image would be fetched from `https://example.com/assets/cat.jpg`
+You can see here that we used the parameter image to define the path from where original image should be fetched. So if the `image = 'cat.jpg'` the original image would be fetched from `https://example.com/assets/cat.jpg`
 
 **Presets**  
-A preset describe the series of operations that will be performed on the original image to create the final image. 
+A preset describe the series of operations that will be performed on the original image to create the final image.
 
 A common preset is to create a small thumbnail of the original image to be used as a preview. We can define this preset as this:
 

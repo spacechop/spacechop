@@ -4,4 +4,5 @@
 * [Overview](overview.md)
 * [Configuration](configuration/README.md)
   * [Sources](configuration/sources.md)
+  * [Storage](configuration/storage.md)
 

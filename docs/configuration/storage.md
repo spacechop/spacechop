@@ -1,52 +1,23 @@
-# Sources
+# Storage
 
-## HTTP Source
+## Hash parameter
 
-The HTTP source fetches original images via GET request.
+All storages must make use of the `hash` parameter in order keep transformations up to date as preset configuration changes.
 
-### Example
+## S3 Storage
 
-```yaml
-sources:
-  - http:
-      root: https://example.com/assets/:image
-```
-
-### Options
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left">Name</th>
-      <th style="text-align:left"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left">root</td>
-      <td style="text-align:left">
-        <p>The url of original image.</p>
-        <p></p>
-        <p><b>Type: </b>string with parameters</p>
-        <p><b>Required</b>
-        </p>
-      </td>
-    </tr>
-  </tbody>
-</table>## S3 Source
-
-The S3 sources fetches original images from a S3 bucket. Can also be used for Digital Ocean spaces, by changing the endpoint.
+The S3 storage uploads transformations to a S3 bucket, or any other provider implementing the S3 interface \(for example Digital Ocean Spaces\). 
 
 ### Example
 
 ```yaml
-sources:
-  - s3:
-      access_key_id: 'xxxx'
-      secret_access_key: 'yyy'
-      region: 'nyc3'
-      bucket_name: 'my-bucket'
-      path: 'originals/:image'
+storage:
+  s3:
+    access_key_id: 'xxxx'
+    secret_access_key: 'yyyy'
+    region: 'nyc3'
+    bucket_name: 'zzz'
+    path: '/:preset/:image.:hash'
 ```
 
 ### Options
@@ -102,7 +73,7 @@ sources:
     <tr>
       <td style="text-align:left">path</td>
       <td style="text-align:left">
-        <p>Path of the original image in the bucket</p>
+        <p>Path of the original image in the bucket.</p>
         <p></p>
         <p><b>Type: </b>string with parameters</p>
         <p><b>Required</b>
@@ -118,37 +89,15 @@ sources:
         <p><b>Default: </b>derived from bucket_name and region, as per AWS standard.</p>
       </td>
     </tr>
-  </tbody>
-</table>## Volume Source
-
-The volume sources fetches original image from disk.
-
-### Example
-
-```yaml
-sources:
-  - volume:
-      root: /mnt/images/:image
-```
-
-### Options
-
-<table>
-  <thead>
     <tr>
-      <th style="text-align:left">Name</th>
-      <th style="text-align:left"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left">root</td>
+      <td style="text-align:left">ACL</td>
       <td style="text-align:left">
-        <p>The path of the original image on disk</p>
+        <p>What ACL should be set on the uploaded object. See available values here:
+          <a
+          href="https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html">https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html</a>.</p>
         <p></p>
-        <p><b>Type: </b>string with parameters</p>
-        <p><b>Required</b>
-        </p>
+        <p><b>Type: </b>string</p>
+        <p><b>Default</b>: 'private'</p>
       </td>
     </tr>
   </tbody>
