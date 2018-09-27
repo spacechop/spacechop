@@ -14,8 +14,7 @@
         <p>Disables sending a chunked response, and instead buffers all data in memory
           and sends it all at the same time. Also means that header <code>Content-Length</code> will
           be set.</p>
-        <p></p>
-        <p><b>Type: </b>boolean</p>
+        <p><b>Type:</b> boolean</p>
         <p><b>Default</b>: false</p>
       </td>
     </tr>

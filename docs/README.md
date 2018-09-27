@@ -7,7 +7,8 @@ description: What is SpaceChop and what does it do?
 SpaceChop is the best way to do easy image processing. The tool is designed to help you quickly setup a service that fetches original images from your source and process and deliver them accordingly, and can be used with any back-end or front-end. The client is:
 
 ## Overview
-![](.gitbook/assets/sc-overview.png)
+
+![](.gitbook/assets/sc-overview%20%282%29.png)
 
 **Paths**  
 A path is an URL pattern that will be accepted by SpaceChop. The pattern will consist of a set of parameters that will be extracted from the URL using [path-to-regex](https://github.com/pillarjs/path-to-regexp).
@@ -60,3 +61,4 @@ storage:
 ```
 
 Again, we make use of parameters to describe where the transformation should be stored.
+
