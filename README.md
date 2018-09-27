@@ -1,4 +1,4 @@
-# [SpaceChop](https://spacechop.com) [![Build Status](https://travis-ci.org/spacechop/spacechop.svg?branch=master)](https://travis-ci.org/spacechop/spacechop) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md) [![Docker](https://img.shields.io/badge/docker-spacechop/spacechop-blue.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![Docker Registry](https://img.shields.io/docker/pulls/spacechop/spacechop.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![](https://images.microbadger.com/badges/image/spacechop/spacechop.svg)](https://microbadger.com/images/spacechop/spacechop "Get your own image badge on microbadger.com")
+# [SpaceChop](https://spacechop.com) [![Build Status](https://travis-ci.org/spacechop/spacechop.svg?branch=master)](https://travis-ci.org/spacechop/spacechop) [![Docker](https://img.shields.io/badge/docker-spacechop/spacechop-blue.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![Docker Registry](https://img.shields.io/docker/pulls/spacechop/spacechop.svg)](https://hub.docker.com/r/spacechop/spacechop/) [![](https://images.microbadger.com/badges/image/spacechop/spacechop.svg)](https://microbadger.com/images/spacechop/spacechop "Get your own image badge on microbadger.com")
 SpaceChop is a Docker container for processing your images through HTTP requests.
 
 **🔒 Secure** - Dont allow everyone to create arbitrary image transformations and overload your server.
@@ -86,7 +86,7 @@ In a preset there are steps which are composed of a list of operations with thei
 
 ## Contributing
 
-[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechop) [![Greenkeeper badge](https://badges.greenkeeper.io/spacechop/spacechop.svg)](https://greenkeeper.io/)
+[![codecov](https://codecov.io/gh/spacechop/spacechop/branch/master/graph/badge.svg)](https://codecov.io/gh/spacechop/spacechop) [![Greenkeeper badge](https://badges.greenkeeper.io/spacechop/spacechop.svg)](https://greenkeeper.io/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 [Read the SpaceChop Contributor Guidelines.](CONTRIBUTING.md)
 
