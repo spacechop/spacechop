@@ -1,4 +1,5 @@
 import winston, { format } from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 const { combine, timestamp, json } = format;
 
@@ -11,6 +12,15 @@ const logLevel = 'LOG_LEVEL' in process.env
     ? 'error'
     : 'info';
 
+// Rotate log file transport.
+const createRotatedFileTransform = (config) => new DailyRotateFile({
+  ...config,
+  datePattern: 'YYYY-MM-DD-HH',
+  zippedArchive: true,
+  maxSize: '20m',
+  maxFiles: '14d',
+});
+
 const logger = winston.createLogger({
   level: logLevel,
   format: combine(
@@ -22,8 +32,13 @@ const logger = winston.createLogger({
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
     //
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
+    createRotatedFileTransform({
+      filename: 'error-%DATE%.log',
+      level: 'warning',
+    }),
+    createRotatedFileTransform({
+      filename: 'combined-%DATE%.log',
+    }),
   ],
 });
 
