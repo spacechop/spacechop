@@ -300,7 +300,9 @@ Compresses the image \(but does not strip metadata\). If used together with Form
 
 Fill an area of 200x200 pixels and compress the image using mozjpeg to a quality of 82, to make the images fast and **SEO friendly**.
 
-```text
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
+```yaml
 presets:
   fill_200x200:
     steps:
@@ -312,6 +314,8 @@ presets:
       - $compress:
           quality: 82
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ## Strip
 
