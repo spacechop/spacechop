@@ -6,11 +6,15 @@ The HTTP source fetches original images via GET request.
 
 ### Example
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 sources:
   - http:
       root: https://example.com/assets/:image
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Options
 
@@ -39,6 +43,8 @@ The S3 sources fetches original images from a S3 bucket. Can also be used for Di
 
 ### Example
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 sources:
   - s3:
@@ -48,6 +54,8 @@ sources:
       bucket_name: 'my-bucket'
       path: 'originals/:image'
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Options
 
@@ -119,17 +127,25 @@ sources:
       </td>
     </tr>
   </tbody>
-</table>## Volume Source
+</table>{% hint style="info" %}
+Avoid using forward slash in **path**, it will create unnamed folders.
+{% endhint %}
+
+## Volume Source
 
 The volume sources fetches original image from disk.
 
 ### Example
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 sources:
   - volume:
       root: /mnt/images/:image
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Options
 

@@ -8,6 +8,8 @@ If you require multiple different paths that are very different you can define s
 
 ## Examples
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 paths:
   # ex. https://example.com/images/t_thumb/cat.jpeg
@@ -19,4 +21,6 @@ paths:
   - /images/:preset/:image(\w+).(.*)
 
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 

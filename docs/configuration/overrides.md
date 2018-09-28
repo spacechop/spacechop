@@ -19,4 +19,17 @@
       </td>
     </tr>
   </tbody>
-</table>
+</table>### Example
+
+Switch from `Transfer-Encoding: chunked` and turn on `Content-Length: bytelength`
+
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
+```yaml
+disableChunkedEncoding: true
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+
+

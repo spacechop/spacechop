@@ -10,6 +10,8 @@ The S3 storage uploads transformations to a S3 bucket, or any other provider imp
 
 ### Example
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 storage:
   s3:
@@ -19,6 +21,8 @@ storage:
     bucket_name: 'zzz'
     path: '/:preset/:image.:hash'
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Options
 

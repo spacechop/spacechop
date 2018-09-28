@@ -23,11 +23,15 @@ The parameters extracted from the URL can be consumed other parts of SpaceChop w
 **Sources**  
 Sources defines how original images can be fetched. One type of source is the _HTTP Source_ which will fetch the original via a standard GET request. We can configure the source like this:
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 sources:
   - http:
       root: https://example.com/assets/:image
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 You can see here that we used the parameter image to define the path from where original image should be fetched. So if the `image = 'cat.jpg'` the original image would be fetched from `https://example.com/assets/cat.jpg`
 
@@ -36,6 +40,8 @@ A preset describe the series of operations that will be performed on the origina
 
 A common preset is to create a small thumbnail of the original image to be used as a preview. We can define this preset as this:
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 presets:
   steps:
@@ -45,6 +51,8 @@ presets:
     - $compress:
         quality: 75
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 This will result in a compressed 200x200px image.
 
@@ -53,12 +61,16 @@ If a storage is defined the final image will be uploaded there after the transfo
 
 A storage provider is the _S3 Storage_ which will upload the image to your S3 bucket. The configuration looks like this \(some configuration left out for brevity\):
 
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 storage:
   s3:
     bucket_name: 'my-images'
     path: 'transformed/:preset/:image.:hash'
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 Again, we make use of parameters to describe where the transformation should be stored.
 
