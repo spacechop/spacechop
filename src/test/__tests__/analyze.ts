@@ -85,6 +85,22 @@ describe('Headers', () => {
           expect.objectContaining(expected),
         );
       });
+
+      const missingStorage = {
+        exists: jest.fn(() => Promise.resolve(false)),
+        stream: jest.fn(() => Promise.resolve(null)),
+        upload: jest.fn(),
+      };
+      const missingStorageHandler = requestHandler(config, params, sources, missingStorage);
+      it(`should correctly analyze asset [${asset}] when not existing in storage`, async () => {
+        request.setParams(0, 't_original');
+        request.setParams(1, asset);
+        request.setQuery('analyze');
+        await missingStorageHandler(request, response);
+        expect(response.json).toBeCalledWith(
+          expect.objectContaining(expected),
+        );
+      });
     }
   });
 });
