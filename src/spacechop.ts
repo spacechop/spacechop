@@ -85,13 +85,14 @@ export const requestHandler = (
   if (storage) {
     const fromCache = await fetchFromStorage(storage, params);
 
-    if ('analyze' in req.query) {
-      const { state } = await buildTransformation(fromCache.stream, []);
-      res.json(state);
-      return;
-    }
     // It exists in cache
     if (fromCache && fromCache.contentType) {
+      if ('analyze' in req.query) {
+        const { state } = await buildTransformation(fromCache.stream, steps);
+        res.json(state);
+        return;
+      }
+
       await respond(res, fromCache.stream, fromCache.contentType, config);
       trace.end();
       return;
