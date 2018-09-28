@@ -84,17 +84,18 @@ export const requestHandler = (
   // check if transformation is already done and exists in storage
   if (storage) {
     const fromCache = await fetchFromStorage(storage, params);
-
-    if ('analyze' in req.query) {
-      const { state } = await buildTransformation(fromCache.stream, []);
-      res.json(state);
-      return;
-    }
-    // It exists in cache
-    if (fromCache && fromCache.contentType) {
-      await respond(res, fromCache.stream, fromCache.contentType, config);
-      trace.end();
-      return;
+    if (fromCache !== null) {
+      if ('analyze' in req.query) {
+        const { state } = await buildTransformation(fromCache.stream, []);
+        res.json(state);
+        return;
+      }
+      // It exists in cache
+      if (fromCache.contentType) {
+        await respond(res, fromCache.stream, fromCache.contentType, config);
+        trace.end();
+        return;
+      }
     }
   }
 
