@@ -20,5 +20,6 @@ export default async (stream: Stream, requirements: DefinitionRequirement[] = []
   }
   return {
     ...info,
+    original: info,
   };
 };

@@ -24,4 +24,7 @@ export default interface ImageDefinition {
   animated?: boolean;
   size?: number;
   lossy?: boolean;
+
+  // The state from analyze.
+  original: ImageDefinition;
 }
