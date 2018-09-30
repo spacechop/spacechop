@@ -2,12 +2,18 @@ import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
 import { StripConfig } from './types';
 
-export const exiftoolOptions = (config: StripConfig): string[] => {
+export const magickOptions = (config: StripConfig, state: ImageDefinition): string[] => {
   return [
-    'exiftool',
-    '-all=',
-    ...!config.icc_profile ? ['--icc_profile:all'] : [],
+    'magick',
     '-',
+    '-strip',
+    ...!config.icc_profile ? [
+      '-sampling-factor',
+      '4:2:0',
+      '-colorspace',
+      'sRGB',
+    ] : [],
+    `${state.type}:-`,
   ];
 };
 
@@ -33,7 +39,7 @@ export default class Strip implements Operation {
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
-    const options = exiftoolOptions(this.config);
+    const options = magickOptions(this.config, state);
     return {
       state: transformState(this.config, state),
       command: options.join(' '),
