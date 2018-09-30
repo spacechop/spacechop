@@ -4,10 +4,6 @@ import { StripConfig } from './types';
 
 export const magickOptions = (config: StripConfig, state: ImageDefinition): string[] => {
   return [
-    // 'exiftool',
-    // '-all=',
-    // ...!config.icc_profile ? ['--icc_profile:all'] : [],
-    // '-',
     'magick',
     '-',
     '-strip',
