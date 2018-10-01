@@ -32,4 +32,13 @@ export const mimeToFormat = (mime: Mime): Format => {
   return type;
 };
 
+export const parseFormat = (value: string): Format => {
+  switch (value) {
+    case 'jpg':
+      return 'jpeg' as Format;
+    default:
+      return value in allFormats ? value as Format : null;
+  }
+};
+
 export default Format;

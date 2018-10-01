@@ -1,8 +1,8 @@
 import { Params } from '../config/params';
+import { Format, parseFormat } from '../types/Format';
 import StepType from '../types/Step';
 import { Step } from '../types/Step';
 import { StepConfig } from '../types/StepConfig';
-
 
 // Casts passed value
 // Ex:
@@ -10,7 +10,7 @@ import { StepConfig } from '../types/StepConfig';
 // 'false' -> false
 // '100' -> 100
 // 'value' -> 'value'
-export const castValue = (value: string): boolean | number | string => {
+export const castValue = (value: string): boolean | number | string | Format => {
   if (value === 'true') {
     return true;
   }
@@ -20,6 +20,10 @@ export const castValue = (value: string): boolean | number | string => {
   const maybeNumber = parseFloat(value);
   if (!isNaN(maybeNumber)) {
     return maybeNumber;
+  }
+  const maybeFormat = parseFormat(value);
+  if (maybeFormat) {
+    return maybeFormat;
   }
   return value;
 };
