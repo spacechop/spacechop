@@ -15,7 +15,7 @@ A path is an URL pattern that will be accepted by SpaceChop. The pattern will co
 
 | Path | URL | Parameters |
 | :--- | :--- | :--- |
-| `/:preset/:image` | `/t_thumb/cat.jpg` | `{   preset: "t_thumb",   image: "cat.jpg" }` |
+| `/:preset/:image` | `/t_thumb/cat.jpg` | `{ preset: "t_thumb", image: "cat.jpg" }` |
 
 **Parameters**  
 The parameters extracted from the URL can be consumed other parts of SpaceChop when fetching, transforming and storing the original image. There is only one parameter that must be set in the path, and that is `preset`, which is used to determine which preset should be used.
