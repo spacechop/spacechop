@@ -2,6 +2,15 @@ import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
 import { CompressConfig } from './types';
 
+const shouldInterlace = (state: ImageDefinition): boolean => {
+  if (state.type === 'jpeg') {
+    // estimate number of bytes in picture.
+    const estimateSize = state.width * state.height;
+    return estimateSize > 10000;
+  }
+  return false;
+};
+
 export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'mozjpeg',
@@ -13,8 +22,7 @@ export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): 
     '4:2:0',
     '-strip',
     `-quality ${config.quality}`,
-    '-interlace',
-    'JPEG',
+    ...shouldInterlace(state) ? ['-interlace', 'JPEG'] : [],
     '-colorspace',
     'sRGB',
     `${state.type}:-`,
@@ -51,6 +59,7 @@ export const magickOptions = (config: CompressConfig, state: ImageDefinition): s
 export const transformState = (_, state: ImageDefinition): ImageDefinition => {
   return {
     ...state,
+    interlacing: shouldInterlace(state),
   };
 };
 
