@@ -61,6 +61,27 @@ describe('Populate preset step params', () => {
         },
       }]);
     });
+
+    it('should cast string to valid Format', () => {
+      const preset: PresetConfig = {
+        steps: [{
+          $format: {
+            type: { from_path: 'format' },
+          },
+        }],
+      };
+      const params: Params =  {
+        preset: null,
+        format: 'jpg',
+      };
+
+      const steps = populatePresetParams(preset.steps, params);
+      expect(steps).toEqual([{
+        $format: {
+          type: 'jpeg',
+        },
+      }]);
+    });
   });
 
   describe('Basic', () => {
