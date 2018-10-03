@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`validate hash should to throw error if hash parameter is not used in storage 1`] = `"storage.s3: Missing usage of parameter \\":hash\\""`;

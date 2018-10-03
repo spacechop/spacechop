@@ -47,6 +47,7 @@ export default class S3Storage implements Storage {
   public exists(params: any): Promise<boolean> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
+    const { hash } = params;
 
     return new Promise((resolve) => {
       const query = {
@@ -55,7 +56,8 @@ export default class S3Storage implements Storage {
       };
 
       this.S3.headObject(query, (err, data) => {
-        resolve(!err && !!data);
+        const { Metadata: meta = {} } = data || {};
+        resolve(!err && !!data && meta['x-amz-meta-hash'] === hash);
       });
     });
   }
@@ -90,12 +92,16 @@ export default class S3Storage implements Storage {
 
   public upload(params: any, stream: Stream, contentType: Mime): Promise<void> {
     const Key = compilePath(this.config.path, params);
+    const { hash } = params;
     const p: AWS.S3.PutObjectRequest = {
       Bucket: this.bucketName,
       Key,
       Body: stream,
       ContentType: contentType,
       ACL: this.ACL,
+      Metadata: {
+        'x-amz-meta-hash': hash,
+      },
     };
 
     return new Promise((resolve, reject) => {

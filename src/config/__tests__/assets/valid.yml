@@ -7,7 +7,7 @@ sources:
       secret_access_key: secret_access_key
       region: region
       bucket_name: bucket_name
-      path: ''
+      path: ':image'
 
   - http:
       root: https://example.com/images/:image

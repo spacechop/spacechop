@@ -49,7 +49,7 @@ Object {
       "s3": Object {
         "access_key_id": "access_key_id",
         "bucket_name": "bucket_name",
-        "path": "",
+        "path": ":image",
         "region": "region",
         "secret_access_key": "secret_access_key",
       },
