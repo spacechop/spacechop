@@ -32,7 +32,8 @@ export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): 
 export const pngquantOptions = (config: CompressConfig, state: ImageDefinition): string[] => {
   return [
     'pngquant',
-    '--speed 10',
+    `--quality=65-${config.quality}`,
+    '--speed 3',
     '-',
   ];
 };
