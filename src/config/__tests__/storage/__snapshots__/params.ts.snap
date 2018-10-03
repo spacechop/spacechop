@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate storage should throw error on empty param in storage 1`] = `"storage.s3.path: Path cannot be empty"`;
+
+exports[`validate storage should throw error on empty path in storage 1`] = `
+"storage.s3.path: Path cannot be empty
+params.image: Could not find any usage in sources, storage or paths"
+`;
+
+exports[`validate storage should throw error on missing param in storage 1`] = `
+"storage.s3.path: Missing path parameters
+params.image: Could not find any usage in sources, storage or paths"
+`;

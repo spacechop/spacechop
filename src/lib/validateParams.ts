@@ -21,13 +21,19 @@ export default (config) => {
     for (const key of Object.keys(source[name])) {
       if (source[name][key].length > 0) {
         const sourceParams = extract(source[name][key]);
-        for (const param of sourceParams) {
-          if (typeof params[param.name] !== 'number') {
-            errors.push(`source[${i}].${name}.${key}: Missing param "${param.name}" in paths`);
-          } else {
-            params[param.name]++;
+        if (key === 'path' && sourceParams.length === 0) {
+          errors.push(`storage.${name}.${key}: Missing path parameters`);
+        } else {
+          for (const param of sourceParams) {
+            if (typeof params[param.name] !== 'number') {
+              errors.push(`source[${i}].${name}.${key}: Missing param "${param.name}" in paths`);
+            } else {
+              params[param.name]++;
+            }
           }
         }
+      } else if (key === 'path') {
+        errors.push(`source[${i}].${name}.${key}: Path cannot be empty`);
       }
     }
   }
@@ -39,13 +45,22 @@ export default (config) => {
       for (const key of Object.keys(store)) {
         if (store[key].length > 0) {
           const storeParams = extract(store[key]);
-          for (const param of storeParams) {
-            if (typeof params[param.name] !== 'number') {
-              errors.push(`storage.${name}.${key}: Missing param "${param.name}" in paths`);
-            } else {
-              params[param.name]++;
+          const filteredParams = storeParams.filter(
+            (param: any) => param.name !== 'preset',
+          );
+          if (key === 'path' && filteredParams.length === 0) {
+            errors.push(`storage.${name}.${key}: Missing path parameters`);
+          } else {
+            for (const param of storeParams) {
+              if (typeof params[param.name] !== 'number') {
+                errors.push(`storage.${name}.${key}: Missing param "${param.name}" in paths`);
+              } else {
+                params[param.name]++;
+              }
             }
           }
+        } else if (key === 'path') {
+          errors.push(`storage.${name}.${key}: Path cannot be empty`);
         }
       }
     }
@@ -79,7 +94,7 @@ export default (config) => {
 
       default:
         if (params[param] === 0) {
-          errors.push(`params.${param}: Could not find any usage in sources or paths`);
+          errors.push(`params.${param}: Could not find any usage in sources, storage or paths`);
         }
     }
   }
