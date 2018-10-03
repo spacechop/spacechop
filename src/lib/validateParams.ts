@@ -32,6 +32,25 @@ export default (config) => {
     }
   }
 
+  // Validate params in storage.
+  if (storage) {
+    for (const name of Object.keys(storage)) {
+      const store = storage[name];
+      for (const key of Object.keys(store)) {
+        if (store[key].length > 0) {
+          const storeParams = extract(store[key]);
+          for (const param of storeParams) {
+            if (typeof params[param.name] !== 'number') {
+              errors.push(`storage.${name}.${key}: Missing param "${param.name}" in paths`);
+            } else {
+              params[param.name]++;
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Validate params in preset steps.
   for (const preset of Object.keys(presets)) {
     for (let i = 0; i < presets[preset].steps.length; i++) {
@@ -48,28 +67,6 @@ export default (config) => {
           }
         }
       }
-    }
-  }
-
-  // If storage is defined it should make use of the `:hash` parameter
-  // in the configuration. It could be in any of the keys, but it must
-  // be in at least one.
-  if (storage) {
-    const name = Object.keys(storage)[0];
-    const strg = storage[name];
-    let seenHashUsage = false;
-    for (const key of Object.keys(strg)) {
-      if (strg[key].length > 0) {
-        const storageParams = extract(strg[key]);
-        for (const param of storageParams) {
-          if (param.name === 'hash') {
-            seenHashUsage = true;
-          }
-        }
-      }
-    }
-    if (!seenHashUsage) {
-      errors.push(`storage.${name}: Missing usage of parameter ":hash"`);
     }
   }
 

@@ -1,12 +1,12 @@
 # Storage
 
-## Hash parameter
-
-All storages must make use of the `hash` parameter in order keep transformations up to date as preset configuration changes.
-
 ## S3 Storage
 
-The S3 storage uploads transformations to a S3 bucket, or any other provider implementing the S3 interface \(for example Digital Ocean Spaces\). 
+The S3 storage uploads transformations to a S3 bucket, or any other provider implementing the S3 interface \(for example Digital Ocean Spaces\).
+
+{% hint style="info" %}
+**Digital Ocean** can be used by adding an endpoint.
+{% endhint %}
 
 ### Example
 
@@ -19,7 +19,7 @@ storage:
     secret_access_key: 'yyyy'
     region: 'nyc3'
     bucket_name: 'zzz'
-    path: '/:preset/:image.:hash'
+    path: '/:preset/:image'
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -107,3 +107,6 @@ storage:
   </tbody>
 </table>
 
+## Hash header
+
+SpaceChop makes use of a metadata header `x-amz-meta-hash` on storages in order to keep transformations up to date as preset configuration changes.
