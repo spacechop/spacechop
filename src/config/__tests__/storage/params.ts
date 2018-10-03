@@ -80,6 +80,32 @@ describe('validate storage', () => {
     expect(() => validate(config)).toThrowErrorMatchingSnapshot();
   });
 
+  it('should throw error on missing param in path from storage', () => {
+    const config: Config = {
+      paths: ['/:preset/:uuid'],
+      sources: [{
+        s3: {
+          access_key_id: 'access_key_id',
+          secret_access_key: 'secret_access_key',
+          region: 'region',
+          bucket_name: 'bucket_name',
+          path: ':uuid',
+        },
+      }],
+      storage: {
+        s3: {
+          access_key_id: 'access_key_id',
+          secret_access_key: 'secret_access_key',
+          region: 'region',
+          bucket_name: 'bucket_name',
+          path: '/:preset/:image',
+        },
+      },
+      presets: {},
+    };
+    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
+  });
+
   it('should not throw error on valid storage', () => {
     const config: Config = {
       paths: ['/:preset/:image'],
