@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "~2.328.0",
+    "aws-sdk": "~2.329.0",
     "chokidar": "~2.0.4",
     "cluster": "~0.7.7",
     "duplex-child-process": "~1.0.0",
