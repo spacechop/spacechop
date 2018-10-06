@@ -12,9 +12,15 @@
     "test:watch": "jest --watchAll --verbose false",
     "test:ci": "jest --verbose false --ci --coverage"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spacechop/spacechop.git"
+  },
+  "homepage": "https://github.com/spacechop/spacechop#readme",
+  "author": "SpaceChop AB",
   "license": "ISC",
   "dependencies": {
+    "@spacechop/types": "file:./packages/types",
     "aws-sdk": "~2.327.0",
     "chokidar": "~2.0.4",
     "cluster": "~0.7.7",

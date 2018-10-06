@@ -1,4 +1,4 @@
-import { Storage } from './../../types/Storage';
+import { Storage } from '@spacechop/types';
 import Storages from './../index';
 import IStorage from './../storage';
 

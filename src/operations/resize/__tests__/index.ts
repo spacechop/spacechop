@@ -1,9 +1,9 @@
+import { ResizeConfig } from '@spacechop/types';
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import ImageDefinition from './../../../imagedef';
 import Resize from './../index';
-import { ResizeConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 describe('Resize', () => {

@@ -1,6 +1,6 @@
+import { CropConfig } from '@spacechop/types';
 import ImageDefinition from './../../../imagedef';
 import Crop from './../index';
-import { CropConfig } from './../types';
 
 describe('Crop', () => {
   describe('Requirements', () => {

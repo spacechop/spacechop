@@ -13,6 +13,7 @@ ADD /bin/facedetect.cpp /bin/facedetect.cpp
 ADD scripts/install_deps.sh /install_deps.sh
 RUN sh /install_deps.sh
 
+ADD packages/. /src/packages
 ADD package.json /src/package.json
 RUN npm install
 

@@ -1,10 +1,9 @@
+import { allGravities, FillConfig } from '@spacechop/types';
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { allGravities } from '../../Gravity';
 import ImageDefinition from './../../../imagedef';
 import Fill from './../index';
-import { FillConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 

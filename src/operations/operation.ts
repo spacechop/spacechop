@@ -1,4 +1,5 @@
-import ImageDefinition, { DefinitionRequirement } from '../imagedef';
+import { DefinitionRequirement } from '@spacechop/types';
+import ImageDefinition from '../imagedef';
 
 export default interface Operation {
   requirements(): DefinitionRequirement[];

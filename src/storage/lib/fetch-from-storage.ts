@@ -1,5 +1,5 @@
+import { Mime } from '@spacechop/types';
 import { Stream } from 'stream';
-import { Mime } from '../../types/Format';
 import Storage from '../storage';
 
 export interface StorageFetchResult {

@@ -1,10 +1,10 @@
+import { allFormats } from '@spacechop/types';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import ImageDefinition from './../../../imagedef';
-import { allFormats } from './../../../types/Format';
 import Format from './../index';
 
 expect.extend({ toMatchImageSnapshot });

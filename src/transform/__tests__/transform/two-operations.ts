@@ -1,8 +1,8 @@
+import { Step } from '@spacechop/types';
 import { createReadStream } from 'fs';
 import path from 'path';
 import transform from '../..';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { Step } from '../../../types/Step';
 import assetsFolder from './../../../test/assets/dirname';
 
 expect.extend({ toMatchImageSnapshot });

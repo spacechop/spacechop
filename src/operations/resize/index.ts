@@ -1,7 +1,7 @@
+import { ResizeConfig } from '@spacechop/types';
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import transformFace from '../../lib/face-detection/transformFace';
 import Operation from './../operation';
-import { ResizeConfig } from './types';
 
 export const magickOptions = (config: ResizeConfig, state: ImageDefinition): string[] => {
   return [

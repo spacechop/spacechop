@@ -1,3 +1,4 @@
+import { allFormats, CompressConfig } from '@spacechop/types';
 import fs from 'fs';
 import path from 'path';
 import probeImageSize from 'probe-image-size';
@@ -7,8 +8,6 @@ import ImageDefinition from '../../../imagedef';
 import countStreamBytes from '../../../test/utils/countStreamBytes';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { CompressConfig } from '../types';
-import { allFormats } from './../../../types/Format';
 
 expect.extend({ toMatchImageSnapshot });
 

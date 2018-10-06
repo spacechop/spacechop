@@ -1,6 +1,6 @@
-import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { DefinitionRequirement, StripConfig } from '@spacechop/types';
+import ImageDefinition from '../../imagedef';
 import Operation from './../operation';
-import { StripConfig } from './types';
 
 export const exiftoolOptions = (config: StripConfig): string[] => {
   return [

@@ -1,4 +1,4 @@
-import { Step } from '../../types/Step';
+import { Step } from '@spacechop/types';
 import hash from './../hash';
 
 describe('.hash', () => {

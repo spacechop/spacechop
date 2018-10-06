@@ -1,3 +1,4 @@
+import { Config, Format, formatToMime, Mime } from '@spacechop/types';
 import { Request, Response } from 'express';
 import pathToRegex from 'path-to-regexp';
 import { Stream } from 'stream';
@@ -17,8 +18,6 @@ import uploadToStorage from './storage/lib/upload-to-storage';
 import IStorage from './storage/storage';
 import Trace from './trace';
 import transform, { buildTransformation } from './transform';
-import { Config } from './types/Config';
-import { formatToMime, Mime } from './types/Format';
 
 export const handleError = (res) => (error) => {
   console.error(error);

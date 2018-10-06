@@ -1,7 +1,7 @@
+import { FitConfig } from '@spacechop/types';
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import transformFace from '../../lib/face-detection/transformFace';
 import Operation from './../operation';
-import { FitConfig } from './types';
 
 export const magickOptions = (config: FitConfig, state: ImageDefinition): string[] => {
   const width = config.width === undefined ? '' : config.width;

@@ -1,6 +1,5 @@
-import { DefinitionRequirement } from '../imagedef';
+import { DefinitionRequirement, Step } from '@spacechop/types';
 import Operation from '../operations/operation';
-import { Step } from '../types/Step';
 import Operations from './../operations';
 
 interface InitalizedPipeline {

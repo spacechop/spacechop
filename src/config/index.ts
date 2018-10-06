@@ -1,5 +1,4 @@
-import console from '../lib/console';
-import { Config } from '../types/Config';
+import { Config } from '@spacechop/types';
 import load from './load';
 import validate from './validate';
 

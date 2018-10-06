@@ -1,8 +1,6 @@
+import { ImageDefinition, Step } from '@spacechop/types';
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
-import { DefinitionRequirement } from '../types/DefinitionRequirement';
-import { Step } from '../types/Step';
-import ImageDefinition from './../imagedef';
 import analyze from './../imagedef/analyze';
 import StreamSwitch from './../lib/stream-switch';
 import initializePipeline from './initialize-pipeline';

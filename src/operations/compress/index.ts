@@ -1,6 +1,6 @@
+import { CompressConfig } from '@spacechop/types';
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from './../operation';
-import { CompressConfig } from './types';
 
 const shouldInterlace = (state: ImageDefinition): boolean => {
   if (state.type === 'jpeg') {

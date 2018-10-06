@@ -1,5 +1,5 @@
+import { S3SourceConfig } from '@spacechop/types';
 import { Readable } from 'stream';
-import { S3SourceConfig } from '../types';
 import S3Source from './../index';
 
 const mocks = {

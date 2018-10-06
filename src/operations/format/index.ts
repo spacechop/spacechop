@@ -1,7 +1,6 @@
+import { Format as IFormat, FormatConfig } from '@spacechop/types';
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import Operation from '../operation';
-import { Format as IFormat } from './../../types/Format';
-import { FormatConfig } from './types';
 
 export const magickOptions = (config: FormatConfig, _: ImageDefinition): string[] => {
   return [

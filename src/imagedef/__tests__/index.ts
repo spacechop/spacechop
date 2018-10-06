@@ -1,8 +1,7 @@
+import { Format, ImageDefinition, ImageFaceBox } from '@spacechop/types';
 import { createReadStream } from 'fs';
 import path from 'path';
-import ImageDefinition, { ImageFaceBox } from '..';
 import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
-import { Format } from '../../types/Format';
 import analyze from '../analyze';
 
 expect.extend({ toMatchImageSnapshot });

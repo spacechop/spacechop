@@ -1,9 +1,9 @@
+import { FitConfig } from '@spacechop/types';
 import path from 'path';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import ImageDefinition from './../../../imagedef';
 import Fit from './../index';
-import { FitConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });
 

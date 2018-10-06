@@ -1,4 +1,4 @@
-import { Source } from './../../types/Source';
+import { Source } from '@spacechop/types';
 import Sources from './../index';
 import ISource from './../source';
 

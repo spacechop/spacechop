@@ -1,9 +1,9 @@
+import { S3SourceConfig } from '@spacechop/types';
 import AWS from 'aws-sdk';
 import Https from 'https';
 import { Stream } from 'stream';
 import compilePath from '../../lib/compile-path';
 import Source from '../source';
-import { S3SourceConfig } from './types';
 
 const agent = new Https.Agent({
   keepAlive: true,

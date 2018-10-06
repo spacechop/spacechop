@@ -1,13 +1,11 @@
+import { CropConfig, Gravity } from '@spacechop/types';
 import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import getLargestFace from '../../lib/face-detection/getLargestFace';
-import transformFace from '../../lib/face-detection/transformFace';
 import translateFace from '../../lib/face-detection/translateFace';
 import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
 import getMagickOffset from '../getMagickOffset';
-import { Gravity } from '../Gravity';
 import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
-import { CropConfig } from './types';
 
 const gravityTransform = (config: CropConfig, state: ImageDefinition, gravity: Gravity) => {
   const width = config.width as number;
