@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  spacechop:
+    command: npm run test:ci
+    build:
+      cache_from: 
+        - spacechop:latest
+      args:
+        env: development
+    volumes:
+      - ./packages/types:/src/types
+      - ./src:/src/app

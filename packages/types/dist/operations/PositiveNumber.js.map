@@ -1,0 +1,1 @@
+{"version":3,"file":"PositiveNumber.js","sourceRoot":"","sources":["../../../app/operations/PositiveNumber.ts"],"names":[],"mappings":";;;;;;;;;AAAA,0CAA8B;AAE9B,IAAM,aAAa,GAAG,CAAC,CAAC,MAAM,CAAC,cAAc,CAAC,UAAC,CAAC;IAC9C,IAAI,CAAC,GAAG,CAAC,EAAE;QACT,OAAO,2BAA2B,CAAC;KACpC;IACD,OAAO,IAAI,CAAC;AACd,CAAC,CAAC,CAAC;AAGH,kBAAe,aAAa,CAAC"}

@@ -1,0 +1,32 @@
+{
+  "name": "@spacechop/types",
+  "version": "1.0.3",
+  "description": "SpaceChop config types and validation tools",
+  "main": "dist/config/index.js",
+  "types": "dist/config/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spacechop/spacechop.git"
+  },
+  "keywords": [
+    "spacechop"
+  ],
+  "author": "SpaceChop AB",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spacechop/spacechop/issues"
+  },
+  "homepage": "https://github.com/spacechop/spacechop#readme",
+  "dependencies": {
+    "js-yaml": "~3.12.0",
+    "path-to-regexp": "~2.4.0",
+    "runtypes": "~2.1.6"
+  },
+  "devDependencies": {
+    "typescript": "^3.0.1",
+    "@types/node": "^10.11.4"
+  }
+}
