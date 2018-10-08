@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Dont do anything if not on a release branch
-if [[ -z "${TRAVIS_TAG}" ]]; then
-  exit 0
-fi
-if ![[ "${TRAVIS_TAG}" == release-* ]]; then
+if [[ "${TRAVIS_TAG}" != release-* ]]; then
   exit 0
 fi
 
