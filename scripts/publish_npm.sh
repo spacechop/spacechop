@@ -1,11 +1,5 @@
 #!/bin/bash
-function bump {
-	search='("version":[[:space:]]*").+(")'
-	replace="\1${2}\2"
-	
-	sed -i ".tmp" -E "s/${search}/${replace}/g" "$1"
-	rm "$1.tmp"
-}
+
 
 # Dont do anything if not on a release branch
 # if [[ -z "${TRAVIS_TAG}" ]]; then
@@ -30,7 +24,11 @@ if [[ -z "${NPM_TOKEN}" ]]; then
 fi
 
 # VERSION=$(echo $TRAVIS_TAG | sed s/release-//g)
-# bump "package.json" $VERSION
+# search='("version":[[:space:]]*").+(")'
+# replace="\1${VERSION}\2"
+
+# sed -i ".tmp" -E "s/${search}/${replace}/g" "package.json"
+# rm "package.json.tmp"
 
 # Authenticate to NPM registry
 # NPM_TOKEN should be set in travis
