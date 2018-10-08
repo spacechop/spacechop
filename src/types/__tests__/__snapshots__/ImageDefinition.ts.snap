@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate ImageDefinition invalid faulty height 1`] = `"Expected number, but was undefined"`;
+
+exports[`validate ImageDefinition invalid faulty type 1`] = `"Expected number, but was undefined"`;
+
+exports[`validate ImageDefinition invalid faulty width 1`] = `"please no negative number"`;
+
+exports[`validate ImageDefinition invalid no empty config 1`] = `"Expected number, but was undefined"`;

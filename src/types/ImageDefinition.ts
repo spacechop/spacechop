@@ -1,10 +1,11 @@
 import * as t from 'runtypes';
 import Format from './Format';
 import ImageFaceBox from './ImageFaceBox';
+import PositiveNumber from './PositiveNumber';
 
 const ImageDefinition = t.Record({
-  width: t.Number,
-  height: t.Number,
+  width: PositiveNumber,
+  height: PositiveNumber,
   type: Format,
 }).And(t.Partial({
   alpha: t.Boolean,

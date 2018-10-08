@@ -1,4 +1,4 @@
-import { Config, default as ConfigSource } from './Config';
+import { Config } from './Config';
 import { DefinitionRequirement } from './DefinitionRequirement';
 import { Format } from './Format';
 import { Gravity } from './Gravity';
@@ -12,17 +12,7 @@ import { Step } from './Step';
 import { StepConfig } from './StepConfig';
 import { Storage } from './Storage';
 
-const validate = (config) => {
-  try {
-    ConfigSource.check(config);
-  } catch (err) {
-    throw new Error(`${err.key ? `${err.key}: ` : ''}${err.message}`);
-  }
-};
-
 export {
-  validate as default,
-
   Config,
   DefinitionRequirement,
   Format,

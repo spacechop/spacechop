@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate volume source should require valid http root url 1`] = `"Requires valid root"`;
+
+exports[`validate volume source should require valid source http 1`] = `"Expected string, but was undefined"`;

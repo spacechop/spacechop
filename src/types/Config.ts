@@ -1,21 +1,14 @@
 import * as t from 'runtypes';
 import validateParams from '../lib/validateParams';
-import PresetConfig from './PresetConfig';
-import Source from './Source';
+import Paths from './Paths';
+import Presets from './Presets';
+import Sources from './Sources';
 import Storage from './Storage';
 
-// Test to make sure :preset exists in path.
-const pattern = /^\/.*:preset(\([^)]+\))?([^\w)]*?$|\/.*)/i;
-
 const Config = t.Record({
-  paths: t.Array(
-    t.String
-      .withConstraint((n) => !!n || 'Cannot be empty')
-      .withConstraint((n) => /^\//.test(n) || 'Must start with /')
-      .withConstraint((n) => pattern.test(n) || 'Requires :preset in path'),
-  ).withConstraint((n) => n && n.length > 0 || 'Requires at least one path'),
-  sources: t.Array(Source),
-  presets: t.Dictionary(PresetConfig, 'string'),
+  paths: Paths,
+  sources: Sources,
+  presets: Presets,
 }).And(t.Partial({
   storage: Storage,
   disableChunkedEncoding: t.Boolean,

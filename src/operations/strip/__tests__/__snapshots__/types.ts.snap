@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should validate strip config should throw on invalid config require valid icc_profile 1`] = `"Expected boolean, but was string"`;

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate s3 storage should throw on invalid params in source 1`] = `""`;
+
+exports[`validate s3 storage should throw on invalid storage 1`] = `"Expected string, but was undefined"`;

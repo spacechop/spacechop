@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate ImageFaceBox invalid no empty config 1`] = `"Expected number, but was undefined"`;

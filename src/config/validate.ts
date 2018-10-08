@@ -1,5 +1,5 @@
 import console from '../lib/console';
-import validate from '../types';
+import validate from '../types/validate';
 
 let valid = true;
 

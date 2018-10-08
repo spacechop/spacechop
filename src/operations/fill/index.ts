@@ -2,9 +2,8 @@ import getLargestFace from '../../lib/face-detection/getLargestFace';
 import scaleFace from '../../lib/face-detection/scaleFace';
 import transformFace from '../../lib/face-detection/transformFace';
 import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
+import { getMagickOffset, magickGravityMap } from '../../lib/magick';
 import { DefinitionRequirement, Gravity, ImageDefinition } from '../../types';
-import getMagickOffset from '../getMagickOffset';
-import { magickGravityMap } from '../magickGravityMap';
 import Operation from './../operation';
 import { FillConfig } from './types';
 

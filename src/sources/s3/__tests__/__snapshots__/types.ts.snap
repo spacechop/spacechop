@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate s3 source should throw on empty path in source 1`] = `"Expected string, but was undefined"`;
+
+exports[`validate s3 source should throw on invalid params in source 1`] = `""`;
+
+exports[`validate s3 source should throw on invalid source 1`] = `"Expected string, but was undefined"`;

@@ -1,56 +1,31 @@
-import validate from '..';
+import Presets from '../Presets';
 
-describe('validate presets', () => {
-  it('should require presets', () => {
-    const config = {
-      paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
-    };
-    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
-  });
+describe('validate Presets', () => {
+  describe('invalid', () => {
+    it('should require presets', () => {
+      const presets = null;
+      expect(() => Presets.check(presets)).toThrowErrorMatchingSnapshot();
+    });
 
-  it('should throw on invalid presets', () => {
-    let config = {
-      paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
-      presets: {
+    it('should throw on invalid presets', () => {
+      let presets = {
         t_200: {},
-      },
-    };
-    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
+      };
+      expect(() => Presets.check(presets)).toThrowErrorMatchingSnapshot();
 
-    config = {
-      paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
-      presets: {
+      presets = {
         t_200: {
           steps: {},
         },
-      },
-    };
-    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
+      };
+      expect(() => Presets.check(presets)).toThrowErrorMatchingSnapshot();
 
-    config = {
-      paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
-      presets: {
+      presets = {
         t_200: {
           steps: [{}],
         },
-      },
-    };
-    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
-
-    config = {
-      paths: ['/:preset/:image'],
-      sources: [{ http: { root: 'http://localhost' } }],
-      presets: {
-        t_200: {
-          detect: ['face'],
-          steps: [{}],
-        },
-      },
-    };
-    expect(() => validate(config)).toThrowErrorMatchingSnapshot();
+      };
+      expect(() => Presets.check(presets)).toThrowErrorMatchingSnapshot();
+    });
   });
 });

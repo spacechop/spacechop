@@ -10,6 +10,7 @@ describe('formatToMime', () => {
     expect(formatToMime('jpeg')).toBe('image/jpeg');
   });
 });
+
 describe('mimeToFormat', () => {
   it('should throw error on invalid mime', () => {
     const mime: any = 'something';
