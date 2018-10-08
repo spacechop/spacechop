@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   spacechop:
-    command: npm run test:ci
+    command: sh -c "cd types; npm install; npm run-script build"
     build:
       cache_from: 
         - spacechop:latest

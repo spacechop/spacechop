@@ -13,11 +13,14 @@ after_success: |
   bash <(curl -s https://codecov.io/bash)
 
 script:
-  - env
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run spacechop npm run build:dry
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --abort-on-container-exit
-
+  
+  # Compile all packages
+  - docker-compose -f docker-compose.yml -f docker-compose.packages.yml up
+  - sh scripts/publish_npm.sh packages/types
+  
 before_cache:
   # Save tagged docker images
   - rm $HOME/docker/*.tar.gz
