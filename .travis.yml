@@ -19,7 +19,7 @@ script:
   
   # Compile all packages
   - docker-compose -f docker-compose.yml -f docker-compose.packages.yml up
-  - sh scripts/publish_npm.sh packages/types
+  - scripts/publish_npm.sh packages/types
 
 before_cache:
   # Save tagged docker images
