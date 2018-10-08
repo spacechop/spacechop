@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom",
+      "dom.iterable"
+    ],
+    "outDir": "dist",
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "typeRoots": [ "./node_modules/@types/", "./@types/"],
+    "esModuleInterop": true
+  },
+  "files": [
+    "../app/config/index.ts"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/*.spec.ts"
+  ]
+}

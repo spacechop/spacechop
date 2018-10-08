@@ -16,6 +16,10 @@ script:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run spacechop npm run build:dry
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml up --abort-on-container-exit
+  
+  # Compile all packages
+  - docker-compose -f docker-compose.yml -f docker-compose.packages.yml up
+  - scripts/publish_npm.sh packages/types
 
 before_cache:
   # Save tagged docker images

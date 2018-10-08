@@ -3,6 +3,8 @@ import { Config } from '../types/Config';
 import load from './load';
 import validate from './validate';
 
+export { validate, Config };
+
 const {
   CONFIG_PATH = '/config.yml',
 } = process.env;

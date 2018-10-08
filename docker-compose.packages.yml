@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  spacechop:
+    command: sh -c "cd types; npm install; npm run-script build"
+    build:
+      cache_from: 
+        - spacechop:latest
+      args:
+        env: development
+    volumes:
+      - ./packages/types:/src/types
+      - ./src:/src/app
