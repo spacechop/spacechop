@@ -7,7 +7,6 @@ import { ImageFaceBox } from './ImageFaceBox';
 import { Param } from './Param';
 import { PositiveNumber } from './PositiveNumber';
 import { PresetConfig } from './PresetConfig';
-import { ReportFormat } from './ReportFormat';
 import { Source } from './Source';
 import { Step } from './Step';
 import { StepConfig } from './StepConfig';
@@ -33,7 +32,6 @@ export {
   Param,
   PositiveNumber,
   PresetConfig,
-  ReportFormat,
   Source,
   Step,
   StepConfig,
