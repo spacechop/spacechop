@@ -1,8 +1,8 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
+import { ImageDefinition, ImageFaceBox } from '../../types';
 import { Format } from '../../types/Format';
-import { ImageDefinition, ImageFaceBox } from '../../types/index.d';
 import analyze from '../analyze';
 
 expect.extend({ toMatchImageSnapshot });
