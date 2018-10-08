@@ -9,7 +9,6 @@ import { PositiveNumber } from './PositiveNumber';
 import { PresetConfig } from './PresetConfig';
 import { Source } from './Source';
 import { Step } from './Step';
-import { StepConfig } from './StepConfig';
 import { Storage } from './Storage';
 
 export {
@@ -24,6 +23,5 @@ export {
   PresetConfig,
   Source,
   Step,
-  StepConfig,
   Storage,
 };
