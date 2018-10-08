@@ -1,13 +1,12 @@
 #!/bin/bash
 
-
 # Dont do anything if not on a release branch
-# if [[ -z "${TRAVIS_TAG}" ]]; then
-#   exit 0
-# fi
-# if ![[ "${TRAVIS_TAG}" == release-* ]]; then
-#   exit 0
-# fi
+if [[ -z "${TRAVIS_TAG}" ]]; then
+  exit 0
+fi
+if ![[ "${TRAVIS_TAG}" == release-* ]]; then
+  exit 0
+fi
 
 folder=$1
 if [[ -z "${folder}" ]]; then
@@ -23,12 +22,16 @@ if [[ -z "${NPM_TOKEN}" ]]; then
   exit
 fi
 
-# VERSION=$(echo $TRAVIS_TAG | sed s/release-//g)
-# search='("version":[[:space:]]*").+(")'
-# replace="\1${VERSION}\2"
+# Extract release version.
+# Ex: release-1.0.0 -> 1.0.0
+VERSION=$(echo $TRAVIS_TAG | sed s/release-//g)
 
-# sed -i ".tmp" -E "s/${search}/${replace}/g" "package.json"
-# rm "package.json.tmp"
+# Replace version in package.json
+# with VERSION
+search='("version":[[:space:]]*").+(")'
+replace="\1${VERSION}\2"
+sed -i ".tmp" -E "s/${search}/${replace}/g" "package.json"
+rm "package.json.tmp"
 
 # Authenticate to NPM registry
 # NPM_TOKEN should be set in travis
