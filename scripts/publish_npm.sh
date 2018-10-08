@@ -1,3 +1,4 @@
+#!/bin/bash
 function bump {
 	search='("version":[[:space:]]*").+(")'
 	replace="\1${2}\2"
