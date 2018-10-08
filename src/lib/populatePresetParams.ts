@@ -2,7 +2,6 @@ import { Params } from '../config/params';
 import { Format, parseFormat } from '../types/Format';
 import StepType from '../types/Step';
 import { Step } from '../types/Step';
-import { StepConfig } from '../types/StepConfig';
 
 // Casts passed value
 // Ex:
@@ -35,7 +34,7 @@ export default (
 ): Step[] => {
   const populatedSteps = steps.map((step: Step) => {
     const name = Object.keys(step)[0];
-    const config: StepConfig = Object.keys(step[name]).reduce((acc, key) => {
+    const config: Step = Object.keys(step[name]).reduce((acc, key) => {
       let value = step[name][key];
       if (typeof value === 'object' && 'from_path' in value) {
         const paramKey = step[name][key].from_path;
