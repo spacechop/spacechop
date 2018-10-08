@@ -2,8 +2,7 @@
   "name": "@spacechop/types",
   "version": "1.0.11",
   "description": "SpaceChop config types and validation tools",
-  "main": "dist/config/index.js",
-  "types": "dist/config/index.d.ts",
+  "main": "dist/types/index.js",
   "scripts": {
     "build": "tsc"
   },
