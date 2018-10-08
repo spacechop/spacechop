@@ -1,7 +1,7 @@
 import * as t from 'runtypes';
+import Gravity from '../../types/Gravity';
 import Param from '../../types/Param';
-import Gravity from '../Gravity';
-import PostiveNumber from '../PositiveNumber';
+import PostiveNumber from '../../types/PositiveNumber';
 
 const FillConfig = t.Record({
   width: t.Union(PostiveNumber, Param),

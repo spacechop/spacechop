@@ -1,6 +1,6 @@
 import path from 'path';
 import { PassThrough } from 'stream';
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 import { Config } from '../../types/Config';
 import { Mime } from '../../types/Format';
 import assetsFolder from '../assets/dirname';

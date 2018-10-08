@@ -1,6 +1,6 @@
 import { defaultConfig } from '.';
-import { Config } from '../../../types/Config';
-import { validate } from '../../validate';
+import validate from '../..';
+import { Config } from '../../Config';
 
 describe('should validate resize config', () => {
   describe('should throw on invalid config', () => {

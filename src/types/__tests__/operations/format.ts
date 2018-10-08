@@ -1,7 +1,7 @@
 import { defaultConfig } from '.';
-import { Config } from '../../../types/Config';
-import { allFormats } from '../../../types/Format';
-import { validate } from '../../validate';
+import validate from '../..';
+import { Config } from '../../Config';
+import { allFormats } from '../../Format';
 
 describe('should validate format config', () => {
   describe('should throw on invalid config', () => {

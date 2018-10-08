@@ -1,8 +1,8 @@
 import { defaultConfig } from '.';
-import { Config } from '../../../types/Config';
-import { validate } from '../../validate';
+import validate from '../..';
+import { Config } from '../../Config';
 
-describe('should validate fill config', () => {
+describe('should validate fit config', () => {
   describe('should throw on invalid config', () => {
     it('require width or height', () => {
       const config = {
@@ -10,7 +10,7 @@ describe('should validate fill config', () => {
         presets: {
           t_200: {
             steps: [{
-              $fill: {
+              $fit: {
               },
             }],
           },
@@ -25,7 +25,7 @@ describe('should validate fill config', () => {
         presets: {
           t_200: {
             steps: [{
-              $fill: {
+              $fit: {
                 width: -100,
                 height: 100,
               },
@@ -40,27 +40,9 @@ describe('should validate fill config', () => {
         presets: {
           t_200: {
             steps: [{
-              $fill: {
+              $fit: {
                 width: 100,
                 height: -100,
-              },
-            }],
-          },
-        },
-      };
-      expect(() => validate(config)).toThrowErrorMatchingSnapshot();
-    });
-
-    it('require valid gravity', () => {
-      const config = {
-        ...defaultConfig,
-        presets: {
-          t_200: {
-            steps: [{
-              $fill: {
-                width: 100,
-                height: 100,
-                gravity: 'right',
               },
             }],
           },
@@ -77,27 +59,9 @@ describe('should validate fill config', () => {
         presets: {
           t_200: {
             steps: [{
-              $fill: {
+              $fit: {
                 width: 100,
                 height: 100,
-              },
-            }],
-          },
-        },
-      };
-      expect(() => validate(config)).not.toThrow();
-    });
-
-    it('width & height & gravity', () => {
-      const config: Config = {
-        ...defaultConfig,
-        presets: {
-          t_200: {
-            steps: [{
-              $fill: {
-                width: 100,
-                height: 100,
-                gravity: 'center',
               },
             }],
           },

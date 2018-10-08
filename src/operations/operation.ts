@@ -1,4 +1,4 @@
-import ImageDefinition, { DefinitionRequirement } from '../imagedef';
+import { DefinitionRequirement, ImageDefinition } from '../types/index.d';
 
 export default interface Operation {
   requirements(): DefinitionRequirement[];

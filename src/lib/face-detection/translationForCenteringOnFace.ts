@@ -1,5 +1,4 @@
-import { ImageFaceBox } from '../../imagedef';
-import { Gravity } from '../../operations/Gravity';
+import { Gravity, ImageFaceBox } from '../../types';
 
 interface Translation {
   x: number;

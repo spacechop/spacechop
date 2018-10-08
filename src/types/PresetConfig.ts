@@ -1,5 +1,4 @@
 import * as t from 'runtypes';
-import DefinitionRequirement from './DefinitionRequirement';
 import Step from './Step';
 
 const PresetConfig = t.Record({

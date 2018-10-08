@@ -1,5 +1,5 @@
-import { Config } from '../../../types/Config';
-import { validate } from '../../validate';
+import validate from '../..';
+import { Config } from '../../Config';
 
 describe('validate storage', () => {
   it('should throw error on empty param in storage', () => {

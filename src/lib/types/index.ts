@@ -1,5 +1,5 @@
 import { Stream } from 'stream';
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 import isGIF from './gif';
 import isJPEG from './jpeg';
 import isPNG from './png';

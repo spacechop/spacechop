@@ -1,4 +1,4 @@
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 
 /**
  * @see http://en.wikipedia.org/wiki/Portable_Network_Graphics

@@ -1,8 +1,8 @@
 import path from 'path';
 import createTransformedStream from '../../../../test/utils/createTransformedStream';
-import { allGravities } from '../../../Gravity';
-import ImageDefinition from './../../../../imagedef';
-import toMatchImageSnapshot from './../../../../test/utils/toMatchImageSnapshot';
+import toMatchImageSnapshot from '../../../../test/utils/toMatchImageSnapshot';
+import { ImageDefinition } from '../../../../types';
+import { allGravities } from '../../../../types/Gravity';
 import Crop from './../../index';
 import { CropConfig } from './../../types';
 expect.extend({ toMatchImageSnapshot });

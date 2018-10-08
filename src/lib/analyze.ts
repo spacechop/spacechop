@@ -1,10 +1,13 @@
 import { Stream } from 'stream';
-import ImageDefinition, { DefinitionRequirement } from '../imagedef';
+import { DefinitionRequirement, ImageDefinition } from '../types';
 import facedetect from './face-detection/detect';
 import StreamSwitch from './stream-switch';
 import types from './types';
 
-export default async (stream: Stream, requirements: DefinitionRequirement[] = []): Promise<ImageDefinition> => {
+export default async (
+  stream: Stream,
+  requirements: { [key: number]: DefinitionRequirement },
+): Promise<ImageDefinition> => {
   const streamSwitch = new StreamSwitch(stream);
   const streamToAnalyzeTypes = streamSwitch.createReadStream();
   const info = await types(streamToAnalyzeTypes);

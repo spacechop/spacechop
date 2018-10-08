@@ -1,4 +1,4 @@
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 
 export default (buffer): ImageDefinition => {
   if (buffer.length < 3 ||

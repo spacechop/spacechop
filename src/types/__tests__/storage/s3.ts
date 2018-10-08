@@ -1,4 +1,4 @@
-import { validate } from '../../validate';
+import validate from '../..';
 
 describe('validate s3 storage', () => {
   it('should throw on invalid storage', () => {

@@ -1,10 +1,10 @@
 import path from 'path';
+import Fill from '..';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import { allGravities } from '../../Gravity';
-import ImageDefinition from './../../../imagedef';
-import Fill from './../index';
-import { FillConfig } from './../types';
+import { ImageDefinition } from '../../../types';
+import { allGravities } from '../../../types/Gravity';
+import { FillConfig } from '../types';
 
 expect.extend({ toMatchImageSnapshot });
 

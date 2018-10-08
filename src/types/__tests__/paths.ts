@@ -1,5 +1,5 @@
-import { Config } from '../../types/Config';
-import { validate } from '../validate';
+import validate from '..';
+import { Config } from '../Config';
 
 describe('validate paths', () => {
   it('should require paths', () => {

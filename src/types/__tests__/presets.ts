@@ -1,4 +1,4 @@
-import { validate } from '../validate';
+import validate from '..';
 
 describe('validate presets', () => {
   it('should require presets', () => {

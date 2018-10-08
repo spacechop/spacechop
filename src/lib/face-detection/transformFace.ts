@@ -1,4 +1,4 @@
-import { ImageFaceBox } from '../../imagedef';
+import { ImageFaceBox } from '../../types';
 import scaleFace, { ScaleFace } from './scaleFace';
 import translateFace, { TranslateFace } from './translateFace';
 

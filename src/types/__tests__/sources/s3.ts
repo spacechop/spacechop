@@ -1,4 +1,4 @@
-import { validate } from '../../validate';
+import validate from '../..';
 
 describe('validate s3 source', () => {
   it('should throw on invalid source', () => {

@@ -1,4 +1,4 @@
-import { ImageFaceBox } from '../../imagedef';
+import { ImageFaceBox } from '../../types';
 
 /**
  * Finds the largest face in a list of faces.

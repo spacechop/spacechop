@@ -1,4 +1,4 @@
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 
 /**
  * @see https://developers.google.com/speed/webp/docs/riff_container

@@ -1,4 +1,4 @@
-import { ImageFaceBox } from '../../imagedef';
+import { ImageFaceBox } from '../../types';
 
 export interface TranslateFace {
   x: number;

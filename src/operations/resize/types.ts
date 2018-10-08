@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 import Param from '../../types/Param';
-import PositiveNumber from '../PositiveNumber';
+import PositiveNumber from '../../types/PositiveNumber';
 
 const ResizeConfig = t.Record({
   width: t.Union(PositiveNumber, Param),

@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 import Param from '../../types/Param';
-import PostiveNumber from '../PositiveNumber';
+import PostiveNumber from '../../types/PositiveNumber';
 
 const FitConfig = t.Partial({
   width: t.Union(PostiveNumber, Param),

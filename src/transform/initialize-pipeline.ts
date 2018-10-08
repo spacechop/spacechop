@@ -1,12 +1,11 @@
-import { DefinitionRequirement } from '../imagedef';
 import Operation from '../operations/operation';
-import { Step } from '../types/Step';
+import { DefinitionRequirement, Step } from '../types';
 import Operations from './../operations';
 
 interface InitalizedPipeline {
   pipeline: Operation[];
   requirements: {
-    [key: number]: DefinitionRequirement[],
+    [key: number]: DefinitionRequirement,
   };
 }
 
