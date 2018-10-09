@@ -1,7 +1,7 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
 import uuid from 'uuid/v1';
-import ImageDefinition, { ImageFaceBox } from '../../imagedef';
+import { ImageDefinition, ImageFaceBox } from '../../types';
 import scaleFace from './scaleFace';
 
 /**

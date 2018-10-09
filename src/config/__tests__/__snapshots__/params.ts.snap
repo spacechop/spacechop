@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate params presets should throw on missing path params in config 1`] = `"params.width: Could not find any usage in sources, storage or paths"`;
+
+exports[`validate params presets should throw on missing path params in config 2`] = `"params.width: Could not find any usage in sources, storage or paths"`;
+
+exports[`validate params presets should throw on missing path params in config 3`] = `"params.width: Could not find any usage in sources, storage or paths"`;
+
+exports[`validate params presets should throw on missing path params in config 4`] = `"params.image: Could not find any usage in sources, storage or paths"`;
+
+exports[`validate params presets should throw on missing path params in config 5`] = `"params.height: Could not find any usage in sources, storage or paths"`;
+
+exports[`validate params presets should throw on missing path params in config 6`] = `"presets.t_200.steps[0].width: Missing param (width) in paths for preset (t_200)"`;
+
+exports[`validate params presets should throw on missing path params in config 7`] = `"source[0].volume.root: Missing param \\"image\\" in paths"`;
+
+exports[`validate params sources should throw on missing params in path on source 1`] = `
+"source[0].s3.path: Missing param \\"image\\" in paths
+params.uuid: Could not find any usage in sources, storage or paths"
+`;
+
+exports[`validate params sources should throw on missing params in source 1`] = `
+"storage.s3.path: Missing path parameters
+params.image: Could not find any usage in sources, storage or paths"
+`;
+
+exports[`validate params storage should throw error on missing param in path from storage 1`] = `"storage.s3.path: Missing param \\"image\\" in paths"`;
+
+exports[`validate params storage should throw error on missing param in storage 1`] = `
+"storage.s3.path: Missing path parameters
+params.image: Could not find any usage in sources, storage or paths"
+`;

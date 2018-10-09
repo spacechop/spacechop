@@ -8,9 +8,7 @@ const { combine, timestamp, json } = format;
 // In test environment only error logs will be emitted.
 const logLevel = 'LOG_LEVEL' in process.env
   ? process.env.LOG_LEVEL
-  : process.env.NODE_ENV === 'test'
-    ? 'error'
-    : 'info';
+  : (process.env.NODE_ENV === 'test' ? 'error' : 'info');
 
 // Rotate log file transport.
 const createRotatedFileTransform = (config) => new DailyRotateFile({

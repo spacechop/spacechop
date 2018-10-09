@@ -1,5 +1,5 @@
-import ImageDefinition from './../../../imagedef';
-import Crop from './../index';
+import Crop from '..';
+import { ImageDefinition } from './../../../types';
 import { CropConfig } from './../types';
 
 describe('Crop', () => {

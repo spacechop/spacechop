@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`validate sources should require sources 1`] = `"sources: Expected array, but was undefined"`;
-
-exports[`validate sources should require valid source 1`] = `"sources.[0]: Expected { http: { root: string; }; } | { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; } & { endpoint?: string; }; } | { volume: { root: string; }; }, but was object"`;
-
-exports[`validate sources should require valid sources array 1`] = `"sources: Expected array, but was object"`;
-
-exports[`validate sources should throw on any other type of source 1`] = `"sources.[0]: Expected { http: { root: string; }; } | { s3: { access_key_id: string; secret_access_key: string; region: string; bucket_name: string; path: string; } & { endpoint?: string; }; } | { volume: { root: string; }; }, but was object"`;

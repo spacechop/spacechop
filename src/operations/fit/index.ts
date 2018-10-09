@@ -1,5 +1,5 @@
-import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import transformFace from '../../lib/face-detection/transformFace';
+import { DefinitionRequirement, ImageDefinition } from '../../types';
 import Operation from './../operation';
 import { FitConfig } from './types';
 

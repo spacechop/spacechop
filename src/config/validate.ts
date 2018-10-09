@@ -1,13 +1,5 @@
 import console from '../lib/console';
-import Config from '../types/Config';
-
-export const validate = (config) => {
-  try {
-    Config.check(config);
-  } catch (err) {
-    throw new Error(`${err.key ? `${err.key}: ` : ''}${err.message}`);
-  }
-};
+import validate from '../types/validate';
 
 let valid = true;
 

@@ -1,11 +1,11 @@
 import path from 'path';
 import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
+import Format from '..';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import ImageDefinition from './../../../imagedef';
+import { ImageDefinition } from './../../../types';
 import { allFormats } from './../../../types/Format';
-import Format from './../index';
 
 expect.extend({ toMatchImageSnapshot });
 

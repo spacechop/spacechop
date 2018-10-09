@@ -1,6 +1,6 @@
 import { spawn } from 'duplex-child-process';
 import fs from 'fs';
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 import Operation from '../../operations/operation';
 
 

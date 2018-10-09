@@ -1,8 +1,8 @@
 import path from 'path';
+import Resize from '..';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
-import ImageDefinition from './../../../imagedef';
-import Resize from './../index';
+import { ImageDefinition } from './../../../types';
 import { ResizeConfig } from './../types';
 
 expect.extend({ toMatchImageSnapshot });

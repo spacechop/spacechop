@@ -3,7 +3,7 @@ import path from 'path';
 import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
 import Compress from '..';
-import ImageDefinition from '../../../imagedef';
+import { ImageDefinition } from '../../../types';
 import countStreamBytes from '../../../test/utils/countStreamBytes';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';

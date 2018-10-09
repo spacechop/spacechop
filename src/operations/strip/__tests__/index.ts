@@ -2,10 +2,10 @@ import { createReadStream } from 'fs';
 import path from 'path';
 import { PassThrough } from 'stream';
 import Strip from '..';
-import ImageDefinition from '../../../imagedef';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import extractStreamExif from '../../../test/utils/extractStreamExif';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
+import { ImageDefinition } from '../../../types';
 import { allFormats } from './../../../types/Format';
 import { StripConfig } from './../types';
 

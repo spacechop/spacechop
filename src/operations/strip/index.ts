@@ -1,4 +1,4 @@
-import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { DefinitionRequirement, ImageDefinition } from '../../types';
 import Operation from './../operation';
 import { StripConfig } from './types';
 

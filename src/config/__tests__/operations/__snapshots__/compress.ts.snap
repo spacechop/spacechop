@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`should validate compress config should throw on invalid config require quality as non decimal number 1`] = `"presets.t_200.steps.[0].$compress.quality: quality must be non decimal number"`;
-
-exports[`should validate compress config should throw on invalid config require quality between 0-100 1`] = `"presets.t_200.steps.[0].$compress.quality: quality must be between 0 and 100"`;
-
-exports[`should validate operations no double operations in step 1`] = `"presets.t_200.steps.[0]: please only one operation per step"`;

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
-import console from '../lib/console';
 
 export const loadConfig = (filepath) => yaml.safeLoad(fs.readFileSync(filepath));
 

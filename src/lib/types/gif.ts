@@ -1,4 +1,4 @@
-import ImageDefinition from '../../imagedef';
+import { ImageDefinition } from '../../types';
 
 /**
  * @see http://www.onicos.com/staff/iz/formats/gif.html

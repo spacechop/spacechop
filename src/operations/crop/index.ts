@@ -1,11 +1,8 @@
-import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
 import getLargestFace from '../../lib/face-detection/getLargestFace';
-import transformFace from '../../lib/face-detection/transformFace';
 import translateFace from '../../lib/face-detection/translateFace';
 import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
-import getMagickOffset from '../getMagickOffset';
-import { Gravity } from '../Gravity';
-import { magickGravityMap } from '../magickGravityMap';
+import { getMagickOffset, magickGravityMap } from '../../lib/magick';
+import { DefinitionRequirement, Gravity, ImageDefinition } from '../../types';
 import Operation from './../operation';
 import { CropConfig } from './types';
 

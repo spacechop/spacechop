@@ -1,4 +1,4 @@
-import ImageDefinition, { DefinitionRequirement } from '../../imagedef';
+import { DefinitionRequirement, ImageDefinition } from '../../types';
 import Operation from '../operation';
 import { Format as IFormat } from './../../types/Format';
 import { FormatConfig } from './types';

@@ -1,10 +1,8 @@
 import { spawn } from 'duplex-child-process';
 import { Stream } from 'stream';
-import { DefinitionRequirement } from '../types/DefinitionRequirement';
-import { Step } from '../types/Step';
-import ImageDefinition from './../imagedef';
-import analyze from './../imagedef/analyze';
-import StreamSwitch from './../lib/stream-switch';
+import analyze from '../lib/analyze';
+import StreamSwitch from '../lib/stream-switch';
+import { ImageDefinition, Step } from '../types';
 import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';

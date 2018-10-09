@@ -1,10 +1,10 @@
 import path from 'path';
+import Crop from '../..';
 import createTransformedStream from '../../../../test/utils/createTransformedStream';
-import { allGravities } from '../../../Gravity';
-import ImageDefinition from './../../../../imagedef';
-import toMatchImageSnapshot from './../../../../test/utils/toMatchImageSnapshot';
-import Crop from './../../index';
-import { CropConfig } from './../../types';
+import toMatchImageSnapshot from '../../../../test/utils/toMatchImageSnapshot';
+import { ImageDefinition } from '../../../../types';
+import { allGravities } from '../../../../types/Gravity';
+import { CropConfig } from '../../types';
 expect.extend({ toMatchImageSnapshot });
 
 describe('Image similarity - height only', () => {
