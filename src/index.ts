@@ -9,6 +9,8 @@ import setupRoutes from './spacechop';
 let config = loadConfig();
 // create server.
 const app = express();
+app.disable('x-powered-by');
+
 // create and setup router.
 let router = express.Router();
 // Setup routes for the SpaceChop service.
