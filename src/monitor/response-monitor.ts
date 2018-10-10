@@ -1,5 +1,11 @@
 import { Response } from 'express';
 
+
+export interface MonitorResult {
+  headers: object;
+  time: number;
+  statusCode: number;
+}
 /*
  * Monitors a Node HTTPResponse object.
  *
@@ -7,8 +13,7 @@ import { Response } from 'express';
  * It does not include time it took for the response to be downloaded by the client.
  *
  */
-
-const hijack = (prev, listener) => function(...args) {
+const hijack = (prev, listener?) => function(...args) {
   if (listener) {
     listener(...args);
   }
@@ -22,19 +27,11 @@ class ResponseMonitor {
     this.res = httpResponse;
   }
 
-  public monitor() {
+  public monitor(): Promise<MonitorResult> {
     const hrstart = process.hrtime();
     return new Promise((resolve) => {
       this.res.writeHead = hijack(this.res.writeHead, (statusCode) => {
-        const symbols = Object.getOwnPropertySymbols(this.res);
-        let headers = {};
-        for (const symbol of symbols) {
-          if (typeof symbol === 'symbol'
-            && symbol.toString() === 'Symbol(outHeadersKey)') {
-            headers = this.res[symbol];
-            break;
-          }
-        }
+        const headers = this.res.getHeaders();
         const hrend = process.hrtime(hrstart);
         const time = (hrend[0] * 1000) + (hrend[1] / 1000000);
         resolve({ statusCode, time, headers });

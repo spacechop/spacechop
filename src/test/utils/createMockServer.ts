@@ -3,7 +3,12 @@ import express from 'express';
 import matchPath from 'react-router/matchPath';
 import url from 'url';
 
-export default (port, handler, routePath = '/*') => new Promise((resolve) => {
+export interface MockServer {
+  close: () => Promise<void>;
+  waitForPath: (path, timeout) => Promise<void>;
+}
+
+export default (port, handler, routePath = '/*'): Promise<MockServer> => new Promise((resolve) => {
   if (!handler) {
     throw new Error('handler is required in createMockServer');
   }
