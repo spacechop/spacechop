@@ -64,4 +64,3 @@ export default class StreamSwitch {
     this.bufferResolvers[index](chunk);
   }
 }
-

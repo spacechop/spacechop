@@ -58,7 +58,7 @@ export const requestHandler = (
   storage?: IStorage,
   monitor?: any,
 ) => async (req: Request, res: Response) => {
-  const handle = monitor.monitorResponse(res);
+  const handle = monitor && monitor.monitorResponse(res);
   // Create trace instance.
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
@@ -99,6 +99,7 @@ export const requestHandler = (
       }
 
       res.set('X-Cache', 'HIT');
+      res.set('X-Key', fromCache.key);
       await respond(res, fromCache.stream, fromCache.contentType, config);
       trace.end();
       return;
@@ -106,36 +107,37 @@ export const requestHandler = (
   }
 
   // look through sources to fetch original source stream
-  const { stream, key } = await lookThroughSources(sources, params);
+  const fromSource = await lookThroughSources(sources, params);
 
-  if (!stream) {
+  // It does not exist in source
+  if (fromSource && !fromSource.stream) {
     res.status(404);
     res.end('Could not find image');
     trace.warn('image', 'Could not find image');
     return;
   } else {
-    res.set('X-Key', key);
-    trace.log('original', key);
+    res.set('X-Key', fromSource.key);
+    trace.log('original', fromSource.key);
   }
 
   // Only analyze image after pipeline
   const onlyAnalyze = 'analyze' in req.query;
   if (onlyAnalyze) {
-    const { state } = await buildTransformation(stream, steps);
+    const { state } = await buildTransformation(fromSource.stream, steps);
     trace.log('analyze', state);
     res.json(state);
     trace.end();
   } else {
     try {
-      const { stream: transformed, definition } = await transform(stream, steps);
-      trace.log('definition', definition);
-      const contentType = formatToMime(definition.type);
+      const fromTransform = await transform(fromSource.stream, steps);
+      trace.log('definition', fromTransform.definition);
+      const contentType = formatToMime(fromTransform.definition.type);
       res.set('X-Cache', 'MISS');
 
       // Send image data through the worker which passes through to response.
-      let streamToRespondWith = transformed;
-      if (config.storage) {
-        const streamSwitch = new StreamSwitch(transformed);
+      let streamToRespondWith = fromTransform.stream;
+      if (storage) {
+        const streamSwitch = new StreamSwitch(fromTransform.stream);
         streamToRespondWith = streamSwitch.createReadStream();
         const streamToCache = streamSwitch.createReadStream();
         uploadToStorage(storage, params, streamToCache, contentType);
@@ -143,14 +145,20 @@ export const requestHandler = (
       const size = await respond(res, streamToRespondWith, contentType, config);
       trace.log('size', size);
       trace.end();
-      handle.close(size);
+      if (handle) {
+        handle.close(size);
+      }
     } catch (err) {
       trace.warn('error', err);
     }
   }
 };
 
-export default (config: Config, server, monitor) => {
+export default (
+  config: Config,
+  server: any,
+  monitor?: any,
+) => {
   if (!config) {
     return;
   }

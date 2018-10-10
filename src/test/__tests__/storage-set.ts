@@ -38,6 +38,7 @@ describe('Configured storage', () => {
   describe('Image exists in storage cache', () => {
     const sources = [
       {
+        key: jest.fn(),
         exists: jest.fn(),
         stream: jest.fn(),
       },
@@ -91,8 +92,9 @@ describe('Configured storage', () => {
 
     const sources = [
       {
+        key: jest.fn(() => 'test'),
         exists: jest.fn(() => Promise.resolve(true)),
-        stream: jest.fn(() => Promise.resolve(createReadStream(image))),
+        stream: jest.fn(() => createReadStream(image)),
       },
     ];
     const storage = {

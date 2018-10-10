@@ -5,21 +5,24 @@ describe('lookThroughSources', () => {
   it('should return null if image does not exist in source', async () => {
     const sources: Source[] = [
       {
+        key: jest.fn(),
         exists: jest.fn(() => Promise.resolve(false)),
         stream: jest.fn(() => Promise.resolve()),
       },
     ];
 
-    const result = await lookThroughSources(sources, {});
-    expect(result).toBeNull();
+    const { stream } = await lookThroughSources(sources, {});
+    expect(stream).toBeNull();
   });
   it('should only check sources until image is found', async () => {
     const sources: Source[] = [
       {
+        key: jest.fn(),
         exists: jest.fn(() => Promise.resolve(true)),
         stream: jest.fn(() => Promise.resolve()),
       },
       {
+        key: jest.fn(),
         exists: jest.fn(() => Promise.resolve(false)),
         stream: jest.fn(() => Promise.resolve()),
       },
