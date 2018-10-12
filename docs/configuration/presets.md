@@ -38,7 +38,7 @@ Keeps only a specific region of the image, and removes the rest.
     </tr>
   </tbody>
 </table>{% hint style="info" %}
-At least **width** or **height** is required for a crop operation.
+Crop requires at least **width** or **height** is required for a crop operation.
 {% endhint %}
 
 ### Example
@@ -90,8 +90,6 @@ Fits the image into a box. Keeps aspect ratio and does not remove any parts of t
       <td style="text-align:left">
         <p><b>Type: </b>number</p>
         <p><b>Default: </b>Width of the image</p>
-        <p><b>Required</b>
-        </p>
       </td>
     </tr>
     <tr>
@@ -99,12 +97,14 @@ Fits the image into a box. Keeps aspect ratio and does not remove any parts of t
       <td style="text-align:left">
         <p><b>Type:</b> number</p>
         <p><b>Default:</b> Height of the image</p>
-        <p><b>Required</b>
-        </p>
       </td>
     </tr>
   </tbody>
-</table>### Example
+</table>{% hint style="info" %}
+Fit requires at least **width** or **height** is required for a crop operation.
+{% endhint %}
+
+### Example
 
 Fit an image within 200x200 pixels large area and keep aspect ratio.
 
