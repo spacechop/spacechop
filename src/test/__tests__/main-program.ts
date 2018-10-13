@@ -17,6 +17,8 @@ describe('main program', () => {
 
   beforeEach(() => {
     jest.resetModules();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
     chokidar = require('chokidar');
     cluster = require('cluster');
     express = require('express');
@@ -38,7 +40,9 @@ describe('main program', () => {
   });
 
   afterEach(() => {
+    jest.resetModules();
     jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   describe('master should create worker nodes', () => {
@@ -93,31 +97,6 @@ describe('main program', () => {
       };
       monitorResponder(null, monitorResponseMock);
       expect(monitorResponseMock.end).toHaveBeenCalled();
-      expect(monitorResponseMock.end.mock.calls[0][0]).toMatchSnapshot();
-    });
-
-    it('should monitor requests', async () => {
-      expect(expressRouterMocks.get).toHaveBeenCalled();
-      const routerResponder = expressRouterMocks.get.mock.calls[0][1];
-      const requestMock = {
-        params: {
-          preset: 't_720',
-          image: 'image-test',
-        },
-      };
-      const requestResponseMock = {
-        set: jest.fn(),
-        status: jest.fn(),
-        end: jest.fn(),
-      };
-      await routerResponder(requestMock, requestResponseMock);
-      const monitorResponder = expressMocks.get.mock.calls[0][1];
-      const monitorResponseMock = {
-        end: jest.fn(),
-      };
-      await monitorResponder(null, monitorResponseMock);
-      expect(monitorResponseMock.end).toHaveBeenCalled();
-      expect(monitorResponseMock.end.mock.calls[0][0]).toMatchSnapshot();
     });
   });
 });

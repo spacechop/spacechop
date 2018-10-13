@@ -22,7 +22,7 @@ export const responseTimeMimeCounter = new Counter({
 export const responseTimeStorageCounter = new Counter({
   name: 'response_time_storage',
   help: 'Response time from storage',
-  labelNames: ['storage'],
+  labelNames: ['mode'], // could be HIT, MISS
 });
 
 export const responseTimePresetCounter = new Counter({
@@ -34,11 +34,11 @@ export const responseTimePresetCounter = new Counter({
 export const responseTimeOriginalCounter = new Counter({
   name: 'response_time_original',
   help: 'Response time per original',
-  labelNames: ['original'],
+  labelNames: ['key'],
 });
 
 export const transformationMimeCounter = new Counter({
-  name: 'transformation_mime',
+  name: 'transformations_mime',
   help: 'Transformations served per content type',
   labelNames: ['mime'],
 });
@@ -58,7 +58,7 @@ export const transformationPresetCounter = new Counter({
 export const transformationOriginalCounter = new Counter({
   name: 'transformations_original',
   help: 'Transformations served per original',
-  labelNames: ['original'],
+  labelNames: ['key'],
 });
 
 export const bytesMimeCounter = new Counter({
@@ -70,7 +70,7 @@ export const bytesMimeCounter = new Counter({
 export const bytesStorageCounter = new Counter({
   name: 'bytes_storage',
   help: 'Bytes served from storage',
-  labelNames: ['storage'],
+  labelNames: ['mode'], // could be HIT, MISS
 });
 
 export const bytesPresetCounter = new Counter({
@@ -82,5 +82,5 @@ export const bytesPresetCounter = new Counter({
 export const bytesOriginalCounter = new Counter({
   name: 'bytes_original',
   help: 'Bytes served per original',
-  labelNames: ['original'],
+  labelNames: ['key'],
 });

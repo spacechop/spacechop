@@ -24,50 +24,52 @@ if (process.env.PRODUCTION) {
 
 const monitorResponse = (res: Response) => {
   const rm = new ResponseMonitor(res);
-  let responseTime;
-  let responseStatus;
-  let contentType;
-  let storage;
-  let preset;
-  let key;
-  rm.monitor().then(({ statusCode, time, headers }) => {
-    responseTime = time;
-    responseStatus = statusCode;
-    contentType = headers && headers['content-type'][1];
-    storage = headers && headers['x-cache'][1];
-    preset = headers && headers['x-preset'][1];
-    key = headers && headers['x-key'][1];
-  });
-
-  return {
-    close: (size: number) => {
-      statusCodeCounter.labels(responseStatus).inc();
-      responseTimeHistogram.observe(responseTime);
-
-      if (responseStatus === 200) {
-        if (contentType) {
-          transformationMimeCounter.labels(contentType).inc();
-          bytesMimeCounter.labels(contentType).inc(size);
-          responseTimeMimeCounter.labels(contentType).inc(responseTime);
-        }
-        if (storage) {
-          transformationStorageCounter.labels(storage).inc();
-          bytesStorageCounter.labels(storage).inc(size);
-          responseTimeStorageCounter.labels(storage).inc(responseTime);
-        }
-        if (preset) {
-          transformationPresetCounter.labels(preset).inc();
-          bytesPresetCounter.labels(preset).inc(size);
-          responseTimePresetCounter.labels(preset).inc(responseTime);
-        }
-        if (key) {
-          transformationOriginalCounter.labels(key).inc();
-          bytesOriginalCounter.labels(key).inc(size);
-          responseTimeOriginalCounter.labels(key).inc(responseTime);
-        }
+  rm.monitor().then(({ statusCode, time, headers, size }) => {
+    let contentType;
+    let storage;
+    let preset;
+    let key;
+    if (headers) {
+      if (headers['content-type']) {
+        contentType = headers['content-type'];
       }
-    },
-  };
+      if (headers['x-cache']) {
+        storage = headers['x-cache'];
+      }
+      if (headers['x-preset']) {
+        preset = headers['x-preset'];
+      }
+      if (headers['x-key']) {
+        key = headers['x-key'];
+      }
+    }
+
+    statusCodeCounter.labels('' + statusCode).inc();
+    responseTimeHistogram.observe(time);
+
+    if (statusCode === 200) {
+      if (contentType) {
+        transformationMimeCounter.labels(contentType).inc();
+        bytesMimeCounter.labels(contentType).inc(size);
+        responseTimeMimeCounter.labels(contentType).inc(time);
+      }
+      if (storage) {
+        transformationStorageCounter.labels(storage).inc();
+        bytesStorageCounter.labels(storage).inc(size);
+        responseTimeStorageCounter.labels(storage).inc(time);
+      }
+      if (preset) {
+        transformationPresetCounter.labels(preset).inc();
+        bytesPresetCounter.labels(preset).inc(size);
+        responseTimePresetCounter.labels(preset).inc(time);
+      }
+      if (key) {
+        transformationOriginalCounter.labels(key).inc();
+        bytesOriginalCounter.labels(key).inc(size);
+        responseTimeOriginalCounter.labels(key).inc(time);
+      }
+    }
+  });
 };
 
 const getMetrics = () => register.metrics();

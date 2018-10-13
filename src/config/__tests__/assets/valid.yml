@@ -2,15 +2,8 @@ paths:
   - /images/:preset/:image
 
 sources:
-  - s3:
-      access_key_id: access_key_id
-      secret_access_key: secret_access_key
-      region: region
-      bucket_name: bucket_name
-      path: ':image'
-
-  - http:
-      root: https://example.com/images/:image
+  - volume:
+      root: /src/app/test/assets/:image
 
 presets:
   t_720:

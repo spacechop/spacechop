@@ -100,7 +100,8 @@ export const requestHandler = (
 
       res.set('X-Cache', 'HIT');
       res.set('X-Key', fromCache.key);
-      await respond(res, fromCache.stream, fromCache.contentType, config);
+      const size = await respond(res, fromCache.stream, fromCache.contentType, config);
+      trace.log('size', size);
       trace.end();
       return;
     }
@@ -145,9 +146,6 @@ export const requestHandler = (
       const size = await respond(res, streamToRespondWith, contentType, config);
       trace.log('size', size);
       trace.end();
-      if (handle) {
-        handle.close(size);
-      }
     } catch (err) {
       trace.warn('error', err);
     }

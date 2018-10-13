@@ -6,11 +6,16 @@ import loadConfig from './config';
 import monitor from './monitor';
 import setupRoutes from './spacechop';
 
+const { PORT = 3000 } = process.env;
+
 // read initial config.
 let config = loadConfig();
 // create server.
 const app = express();
 app.disable('x-powered-by');
+
+// export server to enable testing.
+export let server;
 
 // create and setup router.
 let router = express.Router();
@@ -53,5 +58,5 @@ if (cluster.isMaster) {
   });
 
   // start listening on port.
-  app.listen(3000, () => console.info('Listening on port 3000'));
+  server = app.listen(PORT, () => console.info(`Listening on port ${PORT}`));
 }
