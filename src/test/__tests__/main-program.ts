@@ -76,4 +76,22 @@ describe('main program', () => {
       expect(expressMocks.listen).toHaveBeenCalled();
     });
   });
+
+  describe('worker should start monitoring', () => {
+    beforeEach(() => {
+      // Mock being worker node.
+      Object.defineProperty(cluster, 'isMaster', { value: false });
+      require('../..');
+    });
+
+    it('should handle monitor requests', () => {
+      expect(expressMocks.get).toHaveBeenCalledWith('/_health', expect.any(Function));
+      const monitor = expressMocks.get.mock.calls[0][1];
+      const responseMocks = {
+        end: jest.fn(),
+      };
+      monitor(null, responseMocks);
+      expect(responseMocks.end).toHaveBeenCalled();
+    });
+  });
 });
