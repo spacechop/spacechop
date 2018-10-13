@@ -8,7 +8,7 @@ import setupRoutes from './spacechop';
 
 const {
   PORT = 3000,
-  MONITOR_PATH = '/_health',
+  PROMETHEUS_METRIC_PATH = '/_health',
 } = process.env;
 
 // read initial config.
@@ -56,7 +56,7 @@ if (cluster.isMaster) {
     setupRoutes(config, router, monitor);
   });
 
-  app.get(MONITOR_PATH, (_, res) => {
+  app.get(PROMETHEUS_METRIC_PATH, (_, res) => {
     res.end(monitor.getMetrics());
   });
 
