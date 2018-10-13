@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/chokidar": "^1.7.5",
     "aws-sdk": "~2.331.0",
     "chokidar": "~2.0.4",
     "cluster": "~0.7.7",

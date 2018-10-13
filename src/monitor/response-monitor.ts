@@ -1,6 +1,5 @@
 import { Response } from 'express';
 
-
 export interface MonitorResult {
   headers: object;
   time: number;

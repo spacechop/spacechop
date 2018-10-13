@@ -1,7 +1,7 @@
 import chokidar from 'chokidar';
 import cluster from 'cluster';
 import express from 'express';
-import { cpus } from 'os';
+import os from 'os';
 import loadConfig from './config';
 import monitor from './monitor';
 import setupRoutes from './spacechop';
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 if (cluster.isMaster) {
-  const workers = cpus().length;
+  const workers = os.cpus().length;
   for (let i = 0; i < workers; i++) {
     cluster.fork();
   }
