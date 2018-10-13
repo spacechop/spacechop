@@ -85,14 +85,39 @@ describe('main program', () => {
       require('../..');
     });
 
-    it('should handle monitor requests', () => {
+    it('should handle monitor check', () => {
       expect(expressMocks.get).toHaveBeenCalledWith('/_health', expect.any(Function));
-      const monitor = expressMocks.get.mock.calls[0][1];
-      const responseMocks = {
+      const monitorResponder = expressMocks.get.mock.calls[0][1];
+      const monitorResponseMock = {
         end: jest.fn(),
       };
-      monitor(null, responseMocks);
-      expect(responseMocks.end).toHaveBeenCalled();
+      monitorResponder(null, monitorResponseMock);
+      expect(monitorResponseMock.end).toHaveBeenCalled();
+      expect(monitorResponseMock.end.mock.calls[0][0]).toMatchSnapshot();
+    });
+
+    it('should monitor requests', async () => {
+      expect(expressRouterMocks.get).toHaveBeenCalled();
+      const routerResponder = expressRouterMocks.get.mock.calls[0][1];
+      const requestMock = {
+        params: {
+          preset: 't_720',
+          image: 'image-test',
+        },
+      };
+      const requestResponseMock = {
+        set: jest.fn(),
+        status: jest.fn(),
+        end: jest.fn(),
+      };
+      await routerResponder(requestMock, requestResponseMock);
+      const monitorResponder = expressMocks.get.mock.calls[0][1];
+      const monitorResponseMock = {
+        end: jest.fn(),
+      };
+      await monitorResponder(null, monitorResponseMock);
+      expect(monitorResponseMock.end).toHaveBeenCalled();
+      expect(monitorResponseMock.end.mock.calls[0][0]).toMatchSnapshot();
     });
   });
 });
