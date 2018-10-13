@@ -6,7 +6,10 @@ import loadConfig from './config';
 import monitor from './monitor';
 import setupRoutes from './spacechop';
 
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONITOR_PATH = '/_health',
+} = process.env;
 
 // read initial config.
 let config = loadConfig();
@@ -53,7 +56,7 @@ if (cluster.isMaster) {
     setupRoutes(config, router, monitor);
   });
 
-  app.get('/_health', (_, res) => {
+  app.get(MONITOR_PATH, (_, res) => {
     res.end(monitor.getMetrics());
   });
 
