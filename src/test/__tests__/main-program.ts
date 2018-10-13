@@ -26,6 +26,7 @@ describe('main program', () => {
     jest.mock('cluster');
     jest.mock('express');
     jest.mock('os');
+    jest.mock('../../config/load');
     // mocking number of cpus.
     os.cpus = jest.fn(() => Array.from(new Array(cpus)));
     // mocking express.
