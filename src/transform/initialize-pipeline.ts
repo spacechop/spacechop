@@ -1,12 +1,11 @@
+import deepmerge from 'deepmerge';
 import Operation from '../operations/operation';
 import { DefinitionRequirement, Step } from '../types';
 import Operations from './../operations';
 
 interface InitalizedPipeline {
   pipeline: Operation[];
-  requirements: {
-    [key: number]: DefinitionRequirement,
-  };
+  requirements: DefinitionRequirement;
 }
 
 export default (steps: Step[]): InitalizedPipeline => {
@@ -24,10 +23,7 @@ export default (steps: Step[]): InitalizedPipeline => {
     // initialize operation instance with config.
     const instance: Operation = new Operations[name](props);
     // prepare requirements from steps
-    requirements = {
-      ...requirements,
-      ...instance.requirements(),
-    };
+    requirements = deepmerge(requirements, instance.requirements());
     return instance;
   });
 

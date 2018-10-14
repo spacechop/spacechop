@@ -1,10 +1,11 @@
 import { Stream } from 'stream';
-import Source from './../source';
+import SourceInstances from '../sources';
 
-export default async (sources: Source[], params: any): Promise<Stream> => {
-  for (const source of sources) {
-    if (await source.exists(params)) {
-      return source.stream(params);
+export default async (sources: SourceInstances, params: any): Promise<Stream> => {
+  for (const key of Object.keys(sources)) {
+    const source = sources[key];
+    if (source.original && await source.instance.exists(params)) {
+      return source.instance.stream(params);
     }
   }
   return null;

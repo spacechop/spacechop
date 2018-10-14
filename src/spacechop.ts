@@ -7,9 +7,9 @@ import populatePresetParams from './lib/populatePresetParams';
 import asyncWrapper from './lib/requestAsyncWrapper';
 import StreamSwitch from './lib/stream-switch';
 import streamToBuffer from './lib/streamToBuffer';
-import instantiateSource from './sources/lib/instantiate-source';
+import instantiateSources from './sources/lib/instantiate-sources';
 import lookThroughSources from './sources/lib/look-through-sources';
-import Source from './sources/source';
+import Sources from './sources/sources';
 import hash from './storage/hash';
 import fetchFromStorage from './storage/lib/fetch-from-storage';
 import instantiateStorage from './storage/lib/instantiate-storage';
@@ -52,7 +52,7 @@ export const respond = async (response: Response, stream: Stream, mime: Mime, co
 
 export const requestHandler = (
   config: Config, keys,
-  sources: Source[],
+  sources: Sources,
   storage?: IStorage,
 ) => async (req: Request, res: Response) => {
   // Create trace instance.
@@ -118,7 +118,7 @@ export const requestHandler = (
     trace.end();
   } else {
     try {
-      const { stream: transformed, definition } = await transform(stream, steps);
+      const { stream: transformed, definition } = await transform(stream, steps, sources, params);
       trace.log('definition', definition);
       const contentType = formatToMime(definition.type);
 
@@ -133,7 +133,7 @@ export const requestHandler = (
       await respond(res, streamToRespondWith, contentType, config);
       trace.end();
     } catch (err) {
-      trace.warn('error', err);
+      trace.warn('error', err.message);
     }
   }
 };
@@ -145,8 +145,11 @@ export default (config: Config, server) => {
   // extract paths from config to listen in on.
   const { paths = ['/*'] } = config;
 
-  const storage = !!config.storage ? instantiateStorage(config.storage) : null;
-  const sources = config.sources.map(instantiateSource);
+  let storage = null;
+  if (!!config.storage) {
+    storage = instantiateStorage(config.storage);
+  }
+  const sources = instantiateSources(config.sources);
   // listen on all paths.
   paths.forEach((path) => {
     const keys = [];

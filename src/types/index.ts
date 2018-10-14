@@ -6,7 +6,7 @@ import { ImageDefinition } from './ImageDefinition';
 import { ImageFaceBox } from './ImageFaceBox';
 import { Param } from './Param';
 import { PositiveNumber } from './PositiveNumber';
-import { PresetConfig } from './PresetConfig';
+import { Preset } from './Preset';
 import { Source } from './Source';
 import { Step } from './Step';
 import { Storage } from './Storage';
@@ -20,7 +20,7 @@ export {
   ImageFaceBox,
   Param,
   PositiveNumber,
-  PresetConfig,
+  Preset,
   Source,
   Step,
   Storage,

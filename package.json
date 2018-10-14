@@ -18,6 +18,7 @@
     "aws-sdk": "~2.331.0",
     "chokidar": "~2.0.4",
     "cluster": "~0.7.7",
+    "deepmerge": "^2.2.1",
     "duplex-child-process": "~1.0.0",
     "express": "~4.16.3",
     "js-yaml": "~3.12.0",

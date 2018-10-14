@@ -1,6 +1,6 @@
 import { DefinitionRequirement, ImageDefinition } from '../types';
 
 export default interface Operation {
-  requirements(): DefinitionRequirement[];
+  requirements(): DefinitionRequirement;
   execute(state: ImageDefinition): { state: ImageDefinition, command: string};
 }

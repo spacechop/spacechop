@@ -1,5 +1,5 @@
 import { Params } from '../../config/params';
-import { PresetConfig } from '../../types/PresetConfig';
+import { Preset } from '../../types/Preset';
 import populatePresetParams, { castValue } from '../populatePresetParams';
 
 describe('Populate preset step params', () => {
@@ -22,7 +22,7 @@ describe('Populate preset step params', () => {
     // A parameter is invalid if for example a string is provided
     // when a number is expected
     it('should throw an error', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $crop: {
             width: { from_path: 'width' },
@@ -42,7 +42,7 @@ describe('Populate preset step params', () => {
     // as parts of the URL. .populatePresetParams should aggressively type check
     // in order to for example cast strings to numbers etc.
     it('should cast string to number', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $crop: {
             width: { from_path: 'width' },
@@ -63,7 +63,7 @@ describe('Populate preset step params', () => {
     });
 
     it('should cast string to valid Format', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $format: {
             type: { from_path: 'format' },
@@ -86,7 +86,7 @@ describe('Populate preset step params', () => {
 
   describe('Basic', () => {
     it('should handle non-path parameters', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $crop: {
             width: 150,
@@ -106,7 +106,7 @@ describe('Populate preset step params', () => {
       }]);
     });
     it('should populate params if mapping contain same names', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $crop: {
             width: { from_path: 'width' },
@@ -128,7 +128,7 @@ describe('Populate preset step params', () => {
       }]);
     });
     it('should populate params if mapping contains different names', () => {
-      const preset: PresetConfig = {
+      const preset: Preset = {
         steps: [{
           $crop: {
             width: { from_path: 'param1' },

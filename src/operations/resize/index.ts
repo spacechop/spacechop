@@ -37,8 +37,8 @@ export default class Crop implements Operation {
     this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): DefinitionRequirement[] {
-    return [];
+  public requirements(): DefinitionRequirement {
+    return {};
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {

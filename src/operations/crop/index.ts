@@ -81,11 +81,11 @@ export default class Crop implements Operation {
     this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): DefinitionRequirement[] {
+  public requirements(): DefinitionRequirement {
     if (this.config.gravity === 'face') {
-      return ['faces'];
+      return { faces: true };
     }
-    return [];
+    return {};
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {

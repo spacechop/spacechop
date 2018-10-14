@@ -3,6 +3,7 @@ import { Stream } from 'stream';
 import url from 'url';
 import compilePath from '../../lib/compile-path';
 import console from '../../lib/console';
+import { SourceOptions } from '../../types/SourceOptions';
 import Source from './../source';
 
 export interface HttpSourceConfig {
@@ -19,8 +20,10 @@ export const buildUri = (input: string, params: {}) => {
 
 export default class HttpSource implements Source {
   public config: HttpSourceConfig;
-  constructor(config: HttpSourceConfig) {
+  public options: SourceOptions;
+  constructor(config: HttpSourceConfig, options: SourceOptions) {
     this.config = config;
+    this.options = options;
   }
 
   public exists(params: {}): Promise<boolean> {
