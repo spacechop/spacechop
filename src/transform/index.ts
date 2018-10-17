@@ -5,7 +5,7 @@ import analyze from '../lib/analyze';
 import StreamSwitch from '../lib/stream-switch';
 import fetchExtraSources from '../sources/lib/fetch-extra-sources';
 import SourceInstances from '../sources/sources';
-import { ImageDefinition, Step } from '../types';
+import { Config, ImageDefinition, Step } from '../types';
 import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';
@@ -18,6 +18,7 @@ export interface TransformationResult {
 export const buildTransformation = async (
   stream: Stream,
   steps: Step[],
+  config?: Config,
   sources?: SourceInstances,
   params?: Params,
 ) => {
@@ -28,17 +29,21 @@ export const buildTransformation = async (
   } = initializePipeline(steps);
 
   const definition: ImageDefinition = await analyze(stream, requirements);
-  if ('sources' in requirements && sources) {
-    await fetchExtraSources(requirements.sources, sources, params);
-  }
 
   // build command from pipeline and image state
-  return simulateTransformation(pipeline, definition);
+  const simulation = simulateTransformation(pipeline, definition);
+
+  if ('sources' in simulation.extra && sources) {
+    await fetchExtraSources(simulation.extra.sources, config, sources, params);
+  }
+
+  return simulation;
 };
 
 export default async (
   input: Stream,
   steps: Step[],
+  config?: Config,
   sources?: SourceInstances,
   params?: Params,
 ): Promise<TransformationResult> => {
@@ -48,7 +53,7 @@ export default async (
 
   // build command from pipeline and image state
   const { commands, state } =
-    await buildTransformation(streamToAnalyze, steps, sources, params);
+    await buildTransformation(streamToAnalyze, steps, config, sources, params);
 
   // do nothing when no steps.
   if (steps.length === 0) {

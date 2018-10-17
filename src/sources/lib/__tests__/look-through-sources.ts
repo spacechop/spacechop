@@ -1,7 +1,7 @@
 import Source from './../../source';
-import lookThroughSources from './../look-through-sources';
+import fetchOriginalSource from './../fetch-original-source';
 
-describe('lookThroughSources', () => {
+describe('fetchOriginalSource', () => {
   it('should return null if image does not exist in source', async () => {
     const sources: Source[] = [
       {
@@ -10,7 +10,7 @@ describe('lookThroughSources', () => {
       },
     ];
 
-    const result = await lookThroughSources(sources, {});
+    const result = await fetchOriginalSource(sources, {});
     expect(result).toBeNull();
   });
   it('should only check sources until image is found', async () => {
@@ -25,7 +25,7 @@ describe('lookThroughSources', () => {
       },
     ];
 
-    await lookThroughSources(sources, {});
+    await fetchOriginalSource(sources, {});
 
     expect(sources[0].exists).toHaveBeenCalled();
     expect(sources[1].exists).not.toHaveBeenCalled();

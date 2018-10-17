@@ -7,8 +7,8 @@ import populatePresetParams from './lib/populatePresetParams';
 import asyncWrapper from './lib/requestAsyncWrapper';
 import StreamSwitch from './lib/stream-switch';
 import streamToBuffer from './lib/streamToBuffer';
+import fetchOriginalSource from './sources/lib/fetch-original-source';
 import instantiateSources from './sources/lib/instantiate-sources';
-import lookThroughSources from './sources/lib/look-through-sources';
 import Sources from './sources/sources';
 import hash from './storage/hash';
 import fetchFromStorage from './storage/lib/fetch-from-storage';
@@ -63,7 +63,7 @@ export const requestHandler = (
   trace.log('params', params);
 
   // find the right preset steps to use
-  const preset = config.presets[params.preset];
+  const preset = config.presets.public[params.preset];
 
   if (!preset) {
     res.status(404);
@@ -100,7 +100,7 @@ export const requestHandler = (
   }
 
   // look through sources to fetch original source stream
-  const stream = await lookThroughSources(sources, params);
+  const stream = await fetchOriginalSource(sources, params);
 
   if (!stream) {
     res.status(404);
@@ -118,7 +118,7 @@ export const requestHandler = (
     trace.end();
   } else {
     try {
-      const { stream: transformed, definition } = await transform(stream, steps, sources, params);
+      const { stream: transformed, definition } = await transform(stream, steps, config, sources, params);
       trace.log('definition', definition);
       const contentType = formatToMime(definition.type);
 
@@ -133,6 +133,7 @@ export const requestHandler = (
       await respond(res, streamToRespondWith, contentType, config);
       trace.end();
     } catch (err) {
+      console.warn(err);
       trace.warn('error', err.message);
     }
   }

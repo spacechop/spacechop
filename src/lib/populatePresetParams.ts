@@ -1,5 +1,6 @@
 import { Params } from '../config/params';
 import { Format, parseFormat } from '../types/Format';
+import { ImageDefinition } from '../types/ImageDefinition';
 import StepType from '../types/Step';
 import { Step } from '../types/Step';
 
@@ -31,14 +32,21 @@ export const castValue = (value: string): boolean | number | string | Format => 
 export default (
   steps: Step[],
   params: Params,
+  state?: ImageDefinition,
 ): Step[] => {
   const populatedSteps = steps.map((step: Step) => {
     const name = Object.keys(step)[0];
     const config: Step = Object.keys(step[name]).reduce((acc, key) => {
       let value = step[name][key];
-      if (typeof value === 'object' && 'from_path' in value) {
-        const paramKey = step[name][key].from_path;
+      if (/^[$]/.test(value)) {
+        const paramKey = step[name][key].replace(/^[$]/, '');
         value = castValue(params[paramKey]);
+      }
+      if (key === 'width' && /^\d+%$/.test(value)) {
+        value = state.width * parseFloat(value.replace(/%/, '')) / 100;
+      }
+      if (key === 'height' && /^\d+%$/.test(value)) {
+        value = state.height * parseFloat(value.replace(/%/, '')) / 100;
       }
       return {
         ...acc,

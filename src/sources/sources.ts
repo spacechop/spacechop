@@ -1,10 +1,7 @@
-import { SourceOptions } from '../types/SourceOptions';
 import Source from './source';
 
 interface SourceInstances {
-  [key: string]: {
-    instance: Source;
-  } & SourceOptions;
+  [key: string]: Source;
 }
 
 export default SourceInstances;
