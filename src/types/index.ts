@@ -1,5 +1,6 @@
 import { Config } from './Config';
 import { DefinitionRequirement } from './DefinitionRequirement';
+import { ExtraRequirement } from './ExtraRequirement';
 import { Format } from './Format';
 import { Gravity } from './Gravity';
 import { ImageDefinition } from './ImageDefinition';
@@ -14,6 +15,7 @@ import { Storage } from './Storage';
 export {
   Config,
   DefinitionRequirement,
+  ExtraRequirement,
   Format,
   Gravity,
   ImageDefinition,

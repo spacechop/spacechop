@@ -37,11 +37,11 @@ export default class S3Source implements Source {
     });
 
     this.bucketName = config.bucket_name;
-    this.path = config.path;
+    this.path = config.pattern;
   }
 
   public exists(params: any): Promise<boolean> {
-    const Key = compilePath(this.config.path, params);
+    const Key = compilePath(this.config.pattern, params);
     const Bucket = this.config.bucket_name;
 
     return new Promise((resolve) => {
@@ -57,7 +57,7 @@ export default class S3Source implements Source {
   }
 
   public stream(params: any): Stream {
-    const Key = compilePath(this.config.path, params);
+    const Key = compilePath(this.config.pattern, params);
     const Bucket = this.config.bucket_name;
 
     const query = {

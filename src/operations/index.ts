@@ -1,3 +1,4 @@
+import Alpha from './alpha';
 import Compose from './compose';
 import Compress from './compress';
 import Crop from './crop';
@@ -8,6 +9,7 @@ import Resize from './resize';
 import Strip from './strip';
 
 export default {
+  $alpha: Alpha,
   $compose: Compose,
   $compress: Compress,
   $crop: Crop,

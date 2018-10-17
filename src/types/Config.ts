@@ -1,16 +1,18 @@
 import * as t from 'runtypes';
 import validateParams from '../lib/validateParams';
-import Paths from './Paths';
+import ParamSchema from './ParamSchema';
 import Presets from './Presets';
+import Services from './Services';
 import Sources from './Sources';
 import Storage from './Storage';
 
 const Config = t.Record({
-  paths: Paths,
+  services: Services,
   sources: Sources,
   presets: Presets,
 }).And(t.Partial({
   storage: Storage,
+  params: ParamSchema,
   disableChunkedEncoding: t.Boolean,
 })).withConstraint(validateParams);
 

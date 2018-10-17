@@ -3,12 +3,8 @@ import { Stream } from 'stream';
 import url from 'url';
 import compilePath from '../../lib/compile-path';
 import console from '../../lib/console';
-import { SourceOptions } from '../../types/SourceOptions';
 import Source from './../source';
-
-export interface HttpSourceConfig {
-  root: string;
-}
+import { HttpSourceConfig } from './types';
 
 export const buildUri = (input: string, params: {}) => {
   const { pathname, ...parts } = url.parse(input);
@@ -20,15 +16,13 @@ export const buildUri = (input: string, params: {}) => {
 
 export default class HttpSource implements Source {
   public config: HttpSourceConfig;
-  public options: SourceOptions;
-  constructor(config: HttpSourceConfig, options: SourceOptions) {
+  constructor(config: HttpSourceConfig) {
     this.config = config;
-    this.options = options;
   }
 
   public exists(params: {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const uri = buildUri(this.config.root, params);
+      const uri = buildUri(this.config.pattern, params);
       request.head(uri, (err, res) => {
         if (err) {
           console.error('Communicating with HTTP source failed with following error:');
@@ -43,7 +37,7 @@ export default class HttpSource implements Source {
   }
 
   public stream(params: {}): Stream {
-    const uri = buildUri(this.config.root, params);
+    const uri = buildUri(this.config.pattern, params);
     return request(uri);
   }
 }

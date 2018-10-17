@@ -1,10 +1,20 @@
+import deepmerge from 'deepmerge';
+import { PreprocessRequirements } from '../types/PreprocessRequirements';
+
 export default (pipeline, initialState) => {
   let currentState = initialState;
   const commands = [];
+  let postrequisites: PreprocessRequirements = {};
   for (const operation of pipeline) {
-    const { command, state } = operation.execute(currentState);
-    commands.push(command);
-    currentState = state;
+    const op = operation.execute(currentState);
+    commands.push(op.command);
+    const postrequisite = operation.postrequisite(currentState);
+    postrequisites = deepmerge(postrequisites, postrequisite);
+    currentState = op.state;
   }
-  return { commands, state: currentState };
+  const simulation = { commands, state: currentState };
+  return {
+    simulation,
+    postrequisites,
+  };
 };

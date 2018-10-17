@@ -25,6 +25,7 @@ export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): 
     ...shouldInterlace(state) ? ['-interlace', 'JPEG'] : [],
     '-colorspace',
     'sRGB',
+    ...state.profile ? ['-profile', state.profile] : [],
     `${state.type}:-`,
   ];
 };
@@ -75,8 +76,10 @@ export default class Compress implements Operation {
     this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): DefinitionRequirement {
-    return {};
+  public requirements(state: ImageDefinition): DefinitionRequirement {
+    return {
+      profile: state.type === 'jpeg',
+    };
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {

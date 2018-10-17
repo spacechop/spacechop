@@ -24,7 +24,7 @@ export default class Format implements Operation {
     this.config = config;
   }
 
-  public requirements(): DefinitionRequirement {
+  public requirements(_: ImageDefinition): DefinitionRequirement {
     return {};
   }
 

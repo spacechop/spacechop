@@ -3,9 +3,10 @@ import { Stream } from 'stream';
 import { Params } from '../config/params';
 import analyze from '../lib/analyze';
 import StreamSwitch from '../lib/stream-switch';
+import types from '../lib/types';
 import fetchExtraSources from '../sources/lib/fetch-extra-sources';
 import SourceInstances from '../sources/sources';
-import { ImageDefinition, Step } from '../types';
+import { Config, ImageDefinition, Step } from '../types';
 import initializePipeline from './initialize-pipeline';
 import joinCommands from './join-commands';
 import simulateTransformation from './simulate-transformation';
@@ -18,27 +19,42 @@ export interface TransformationResult {
 export const buildTransformation = async (
   stream: Stream,
   steps: Step[],
+  config?: Config,
   sources?: SourceInstances,
   params?: Params,
 ) => {
-  // initialize steps
+  const streamSwitch = new StreamSwitch(stream);
+  const streamToAnalyzeTypes = streamSwitch.createReadStream();
+  const streamToAnalyzeRequirements = streamSwitch.createReadStream();
+  // Get initial metadata from image (i.e. width, height, type).
+  const state: ImageDefinition = await types(streamToAnalyzeTypes);
+
+  // Initialize steps and retrieve requirements.
   const {
     pipeline,
     requirements,
-  } = initializePipeline(steps);
+  } = initializePipeline(steps, state);
 
-  const definition: ImageDefinition = await analyze(stream, requirements);
-  if ('sources' in requirements && sources) {
-    await fetchExtraSources(requirements.sources, sources, params);
+  // Get requirements from image (i.e. color profile, faces).
+  const definition: ImageDefinition = {
+    ...state,
+    ...await analyze(streamToAnalyzeRequirements, requirements),
+  };
+
+  // Build command from pipeline and image state.
+  const simulation = simulateTransformation(pipeline, definition);
+
+  if ('sources' in simulation.extra && sources) {
+    await fetchExtraSources(simulation.extra.sources, config, sources, params);
   }
 
-  // build command from pipeline and image state
-  return simulateTransformation(pipeline, definition);
+  return simulation;
 };
 
 export default async (
   input: Stream,
   steps: Step[],
+  config?: Config,
   sources?: SourceInstances,
   params?: Params,
 ): Promise<TransformationResult> => {
@@ -48,7 +64,7 @@ export default async (
 
   // build command from pipeline and image state
   const { commands, state } =
-    await buildTransformation(streamToAnalyze, steps, sources, params);
+    await buildTransformation(streamToAnalyze, steps, config, sources, params);
 
   // do nothing when no steps.
   if (steps.length === 0) {
@@ -57,6 +73,7 @@ export default async (
 
   // Spawn new worker to work through the commands.
   const finalCommand = joinCommands(commands);
+
   const stream = spawn('sh', ['-c', finalCommand]);
   stream.on('error', (err) => { throw err; });
   streamToTransform.pipe(stream);

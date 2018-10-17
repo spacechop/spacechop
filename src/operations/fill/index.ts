@@ -1,8 +1,10 @@
+import convertRelativeConfig from '../../lib/convertRelative';
+import getFaceCenter from '../../lib/face-detection/getFaceCenter';
 import getLargestFace from '../../lib/face-detection/getLargestFace';
 import scaleFace from '../../lib/face-detection/scaleFace';
 import transformFace from '../../lib/face-detection/transformFace';
-import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
 import { getMagickOffset, magickGravityMap } from '../../lib/magick';
+import translationForGravity from '../../lib/translationForGravity';
 import { DefinitionRequirement, Gravity, ImageDefinition } from '../../types';
 import Operation from './../operation';
 import { FillConfig } from './types';
@@ -12,20 +14,31 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition, gravity: G
   const height = config.height as number;
   const scale = state.width < state.height ?
     state.width / width : state.height / height;
-
-  if (config.gravity !== 'face' || !state.faces || state.faces.length === 0) {
-    return { scale };
-  }
-
-  const largestFace = scaleFace({ scale })(getLargestFace(state.faces));
-  const newSize = { width, height };
-  const scaledSize = {
+  const offset: { x: number, y: number } = { x: 0, y: 0 };
+  const sizeAfter = { width, height };
+  const sizeBefore = {
     width: Math.round(state.width / scale),
     height: Math.round(state.height / scale),
   };
 
-  const translate = translationForCenteringOnFace(
-    newSize, scaledSize, largestFace, gravity,
+  if (config.gravity === 'face' && state.faces && state.faces.length > 0) {
+    const largestFace = scaleFace({ scale })(getLargestFace(state.faces));
+    const { x, y } = getFaceCenter(largestFace);
+    offset.x += x;
+    offset.y += y;
+  }
+
+  if (config.offset) {
+    const { x, y } = convertRelativeConfig(config.offset, sizeBefore) as { x: number, y: number };
+    offset.x += x;
+    offset.y += y;
+  }
+
+  const translate = translationForGravity(
+    sizeBefore,
+    sizeAfter,
+    offset,
+    gravity,
   );
 
   return { scale, translate };
@@ -33,13 +46,14 @@ const gravityTransform = (config: FillConfig, state: ImageDefinition, gravity: G
 
 export const magickOptions = (config: FillConfig, state: ImageDefinition): string[] => {
   const gravity = config.gravity as Gravity;
-  const { translate } = gravityTransform(config, state, 'center');
+  const { translate } = gravityTransform(config, state, gravity);
   const offset = getMagickOffset(translate);
   return [
     '-',
     `-resize ${config.width}x${config.height}^`,
     `-gravity ${magickGravityMap[gravity]}`,
-    `-extent ${config.width}x${config.height}${offset}`,
+    // `-extent ${config.width}x${config.height}${offset}`,
+    `-crop ${config.width}x${config.height}${offset}`,
     `${state.type}:-`,
   ];
 };
@@ -74,7 +88,7 @@ export default class Fill implements Operation {
     this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): DefinitionRequirement {
+  public requirements(_: ImageDefinition): DefinitionRequirement {
     if (this.config.gravity === 'face') {
       return { faces: true };
     }

@@ -18,6 +18,7 @@ const ImageDefinition = t.Record({
   animated: t.Boolean,
   size: t.Number,
   lossy: t.Boolean,
+  profile: t.String,
 }));
 
 export type ImageDefinition = t.Static<typeof ImageDefinition>;

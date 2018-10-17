@@ -4,7 +4,7 @@ apk update
 apk upgrade
 
 # Install dependencies.
-apk add --no-cache imagemagick openblas
+apk add --no-cache imagemagick openblas jq
 
 # Install build dependencies.
 apk --no-cache add -t .build-deps \
@@ -32,10 +32,7 @@ git clone https://github.com/davisking/dlib.git /usr/share/dlib
 mkdir -p /usr/share/dlib/app
 mv /bin/CMakeLists.txt /usr/share/dlib/app/CMakeLists.txt
 mv /bin/facedetect.cpp /usr/share/dlib/app/facedetect.cpp
-# curl -O http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-# bzip2 -d shape_predictor_68_face_landmarks.dat.bz2
 mkdir -p /usr/share/dlib/build/
-# mv shape_predictor_68_face_landmarks.dat /bin/shape_predictor_68_face_landmarks.dat
 cd /usr/share/dlib/build
 cmake \
   -O0 -j3 \
