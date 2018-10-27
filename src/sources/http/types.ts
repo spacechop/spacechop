@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 
-const pattern = /^(https?|ftp):\/\/(-\.)?([^\s/?\.#-]+\.?)+(\/[^\s]*)?$/i;
+const pattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
 const HttpSourceConfig = t.Record({
   root: t.String.withConstraint(

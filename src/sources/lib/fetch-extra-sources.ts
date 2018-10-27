@@ -14,15 +14,14 @@ export default async (
 ): Promise<void> => {
   const promises = [];
   for (const extra of extras) {
-    for (const key of Object.keys(sources[extra.source])) {
-      const source = sources[extra.source][key];
+    const source = sources[extra.source];
+    if (source) {
       // Combine params and extra params.
       const parameters = { ...params, ...extra.params };
       if (source && await source.exists(parameters)) {
         const extraStream = source.stream(parameters);
         if (extra.preset) {
-          const preset = config.presets.public[extra.preset]
-            || config.presets.private[extra.preset];
+          const preset = config.presets[extra.preset];
           const steps = populatePresetParams(preset.steps, params, extra.state);
           promises.push(transform(extraStream, steps).then(
             ({ stream }) => saveStreamToFile(stream, extra.handle),
@@ -33,5 +32,6 @@ export default async (
       }
     }
   }
+
   await Promise.all(promises);
 };

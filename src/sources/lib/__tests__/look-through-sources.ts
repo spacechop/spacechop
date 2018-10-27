@@ -1,7 +1,7 @@
 import Source from './../../source';
-import fetchOriginalSource from './../fetch-original-source';
+import fetchSource from './../fetch-source';
 
-describe('fetchOriginalSource', () => {
+describe('fetchPublicSource', () => {
   it('should return null if image does not exist in source', async () => {
     const sources: Source[] = [
       {
@@ -10,7 +10,7 @@ describe('fetchOriginalSource', () => {
       },
     ];
 
-    const result = await fetchOriginalSource(sources, {});
+    const result = await fetchSource(sources, {});
     expect(result).toBeNull();
   });
   it('should only check sources until image is found', async () => {
@@ -25,7 +25,7 @@ describe('fetchOriginalSource', () => {
       },
     ];
 
-    await fetchOriginalSource(sources, {});
+    await fetchSource(sources, {});
 
     expect(sources[0].exists).toHaveBeenCalled();
     expect(sources[1].exists).not.toHaveBeenCalled();

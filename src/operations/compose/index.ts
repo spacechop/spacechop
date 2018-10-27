@@ -1,17 +1,30 @@
 import uuid from 'uuid/v1';
-import { DefinitionRequirement, ExtraRequirement, ImageDefinition } from '../../types';
+import { getMagickOffset, magickGravityMap } from '../../lib/magick';
+import magickArrangementMap from '../../lib/magick/magickArrangementMap';
+import magickComposeMap from '../../lib/magick/magickComposeMap';
+import { DefinitionRequirement, ExtraRequirement, Gravity, ImageDefinition } from '../../types';
 import Operation from '../operation';
 import { ComposeConfig } from './types';
 
-export const magickOptions = (handle: string, config: ComposeConfig, _: ImageDefinition): string[] => {
+export const magickOptions = (handle: string, config: ComposeConfig, state: ImageDefinition): string[] => {
+  const gravity = config.gravity as Gravity;
+  const width = 4000;
+  const heigth = 1700;
   return [
     'magick',
-    'composite',
-    '-compose atop',
-    '-gravity', 'center',
+    '-size', `${width}x${heigth} canvas:transparent`,
+    '-',
+    `-gravity ${magickGravityMap[gravity]}`,
+    '-geometry', `${state.width}x${state.height}${getMagickOffset(config.offset)}`,
+    '-composite',
     handle,
-    '-',
-    '-',
+    ...config.arrange ? ['-compose', magickArrangementMap[config.arrange]] : [
+      '-compose', 'dst-over',
+    ],
+    ...config.blend ? ['-compose', magickComposeMap[config.blend]] : [],
+    // // '-watermark', '10', // %
+    '-composite',
+    `${state.type}:-`,
   ];
 };
 
@@ -21,11 +34,16 @@ export const transformState = (_: ComposeConfig, state: ImageDefinition): ImageD
   };
 };
 
+export const defaultConfig: ComposeConfig = {
+  source: null,
+  arrange: 'over',
+};
+
 export default class Compose implements Operation {
   public config: ComposeConfig;
   private handle: string;
   constructor(config: ComposeConfig) {
-    this.config = config;
+    this.config = { ...defaultConfig, ...config };
     this.handle = `/tmp/${uuid()}`;
   }
 
@@ -44,9 +62,11 @@ export default class Compose implements Operation {
       command: options.join(' '),
       extra: {
         sources: [{
-          state,
+          source: this.config.source,
+          params: this.config.params,
+          preset: this.config.preset,
           handle: this.handle,
-          ...this.config,
+          state,
         }],
       },
     };

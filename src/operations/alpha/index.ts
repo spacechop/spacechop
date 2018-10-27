@@ -32,7 +32,6 @@ export default class Alpha implements Operation {
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
     const options = magickOptions(this.config, state);
-    console.log(options);
     return {
       state: transformState(this.config, state),
       command: options.join(' '),
