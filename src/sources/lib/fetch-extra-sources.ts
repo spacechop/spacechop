@@ -22,7 +22,7 @@ export default async (
         const extraStream = source.stream(parameters);
         if (extra.preset) {
           const preset = config.presets[extra.preset];
-          const steps = populatePresetParams(preset.steps, params, extra.state);
+          const steps = populatePresetParams(preset.steps, params);
           promises.push(transform(extraStream, steps).then(
             ({ stream }) => saveStreamToFile(stream, extra.handle),
           ));

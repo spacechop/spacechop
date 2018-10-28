@@ -4,25 +4,18 @@ import { ImageDefinition } from '../types/ImageDefinition';
 import StepType from '../types/Step';
 import { Step } from '../types/Step';
 
-const populateConfig = (config: any, params: any, state: ImageDefinition): any => {
+const populateConfig = (config: any, params: any): any => {
   return Object.keys(config).reduce((acc, key) => {
     let value = config[key];
     // Populate params.
     if (/^[$]/.test(value)) {
-      const paramKey = config[key].replace(/^[$]/, '');
-      value = castValue(params[paramKey]);
-    }
-    // Populate relative width.
-    if (key === 'width' && /^\d+%$/.test(value)) {
-      value = state.width * parseFloat(value.replace(/%/, '')) / 100;
-    }
-    // Populate relative height.
-    if (key === 'height' && /^\d+%$/.test(value)) {
-      value = state.height * parseFloat(value.replace(/%/, '')) / 100;
+      value = castValue(config[key].replace(/[$](\w+)/ig,
+        (_, paramKey) => params[paramKey],
+      ));
     }
     // Recursing through nested configuration.
     if (typeof value === 'object') {
-      value = populateConfig(value, params, state);
+      value = populateConfig(value, params);
     }
     return {
       ...acc,
@@ -45,7 +38,7 @@ export const castValue = (value: string): boolean | number | string | Format => 
     return false;
   }
   const maybeNumber = parseFloat(value);
-  if (!isNaN(maybeNumber)) {
+  if (!isNaN(maybeNumber) && value === `${maybeNumber}`) {
     return maybeNumber;
   }
   const maybeFormat = parseFormat(value);
@@ -59,11 +52,10 @@ export const castValue = (value: string): boolean | number | string | Format => 
 export default (
   steps: Step[],
   params: Params,
-  state?: ImageDefinition,
 ): Step[] => {
   const populatedSteps = steps.map((step: Step) => {
     const name = Object.keys(step)[0];
-    const config = populateConfig(step[name], params, state);
+    const config = populateConfig(step[name], params);
     return { [name]: config };
   });
 

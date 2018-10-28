@@ -1,4 +1,5 @@
 import * as t from 'runtypes';
+import Percentage from './Percentage';
 
 const StringParam = t.Union(
   t.Literal('string'),
@@ -37,7 +38,6 @@ const FloatParam = t.Union(
     enum: t.Array(t.Number),
     min: t.Number,
     max: t.Number,
-    round: t.Number,
   })),
 );
 

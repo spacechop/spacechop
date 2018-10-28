@@ -137,7 +137,7 @@ export const requestHandler = (
   if (onlyAnalyze) {
     const { state } = await buildTransformation(stream, steps);
     // trace.log('analyze', state);
-    res.json({ state, params });
+    res.json({ state, params, steps });
     trace.end();
   } else {
     try {

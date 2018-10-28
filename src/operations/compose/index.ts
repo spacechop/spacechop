@@ -1,5 +1,6 @@
 import uuid from 'uuid/v1';
 import { getMagickOffset, magickGravityMap } from '../../lib/magick';
+import { MagickOffset } from '../../lib/magick/getMagickOffset';
 import magickArrangementMap from '../../lib/magick/magickArrangementMap';
 import magickComposeMap from '../../lib/magick/magickComposeMap';
 import { DefinitionRequirement, ExtraRequirement, Gravity, ImageDefinition } from '../../types';
@@ -8,14 +9,14 @@ import { ComposeConfig } from './types';
 
 export const magickOptions = (handle: string, config: ComposeConfig, state: ImageDefinition): string[] => {
   const gravity = config.gravity as Gravity;
-  const width = 4000;
+  const width = 3945;
   const heigth = 1700;
   return [
     'magick',
     '-size', `${width}x${heigth} canvas:transparent`,
     '-',
     `-gravity ${magickGravityMap[gravity]}`,
-    '-geometry', `${state.width}x${state.height}${getMagickOffset(config.offset)}`,
+    '-geometry', `${state.width}x${state.height}${getMagickOffset(config.offset as MagickOffset)}`,
     '-composite',
     handle,
     ...config.arrange ? ['-compose', magickArrangementMap[config.arrange]] : [

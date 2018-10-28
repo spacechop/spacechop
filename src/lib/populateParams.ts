@@ -6,7 +6,7 @@ export default (
   input: any,
   params: Params,
 ): Params => {
-  return Object.keys(input).reduce((acc: Params, param: string) => {
+  return Object.keys(input || {}).reduce((acc: Params, param: string) => {
     let value = params[param];
     // Populate params.
     if (/^[$]/.test(value)) {

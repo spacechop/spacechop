@@ -5,7 +5,7 @@ const S3SourceConfig = t.Record({
   secret_access_key: t.String.withConstraint((n) => n && n.length > 0),
   region: t.String.withConstraint((n) => n && n.length > 0),
   bucket_name: t.String.withConstraint((n) => n && n.length > 0),
-  path: t.String.withConstraint((n) => n && n.length > 0),
+  pattern: t.String.withConstraint((n) => n && n.length > 0),
 }).And(t.Partial({
   endpoint: t.String,
 }));
