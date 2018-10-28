@@ -1,7 +1,9 @@
+import convertRelativeConfig from '../../lib/convertRelative';
+import getFaceCenter from '../../lib/face-detection/getFaceCenter';
 import getLargestFace from '../../lib/face-detection/getLargestFace';
 import translateFace from '../../lib/face-detection/translateFace';
-import translationForCenteringOnFace from '../../lib/face-detection/translationForCenteringOnFace';
 import { getMagickOffset, magickGravityMap } from '../../lib/magick';
+import translationForGravity from '../../lib/translationForGravity';
 import { DefinitionRequirement, Gravity, ImageDefinition } from '../../types';
 import Operation from './../operation';
 import { CropConfig } from './types';
@@ -9,19 +11,36 @@ import { CropConfig } from './types';
 const gravityTransform = (config: CropConfig, state: ImageDefinition, gravity: Gravity) => {
   const width = config.width as number;
   const height = config.height as number;
+  const offset: { x: number, y: number } = { x: 0, y: 0 };
+  const sizeAfter = { width, height };
+  const sizeBefore = {
+    width: state.width,
+    height: state.height,
+  };
+
+  if (config.gravity === 'face' && state.faces && state.faces.length > 0) {
+    const largestFace = getLargestFace(state.faces);
+    const { x, y } = getFaceCenter(largestFace);
+    offset.x += x;
+    offset.y += y;
+  }
+
+  if (config.offset) {
+    const { x, y } = convertRelativeConfig(config.offset, sizeAfter) as { x: number, y: number };
+    offset.x += x;
+    offset.y += y;
+  }
+
+  const translate = translationForGravity(
+    sizeBefore,
+    sizeAfter,
+    offset,
+    gravity,
+  );
 
   if (config.gravity !== 'face' || !state.faces || state.faces.length === 0) {
     return null;
   }
-
-  const largestFace = getLargestFace(state.faces);
-
-  const translate = translationForCenteringOnFace(
-    { width, height },
-    { width: state.width, height: state.height },
-    largestFace,
-    gravity,
-  );
 
   return translate;
 };
@@ -81,11 +100,11 @@ export default class Crop implements Operation {
     this.config = { ...defaultConfig, ...config };
   }
 
-  public requirements(): DefinitionRequirement[] {
+  public requirements(): DefinitionRequirement {
     if (this.config.gravity === 'face') {
-      return ['faces'];
+      return { faces: true };
     }
-    return [];
+    return {};
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {

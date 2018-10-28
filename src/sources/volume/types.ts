@@ -3,7 +3,7 @@ import * as t from 'runtypes';
 const pattern = /^\/.*/i;
 
 const VolumeSourceConfig = t.Record({
-  root: t.String.withConstraint(
+  pattern: t.String.withConstraint(
     (n) => (n && n.length > 0 && pattern.test(n)) || 'Requires valid root',
   ),
 });

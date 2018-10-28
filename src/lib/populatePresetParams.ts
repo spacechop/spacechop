@@ -1,7 +1,28 @@
 import { Params } from '../config/params';
 import { Format, parseFormat } from '../types/Format';
+import { ImageDefinition } from '../types/ImageDefinition';
 import StepType from '../types/Step';
 import { Step } from '../types/Step';
+
+const populateConfig = (config: any, params: any): any => {
+  return Object.keys(config).reduce((acc, key) => {
+    let value = config[key];
+    // Populate params.
+    if (/^[$]/.test(value)) {
+      value = castValue(config[key].replace(/[$](\w+)/ig,
+        (_, paramKey) => params[paramKey],
+      ));
+    }
+    // Recursing through nested configuration.
+    if (typeof value === 'object') {
+      value = populateConfig(value, params);
+    }
+    return {
+      ...acc,
+      [key]: value,
+    };
+  }, {});
+};
 
 // Casts passed value
 // Ex:
@@ -17,7 +38,7 @@ export const castValue = (value: string): boolean | number | string | Format => 
     return false;
   }
   const maybeNumber = parseFloat(value);
-  if (!isNaN(maybeNumber)) {
+  if (!isNaN(maybeNumber) && value === `${maybeNumber}`) {
     return maybeNumber;
   }
   const maybeFormat = parseFormat(value);
@@ -34,17 +55,7 @@ export default (
 ): Step[] => {
   const populatedSteps = steps.map((step: Step) => {
     const name = Object.keys(step)[0];
-    const config: Step = Object.keys(step[name]).reduce((acc, key) => {
-      let value = step[name][key];
-      if (typeof value === 'object' && 'from_path' in value) {
-        const paramKey = step[name][key].from_path;
-        value = castValue(params[paramKey]);
-      }
-      return {
-        ...acc,
-        [key]: value,
-      };
-    }, {});
+    const config = populateConfig(step[name], params);
     return { [name]: config };
   });
 

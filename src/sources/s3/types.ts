@@ -1,11 +1,11 @@
 import * as t from 'runtypes';
 
 const S3SourceConfig = t.Record({
-    access_key_id: t.String.withConstraint((n) => n && n.length > 0),
-    secret_access_key: t.String.withConstraint((n) => n && n.length > 0),
-    region: t.String.withConstraint((n) => n && n.length > 0),
-    bucket_name: t.String.withConstraint((n) => n && n.length > 0),
-    path: t.String.withConstraint((n) => n && n.length > 0),
+  access_key_id: t.String.withConstraint((n) => n && n.length > 0),
+  secret_access_key: t.String.withConstraint((n) => n && n.length > 0),
+  region: t.String.withConstraint((n) => n && n.length > 0),
+  bucket_name: t.String.withConstraint((n) => n && n.length > 0),
+  pattern: t.String.withConstraint((n) => n && n.length > 0),
 }).And(t.Partial({
   endpoint: t.String,
 }));

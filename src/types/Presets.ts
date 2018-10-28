@@ -1,7 +1,7 @@
 import * as t from 'runtypes';
-import PresetConfig from './PresetConfig';
+import Preset from './Preset';
 
-const Presets = t.Dictionary(PresetConfig, 'string');
+const Presets = t.Dictionary(Preset, 'string');
 
 export type Presets = t.Static<typeof Presets>;
 export default Presets;
