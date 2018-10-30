@@ -37,6 +37,7 @@ describe('Preset missing', () => {
 
   const sources = [
     {
+      key: jest.fn(),
       exists: jest.fn(),
       stream: jest.fn(),
     },

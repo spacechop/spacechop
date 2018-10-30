@@ -3,6 +3,7 @@ import { Mime } from '../../types/Format';
 import Storage from '../storage';
 
 export interface StorageFetchResult {
+  key: string;
   stream: Stream;
   contentType?: Mime;
 }

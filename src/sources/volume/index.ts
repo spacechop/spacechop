@@ -2,6 +2,7 @@ import fs from 'fs';
 import { Stream } from 'stream';
 import url from 'url';
 import compilePath from '../../lib/compile-path';
+import hashKey from '../../lib/hashKey';
 import Source from './../source';
 
 export interface VolumeSourceConfig {
@@ -20,6 +21,10 @@ export default class VolumeSource implements Source {
   public config: VolumeSourceConfig;
   constructor(config: VolumeSourceConfig) {
     this.config = config;
+  }
+
+  public key(params: any): string {
+    return hashKey(compilePath(this.config.root, params));
   }
 
   public exists(params: {}): Promise<boolean> {

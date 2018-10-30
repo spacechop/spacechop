@@ -62,7 +62,7 @@ export default class S3Storage implements Storage {
     });
   }
 
-  public stream(params: any): Promise<{ stream: Stream, contentType: Mime }> {
+  public stream(params: any): Promise<{ key: string, stream: Stream, contentType: Mime }> {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
@@ -81,7 +81,7 @@ export default class S3Storage implements Storage {
         // 300 is rather arbitrary, but 200 and 204 must be considered successful.
         if (status < 300) {
           const contentType = (headers['content-type'] || null) as Mime;
-          resolve({ stream, contentType });
+          resolve({ key: Key, stream, contentType });
           return;
         }
 

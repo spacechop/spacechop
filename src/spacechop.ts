@@ -38,14 +38,16 @@ export const respond = async (response: Response, stream: Stream, mime: Mime, co
       // since it is confusing.
       // response.set('Transfer-Encoding', '');
       response.end(buffer);
-      resolve();
+      resolve(buffer.length);
       return;
     }
 
     response.set('Transfer-Encoding', 'chunked');
+    let size = 0;
     stream.pipe(response);
     stream.on('error', reject);
-    stream.on('end', resolve);
+    stream.on('data', (chunk) => { size += chunk.length; });
+    stream.on('end', () => resolve(size));
     return;
   });
 };
@@ -54,7 +56,9 @@ export const requestHandler = (
   config: Config, keys,
   sources: Source[],
   storage?: IStorage,
+  monitor?: any,
 ) => async (req: Request, res: Response) => {
+  const handle = monitor && monitor.monitorResponse(res);
   // Create trace instance.
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
@@ -71,6 +75,7 @@ export const requestHandler = (
     trace.warn('preset', 'Could not find preset');
     return;
   } else {
+    res.set('X-Preset', params.preset);
     trace.log('preset', preset);
   }
 
@@ -93,44 +98,53 @@ export const requestHandler = (
         return;
       }
 
-      await respond(res, fromCache.stream, fromCache.contentType, config);
+      res.set('X-Cache', 'HIT');
+      res.set('X-Key', fromCache.key);
+      const size = await respond(res, fromCache.stream, fromCache.contentType, config);
+      trace.log('size', size);
       trace.end();
       return;
     }
   }
 
   // look through sources to fetch original source stream
-  const stream = await lookThroughSources(sources, params);
+  const fromSource = await lookThroughSources(sources, params);
 
-  if (!stream) {
+  // It does not exist in source
+  if (fromSource && !fromSource.stream) {
     res.status(404);
     res.end('Could not find image');
     trace.warn('image', 'Could not find image');
     return;
+  } else {
+    res.set('X-Key', fromSource.key);
+    trace.log('original', fromSource.key);
   }
 
   // Only analyze image after pipeline
   const onlyAnalyze = 'analyze' in req.query;
   if (onlyAnalyze) {
-    const { state } = await buildTransformation(stream, steps);
+    const { state } = await buildTransformation(fromSource.stream, steps);
     trace.log('analyze', state);
     res.json(state);
     trace.end();
   } else {
     try {
-      const { stream: transformed, definition } = await transform(stream, steps);
-      trace.log('definition', definition);
-      const contentType = formatToMime(definition.type);
+      const fromTransform = await transform(fromSource.stream, steps);
+      trace.log('definition', fromTransform.definition);
+      const contentType = formatToMime(fromTransform.definition.type);
+      res.set('X-Cache', 'MISS');
 
       // Send image data through the worker which passes through to response.
-      let streamToRespondWith = transformed;
-      if (config.storage) {
-        const streamSwitch = new StreamSwitch(transformed);
+      let streamToRespondWith = fromTransform.stream;
+      if (storage) {
+        const streamSwitch = new StreamSwitch(fromTransform.stream);
         streamToRespondWith = streamSwitch.createReadStream();
         const streamToCache = streamSwitch.createReadStream();
         uploadToStorage(storage, params, streamToCache, contentType);
       }
-      await respond(res, streamToRespondWith, contentType, config);
+      const size = await respond(res, streamToRespondWith, contentType, config);
+      trace.log('size', size);
       trace.end();
     } catch (err) {
       trace.warn('error', err);
@@ -138,7 +152,11 @@ export const requestHandler = (
   }
 };
 
-export default (config: Config, server) => {
+export default (
+  config: Config,
+  server: any,
+  monitor?: any,
+) => {
   if (!config) {
     return;
   }
@@ -151,7 +169,7 @@ export default (config: Config, server) => {
   paths.forEach((path) => {
     const keys = [];
     const pattern = pathToRegex(path, keys);
-    const handler = requestHandler(config, keys, sources, storage);
+    const handler = requestHandler(config, keys, sources, storage, monitor);
     server.get(pattern, asyncWrapper(handler, handleError));
   });
 };

@@ -58,6 +58,15 @@ describe('S3 source', () => {
     });
   });
 
+  describe('.key', () => {
+    it('should return key', async () => {
+      const source = new S3Source(defaultConfig);
+      // console.log(source);
+      const result = source.key({ image: 'hej' });
+      expect(result).toMatch(/.+/);
+    });
+  });
+
   describe('.stream', () => {
     it('should return a stream', async () => {
       const source = new S3Source(defaultConfig);

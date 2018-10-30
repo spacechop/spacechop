@@ -1,9 +1,15 @@
 import chokidar from 'chokidar';
 import cluster from 'cluster';
 import express from 'express';
-import { cpus } from 'os';
+import os from 'os';
 import loadConfig from './config';
+import monitor from './monitor';
 import setupRoutes from './spacechop';
+
+const {
+  PORT = 3000,
+  PROMETHEUS_METRIC_PATH = '/_health',
+} = process.env;
 
 // read initial config.
 let config = loadConfig();
@@ -11,10 +17,13 @@ let config = loadConfig();
 const app = express();
 app.disable('x-powered-by');
 
+// export server to enable testing.
+export let server;
+
 // create and setup router.
 let router = express.Router();
 // Setup routes for the SpaceChop service.
-setupRoutes(config, router);
+setupRoutes(config, router, monitor);
 // Enable reloading of routes runtime by using a simple router that we switch out.
 app.use((req, res, next) => {
   // pass through requests to the router.
@@ -22,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 if (cluster.isMaster) {
-  const workers = cpus().length;
+  const workers = os.cpus().length;
   for (let i = 0; i < workers; i++) {
     cluster.fork();
   }
@@ -44,9 +53,13 @@ if (cluster.isMaster) {
     console.info('Reloading config...');
     router = express.Router();
     config = loadConfig();
-    setupRoutes(config, router);
+    setupRoutes(config, router, monitor);
+  });
+
+  app.get(PROMETHEUS_METRIC_PATH, (_, res) => {
+    res.end(monitor.getMetrics());
   });
 
   // start listening on port.
-  app.listen(3000, () => console.info('Listening on port 3000'));
+  server = app.listen(PORT, () => console.info(`Listening on port ${PORT}`));
 }

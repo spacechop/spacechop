@@ -3,6 +3,7 @@ import { Stream } from 'stream';
 import url from 'url';
 import compilePath from '../../lib/compile-path';
 import console from '../../lib/console';
+import hashKey from '../../lib/hashKey';
 import Source from './../source';
 
 export interface HttpSourceConfig {
@@ -21,6 +22,10 @@ export default class HttpSource implements Source {
   public config: HttpSourceConfig;
   constructor(config: HttpSourceConfig) {
     this.config = config;
+  }
+
+  public key(params: any): string {
+    return hashKey(buildUri(this.config.root, params));
   }
 
   public exists(params: {}): Promise<boolean> {

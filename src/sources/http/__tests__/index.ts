@@ -53,6 +53,15 @@ describe('HTTP Source', () => {
         expect(result).toBe(true);
       });
     });
+
+    describe('.key', () => {
+      it('should return key', async () => {
+        // console.log(source);
+        const result = instance.key({ image: 'some-image.jpg' });
+        expect(result).toMatch(/.+/);
+      });
+    });
+
     describe('.stream', () => {
       const result = instance.stream({ image: 'some-image.jpg' });
 

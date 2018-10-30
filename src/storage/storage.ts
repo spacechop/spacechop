@@ -2,6 +2,7 @@ import { Stream } from 'stream';
 import { Mime } from '../types/Format';
 
 export interface StorageStreamResult {
+  key: string;
   stream: Stream;
   contentType?: Mime;
 }

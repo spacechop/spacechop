@@ -27,6 +27,7 @@ describe('Image missing in source', () => {
 
   const sources = [
     {
+      key: jest.fn(),
       exists: jest.fn(() => Promise.resolve(false)),
       stream: jest.fn(),
     },
