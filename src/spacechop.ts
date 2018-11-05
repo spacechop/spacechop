@@ -63,8 +63,6 @@ export const requestHandler = (
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
   const params = extractParamValues(keys, req.params);
-  trace.log('url', req.originalUrl);
-  trace.log('params', params);
 
   // find the right preset steps to use
   const preset = config.presets[params.preset];
@@ -76,12 +74,10 @@ export const requestHandler = (
     return;
   } else {
     res.set('X-Preset', params.preset);
-    trace.log('preset', preset);
   }
 
   // populate steps with params.
   const steps = populatePresetParams(preset.steps, params);
-  trace.log('steps', steps);
   if (storage) {
     params.hash = hash(steps);
   }
@@ -100,8 +96,7 @@ export const requestHandler = (
 
       res.set('X-Cache', 'HIT');
       res.set('X-Key', fromCache.key);
-      const size = await respond(res, fromCache.stream, fromCache.contentType, config);
-      trace.log('size', size);
+      await respond(res, fromCache.stream, fromCache.contentType, config);
       trace.end();
       return;
     }
@@ -118,20 +113,17 @@ export const requestHandler = (
     return;
   } else {
     res.set('X-Key', fromSource.key);
-    trace.log('original', fromSource.key);
   }
 
   // Only analyze image after pipeline
   const onlyAnalyze = 'analyze' in req.query;
   if (onlyAnalyze) {
     const { state } = await buildTransformation(fromSource.stream, steps);
-    trace.log('analyze', state);
     res.json(state);
     trace.end();
   } else {
     try {
       const fromTransform = await transform(fromSource.stream, steps);
-      trace.log('definition', fromTransform.definition);
       const contentType = formatToMime(fromTransform.definition.type);
       res.set('X-Cache', 'MISS');
 
@@ -143,8 +135,7 @@ export const requestHandler = (
         const streamToCache = streamSwitch.createReadStream();
         uploadToStorage(storage, params, streamToCache, contentType);
       }
-      const size = await respond(res, streamToRespondWith, contentType, config);
-      trace.log('size', size);
+      await respond(res, streamToRespondWith, contentType, config);
       trace.end();
     } catch (err) {
       trace.warn('error', err);
