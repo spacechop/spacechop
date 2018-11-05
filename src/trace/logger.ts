@@ -3,6 +3,8 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 
 const { combine, timestamp, json } = format;
 
+const { LOG_FILE, NODE_ENV } = process.env;
+
 // By default log level is set to `info`.
 // Override log level by setting `LOG_LEVEL` environment variable.
 // In test environment only error logs will be emitted.
@@ -26,28 +28,25 @@ const logger = winston.createLogger({
     json(),
   ),
   transports: [
+    // Log to the `console` with the format:
+    // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    }),
     //
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
     //
-    createRotatedFileTransform({
-      filename: 'error-%DATE%.log',
-      level: 'warning',
-    }),
-    createRotatedFileTransform({
-      filename: 'combined-%DATE%.log',
-    }),
+    ...LOG_FILE ? [
+      createRotatedFileTransform({
+        filename: `${LOG_FILE}-%DATE%.log`,
+        level: 'warning',
+      }),
+      createRotatedFileTransform({
+        filename: `${LOG_FILE}-%DATE%.log`,
+      }),
+    ] : [],
   ],
 });
-
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
-}
 
 export default logger;
