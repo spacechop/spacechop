@@ -44,15 +44,16 @@ describe('main program', () => {
       require('../..');
     });
 
-    it('should start listening to config changes', () => {
+    it('should start listening to config changes', async () => {
       expect(chokidar.watch).toHaveBeenCalled();
+      expect(chokidar.on).toHaveBeenCalled();
+      const handler = chokidar.on.mock.calls[0][1];
+      // Trigger listen to file.
+      handler();
     });
-  });
 
-  describe('should start monitoring', () => {
-    beforeEach(() => {
-      // Mock being worker node.
-      require('../..');
+    it('should start listening to config changes', () => {
+      expect(expressMocks.listen).toHaveBeenCalled();
     });
 
     it('should handle monitor check', () => {

@@ -33,7 +33,6 @@ chokidar.watch('/config.yml', {
   usePolling: true,
   interval: 1000,
 }).on('all', async () => {
-  console.info('Reloading config...');
   router = express.Router();
   config = loadConfig();
   setupRoutes(config, router, monitor);
