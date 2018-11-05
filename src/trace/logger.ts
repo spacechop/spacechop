@@ -13,7 +13,7 @@ const logLevel = 'LOG_LEVEL' in process.env
   : (process.env.NODE_ENV === 'test' ? 'error' : 'info');
 
 // Rotate log file transport.
-const createRotatedFileTransform = (config) => new DailyRotateFile({
+const createRotatedFile = (config) => new DailyRotateFile({
   ...config,
   datePattern: 'YYYY-MM-DD-HH',
   zippedArchive: true,
@@ -37,15 +37,7 @@ const logger = winston.createLogger({
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
     //
-    ...LOG_FILE ? [
-      createRotatedFileTransform({
-        filename: `${LOG_FILE}-%DATE%.log`,
-        level: 'warning',
-      }),
-      createRotatedFileTransform({
-        filename: `${LOG_FILE}-%DATE%.log`,
-      }),
-    ] : [],
+    ...LOG_FILE ? [createRotatedFile({ filename: `${LOG_FILE}-%DATE%.log` })] : [],
   ],
 });
 

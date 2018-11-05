@@ -2,8 +2,10 @@ version: '3.2'
 services:
   spacechop:
     command: npm run test:ci
+    env:
+      - LOG_FILE=test
     build:
-      cache_from: 
+      cache_from:
         - spacechop:latest
       args:
         env: development
