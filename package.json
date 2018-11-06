@@ -27,7 +27,7 @@
     "runtypes": "~2.1.6",
     "uuid": "~3.3.2",
     "winston": "~3.1.0",
-    "winston-daily-rotate-file": "^3.3.5"
+    "winston-daily-rotate-file": "3.4.1"
   },
   "devDependencies": {
     "@types/chokidar": "1.7.5",
