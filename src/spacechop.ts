@@ -58,7 +58,10 @@ export const requestHandler = (
   storage?: IStorage,
   monitor?: any,
 ) => async (req: Request, res: Response) => {
-  const handle = monitor && monitor.monitorResponse(res);
+  // Start monitoring requests.
+  if (monitor) {
+    monitor.monitorResponse(res);
+  }
   // Create trace instance.
   const trace = new Trace();
   // Extract params from request (enables the use of dynamic named params (.*)).
