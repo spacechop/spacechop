@@ -12,7 +12,7 @@ const tests = [
   isWEBP,
 ];
 
-export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolve) => {
+export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolve, reject) => {
   const chunks = [];
   stream.on('data', (chunk) => {
     chunks.push(chunk);
@@ -26,5 +26,6 @@ export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolv
         break;
       }
     }
+    reject('Unsupported type');
   });
 });

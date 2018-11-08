@@ -227,4 +227,29 @@ describe('Analyze', () => {
       });
     }
   });
+
+  describe('Bad files', () => {
+    const assets = '../../test/assets';
+    const sources: Array<{
+      source: string;
+      root: string,
+    }> = [{
+      source: 'zero-byte-file',
+      root: assets,
+    }];
+
+    // create a test for all file types
+    for (const {
+      source,
+      root,
+    } of sources) {
+      describe(`analyze ImageDefinition for ${source}`, () => {
+        const stream = createReadStream(path.join(__dirname, root, source));
+
+        it('should reject', async () => {
+          await expect(analyze(stream, [])).rejects.toMatchSnapshot();
+        });
+      });
+    }
+  });
 });

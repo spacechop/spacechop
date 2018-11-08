@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bad image in source should set status 400 1`] = `
+Array [
+  "Bad request",
+]
+`;

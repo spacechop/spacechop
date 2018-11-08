@@ -141,6 +141,8 @@ export const requestHandler = (
       await respond(res, streamToRespondWith, contentType, config);
       trace.end();
     } catch (err) {
+      res.status(400);
+      res.end('Bad request');
       trace.warn('error', err);
     }
   }
