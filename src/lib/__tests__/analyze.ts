@@ -246,7 +246,7 @@ describe('Analyze', () => {
       describe(`analyze ImageDefinition for ${source}`, () => {
         const stream = createReadStream(path.join(__dirname, root, source));
 
-        it('should return valid ImageDefinition', async () => {
+        it('should reject', async () => {
           await expect(analyze(stream, [])).rejects.toMatchSnapshot();
         });
       });
