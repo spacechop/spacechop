@@ -5,9 +5,3 @@ Array [
   "Bad request",
 ]
 `;
-
-exports[`Image missing in source should set status 404 1`] = `
-Array [
-  "Could not find image",
-]
-`;
