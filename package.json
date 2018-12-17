@@ -39,7 +39,7 @@
     "body-parser": "^1.18.3",
     "codecov": "^3.0.4",
     "jest": "^23.5.0",
-    "jest-express": "1.7.0",
+    "jest-express": "1.9.3",
     "jest-image-snapshot": "^2.4.3",
     "node-exiftool": "^2.3.0",
     "nodemon": "1.18.8",
