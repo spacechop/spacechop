@@ -51,6 +51,7 @@ describe('Headers', () => {
       'grid-no-exif.jpg': 'image/jpeg',
       'animated.gif': 'image/gif',
       'animated.png': 'image/png',
+      'file.svg': 'image/svg+xml',
     };
 
     for (const asset of Object.keys(tests)) {

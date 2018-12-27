@@ -62,6 +62,7 @@ describe('Format', () => {
     png: path.join(assetsFolder, 'grid.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
     webp: path.join(assetsFolder, 'grid.webp'),
+    svg: path.join(assetsFolder, 'file.svg'),
   };
 
 
