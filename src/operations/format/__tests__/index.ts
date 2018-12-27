@@ -99,7 +99,7 @@ describe('Format', () => {
 
         it(`it should have correct type [${toFormat}]`, async () => {
           const meta = await probeImageSize(resultCopies[1]);
-          expect(meta.mime).toBe(`image/${toFormat}`);
+          expect(meta.mime).toBe(`image/${toFormat === 'svg' ? 'svg+xml' : toFormat}`);
         });
       });
     }
