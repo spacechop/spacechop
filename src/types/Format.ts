@@ -5,6 +5,7 @@ const Format = t.Union(
   t.Literal('png'),
   t.Literal('gif'),
   t.Literal('webp'),
+  t.Literal('svg'),
 );
 
 const Mime = t.Union(
@@ -12,6 +13,7 @@ const Mime = t.Union(
   t.Literal('image/png'),
   t.Literal('image/gif'),
   t.Literal('image/webp'),
+  t.Literal('image/svg+xml')
 );
 
 export type Mime = t.Static<typeof Mime>;

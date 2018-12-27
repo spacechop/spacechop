@@ -4,12 +4,14 @@ import isGIF from './gif';
 import isJPEG from './jpeg';
 import isPNG from './png';
 import isWEBP from './webp';
+import isSVG from './svg';
 
 const tests = [
   isGIF,
   isJPEG,
   isPNG,
   isWEBP,
+  isSVG,
 ];
 
 export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolve, reject) => {
