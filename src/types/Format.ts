@@ -24,6 +24,9 @@ export const allMimes = Mime.alternatives.map((f) => f.value);
 
 export const formatToMime = (format: Format): Mime => {
   const typedFormat = Format.check(format);
+  if (typedFormat === 'svg') {
+    return ('image/svg+xml') as Mime;
+  }
   const mime = ('image/' + typedFormat) as Mime;
   return mime;
 };
