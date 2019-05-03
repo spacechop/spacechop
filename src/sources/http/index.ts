@@ -30,7 +30,7 @@ export default class HttpSource implements Source {
 
   public exists(params: {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const uri = buildUri(this.config.root, params);
+      const uri = decodeURIComponent(buildUri(this.config.root, params));
       request.head(uri, (err, res) => {
         if (err) {
           console.error('Communicating with HTTP source failed with following error:');
@@ -45,7 +45,7 @@ export default class HttpSource implements Source {
   }
 
   public stream(params: {}): Stream {
-    const uri = buildUri(this.config.root, params);
+    const uri = decodeURIComponent(buildUri(this.config.root, params));
     return request(uri);
   }
 }
