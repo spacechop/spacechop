@@ -62,6 +62,7 @@ describe('Format', () => {
     png: path.join(assetsFolder, 'grid.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
     webp: path.join(assetsFolder, 'grid.webp'),
+    svg: path.join(assetsFolder, 'file.svg'),
   };
 
 
@@ -98,7 +99,7 @@ describe('Format', () => {
 
         it(`it should have correct type [${toFormat}]`, async () => {
           const meta = await probeImageSize(resultCopies[1]);
-          expect(meta.mime).toBe(`image/${toFormat}`);
+          expect(meta.mime).toBe(`image/${toFormat === 'svg' ? 'svg+xml' : toFormat}`);
         });
       });
     }
