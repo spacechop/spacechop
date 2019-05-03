@@ -37,6 +37,7 @@ mv /bin/facedetect.cpp /usr/share/dlib/app/facedetect.cpp
 mkdir -p /usr/share/dlib/build/
 # mv shape_predictor_68_face_landmarks.dat /bin/shape_predictor_68_face_landmarks.dat
 cd /usr/share/dlib/build
+git checkout v19.17
 cmake \
   -O0 -j3 \
   -D USE_SSE2_INSTRUCTIONS=ON \
@@ -53,8 +54,11 @@ ln -s /usr/share/dlib-build/facedetect /usr/bin/facedetect
 cd /opt/
 git clone https://github.com/mozilla/mozjpeg.git tmp
 cd tmp
-autoreconf -fiv
-./configure -prefix=/opt/mozjpeg
+git checkout 426de82d # 15 Mar 2019
+mkdir build
+cd build
+CMAKE_INSTALL_PREFIX=/opt/mozjpeg cmake ..
+make
 make install
 rm -rf /opt/tmp
 ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozjpeg
@@ -63,6 +67,7 @@ ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozjpeg
 cd /opt
 git clone https://github.com/pornel/giflossy.git tmp
 cd tmp
+git checkout 1.91
 autoreconf -fiv
 ./configure -prefix=/opt/gifsicle
 make install
