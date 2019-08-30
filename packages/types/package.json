@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/spacechop/spacechop#readme",
   "dependencies": {
-    "js-yaml": "~3.13.1",
-    "path-to-regexp": "~2.4.0",
-    "runtypes": "~2.1.6"
+    "js-yaml": "3.13.1",
+    "path-to-regexp": "2.4.0",
+    "runtypes": "4.0.1"
   },
   "devDependencies": {
-    "typescript": "^3.0.1",
-    "@types/node": "^10.11.4"
+    "typescript": "3.5.1",
+    "@types/node": "10.12.10"
   }
 }

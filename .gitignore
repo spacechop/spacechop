@@ -4,3 +4,5 @@ package-lock.json
 .DS_Store
 config.yml
 !examples/config.yml
+coverage
+packages/types/dist
