@@ -1,9 +1,10 @@
 import { createReadStream } from 'fs';
 import path from 'path';
 import toMatchImageSnapshot from '../../test/utils/toMatchImageSnapshot';
-import { ImageDefinition, ImageFaceBox } from '../../types';
+import { ImageDefinition, ImageFaceBox, DefinitionRequirement } from '../../types';
 import { Format } from '../../types/Format';
 import analyze from '../analyze';
+import DefinitionRequirement from '../../types/DefinitionRequirement';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -21,6 +22,9 @@ describe('Analyze', () => {
       animated: boolean,
       lossy?: boolean,
       faces?: ImageFaceBox[],
+      exif?: Partial<{
+        Orientation: number,
+      }>,
     }> = [{
       source: 'grid.jpg',
       alpha: false,
@@ -192,6 +196,32 @@ describe('Analyze', () => {
         width: 52,
         height: 52,
       }],
+    }, {
+      source: 'L3.jpg',
+      alpha: false,
+      interlacing: false,
+      root: assets,
+      type: 'jpeg',
+      width: 100,
+      height: 67,
+      animated: false,
+      lossy: false,
+      exif: expect.objectContaining({
+        Orientation: 3,
+      }),
+    }, {
+      source: 'L7.jpg',
+      alpha: false,
+      interlacing: false,
+      root: assets,
+      type: 'jpeg',
+      width: 67,
+      height: 100,
+      animated: false,
+      lossy: false,
+      exif: expect.objectContaining({
+        Orientation: 7,
+      }),
     }];
 
     // create a test for all file types
@@ -205,6 +235,7 @@ describe('Analyze', () => {
       type,
       root,
       faces,
+      exif,
     } of sources) {
       describe(`analyze ImageDefinition for ${source}`, () => {
         const expected: ImageDefinition = {
@@ -215,11 +246,17 @@ describe('Analyze', () => {
           interlacing,
           animated,
           ...faces && { faces },
+          ...exif && { exif },
         };
         const stream = createReadStream(path.join(__dirname, root, source));
 
         it('should return valid ImageDefinition', async () => {
-          const recieved = await analyze(stream, faces ? ['faces'] : []);
+          const requirements: { [key: number]: DefinitionRequirement } = {
+            ...faces && { 0: 'faces' },
+            ...exif && { 1: 'exif' },
+          };
+
+          const recieved = await analyze(stream, requirements);
           expect(recieved).toEqual(
             expect.objectContaining(expected),
           );

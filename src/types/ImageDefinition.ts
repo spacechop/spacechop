@@ -18,6 +18,10 @@ const ImageDefinition = t.Record({
   animated: t.Boolean,
   size: t.Number,
   lossy: t.Boolean,
+
+  exif: t.Partial({
+    Orientation: t.Number,
+  }),
 }));
 
 export type ImageDefinition = t.Static<typeof ImageDefinition>;
