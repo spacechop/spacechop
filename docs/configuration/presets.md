@@ -228,6 +228,60 @@ presets:
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+## Rotate
+
+Rotates images to the angle specified or auto-rotate to correct orientation, will scale up and crop any bleed after rotation.
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">angle</td>
+      <td style="text-align:left">
+        <td style="text-align:left">
+        <p><b>Type</b>: number | 'auto'</p>
+        <p><b>Default: </b>0</p>
+        <p>-180 - 180 | auto</p>
+      </td>
+      </td>
+    </tr>
+  </tbody>
+</table>### Example
+
+Rotate image to correct orientation.
+
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
+```yaml
+presets:
+  rotate_200x200_auto:
+    steps:
+      - $rotate:
+          angle: auto
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+
+Rotate image, scale up and crop bleed.
+
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
+```yaml
+presets:
+  rotate_200x200_15:
+    steps:
+      - $rotate:
+          angle: 15
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
 ## Format
 
 Changes the format of the image. Conversion is implemented between all of SpaceChops supported formats.
