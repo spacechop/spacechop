@@ -3,6 +3,7 @@ import { DefinitionRequirement, ImageDefinition } from '../types';
 import facedetect from './face-detection/detect';
 import StreamSwitch from './stream-switch';
 import types from './types';
+import exif from './exif';
 
 export default async (
   stream: Stream,
@@ -19,6 +20,10 @@ export default async (
       if (faces.length > 0) {
         info.faces = faces;
       }
+    }
+    if (requirements[i] === 'exif') {
+      const streamToAnalyzeOrientation = streamSwitch.createReadStream();
+      info.exif = await exif(streamToAnalyzeOrientation);
     }
   }
   return {
