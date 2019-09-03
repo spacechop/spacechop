@@ -42,7 +42,7 @@
     "jest-express": "1.7.0",
     "jest-image-snapshot": "2.4.3",
     "node-exiftool": "2.3.0",
-    "nodemon": "1.18.9",
+    "nodemon": "1.19.2",
     "probe-image-size": "4.0.0",
     "react-router": "4.3.1",
     "ts-jest": "23.1.3",
