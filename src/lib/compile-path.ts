@@ -9,7 +9,7 @@ export default (pattern, parameters) => {
     throw new Error('Cant compile path. No pattern provided.');
   }
 
-  if (cache[pattern]) { return cache[pattern](parameters); }
+  if (cache[pattern]) { return decodeURIComponent(cache[pattern](parameters)); }
 
   const toPath = pathToRegexp.compile(pattern);
 
@@ -18,5 +18,5 @@ export default (pattern, parameters) => {
     cacheCount++;
   }
 
-  return toPath(parameters);
+  return decodeURIComponent(toPath(parameters));
 };
