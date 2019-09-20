@@ -37,7 +37,7 @@
     "@types/request": "2.47.1",
     "@types/uuid": "3.4.4",
     "body-parser": "1.18.3",
-    "codecov": "3.0.4",
+    "codecov": "3.6.1",
     "jest": "23.5.0",
     "jest-express": "1.7.0",
     "jest-image-snapshot": "2.4.3",
