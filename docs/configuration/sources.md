@@ -54,6 +54,22 @@ sources:
       bucket_name: 'my-bucket'
       path: 'originals/:image'
 ```
+
+### Example ([minio](https://min.io/))
+```yaml
+sources:
+  - s3:
+      access_key_id: 'xxxx'
+      secret_access_key: 'yyy'
+      region: 'us-east-1'
+      bucket_name: 'my-bucket'
+      path: '/originals/:image'
+      endpoint: "http://localhost:9000"
+      sslDisabled: true
+      signatureVersion: "v4"
+      s3ForcePathStyle: true
+```
+
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
@@ -124,6 +140,33 @@ sources:
         <p></p>
         <p><b>Type: </b>string</p>
         <p><b>Default: </b>derived from bucket_name and region, as per AWS standard.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">sslDisabled</td>
+      <td style="text-align:left">
+        <p>Disable SSL validation (useful when using a local S3 compatible server, minio)</p>
+        <p></p>
+        <p><b>Type: </b>boolean</p>
+        <p><b>Default: </b>false</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">signatureVersion</td>
+      <td style="text-align:left">
+        <p>S3 Signature Version (useful when using a local S3 compatible server, like minio)</p>
+        <p></p>
+        <p><b>Type: </b>string</p>
+        <p><b>Default: </b>defaults to AWS SDK internal default value for this setting</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">s3ForcePathStyle</td>
+      <td style="text-align:left">
+        <p>S3 force path style (useful when using a local S3 compatible server, like minio)</p>
+        <p></p>
+        <p><b>Type: </b>string</p>
+        <p><b>Default: </b>defaults to AWS SDK internal default value for this setting</p>
       </td>
     </tr>
   </tbody>
