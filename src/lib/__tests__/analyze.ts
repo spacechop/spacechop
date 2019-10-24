@@ -107,6 +107,15 @@ describe('Analyze', () => {
       height: 100,
       animated: false,
     }, {
+      source: 'grid.heic',
+      alpha: false,
+      interlacing: false,
+      root: assets,
+      type: 'heic',
+      width: 100,
+      height: 100,
+      animated: false,
+    }, {
       source: 'grid-lossy.webp',
       alpha: false,
       interlacing: false,
@@ -272,6 +281,12 @@ describe('Analyze', () => {
       root: string,
     }> = [{
       source: 'zero-byte-file',
+      root: assets,
+    }, {
+      source: 'text-file.txt',
+      root: assets,
+    }, {
+      source: 'corrupted.png',
       root: assets,
     }];
 

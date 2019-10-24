@@ -1,11 +1,11 @@
 import path from 'path';
-import probeImageSize from 'probe-image-size';
 import { PassThrough } from 'stream';
 import Format from '..';
 import createTransformedStream from '../../../test/utils/createTransformedStream';
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import { ImageDefinition } from './../../../types';
 import { allFormats } from './../../../types/Format';
+import identify from '../../../lib/types';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -44,10 +44,10 @@ describe('Format', () => {
   });
 
   describe('Command', () => {
-    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg'};
+    const defaultState: ImageDefinition = { height: 400, width: 400, type: 'jpeg' };
 
     it('should use width & height', () => {
-      const op = new Format({ type: 'png'});
+      const op = new Format({ type: 'png' });
       const { command } = op.execute(defaultState);
       expect(command).toEqual(expect.stringMatching(/png:-/));
     });
@@ -62,6 +62,7 @@ describe('Format', () => {
     png: path.join(assetsFolder, 'grid.png'),
     gif: path.join(assetsFolder, 'grid.gif'),
     webp: path.join(assetsFolder, 'grid.webp'),
+    heic: path.join(assetsFolder, 'grid.heic'),
   };
 
 
@@ -97,8 +98,8 @@ describe('Format', () => {
         });
 
         it(`it should have correct type [${toFormat}]`, async () => {
-          const meta = await probeImageSize(resultCopies[1]);
-          expect(meta.mime).toBe(`image/${toFormat}`);
+          const meta = await identify(resultCopies[1]);
+          expect(meta.type).toBe(toFormat);
         });
       });
     }

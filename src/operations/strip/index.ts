@@ -33,7 +33,7 @@ export default class Strip implements Operation {
   }
 
   public execute(state: ImageDefinition): { command: string, state: ImageDefinition } {
-    const options = exiftoolOptions(this.config);
+    const options = state.type === 'heic' ? ['cat'] : exiftoolOptions(this.config);
     return {
       state: transformState(this.config, state),
       command: options.join(' '),

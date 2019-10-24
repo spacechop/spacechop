@@ -36,7 +36,7 @@ describe('Strip', () => {
     // create a test for all file types
     for (const type of allFormats) {
       // XXX add source for webp and remove this if statement.
-      if (type !== 'webp') {
+      if (!['webp', 'heic'].includes(type)) {
         it(`should strip exif from ${type}`, async () => {
           // create operation with config.
           const operation = new Strip({ ...defaultConfig });

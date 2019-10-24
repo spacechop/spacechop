@@ -16,14 +16,14 @@ import { ImageDefinition } from '../../types';
  * 1A  A byte that stops display of the file under DOS when the command type has been used—the end-of-file character
  * 0A  A Unix-style line ending (LF) to detect Unix-DOS line ending conversion.
  */
-export default (buffer): ImageDefinition => {
+export default (buffer: Buffer): ImageDefinition => {
   if (buffer.length < 16 ||
-      buffer[0] !== 0x89 ||
-      // PNG
-      buffer[1] !== 0x50 || buffer[2] !== 0x4E || buffer[3] !== 0x47 ||
-      // \r\n
-      buffer[4] !== 0x0D || buffer[5] !== 0x0A ||
-      buffer[6] !== 0x1A || buffer[7] !== 0x0A) {
+    buffer[0] !== 0x89 ||
+    // PNG
+    buffer[1] !== 0x50 || buffer[2] !== 0x4E || buffer[3] !== 0x47 ||
+    // \r\n
+    buffer[4] !== 0x0D || buffer[5] !== 0x0A ||
+    buffer[6] !== 0x1A || buffer[7] !== 0x0A) {
     return;
   }
   // Length  Chunk type  Chunk data  CRC

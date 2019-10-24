@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Analyze Bad files analyze ImageDefinition for corrupted.png should reject 1`] = `"Unsupported type"`;
+
+exports[`Analyze Bad files analyze ImageDefinition for text-file.txt should reject 1`] = `"Unsupported type"`;
+
 exports[`Analyze Bad files analyze ImageDefinition for zero-byte-file should reject 1`] = `"Unsupported type"`;

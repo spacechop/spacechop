@@ -20,7 +20,7 @@ export const mozjpegOptions = (config: CompressConfig, state: ImageDefinition): 
     '-',
     '-sampling-factor',
     '4:2:0',
-    '-strip',
+    // '-strip',
     `-quality ${config.quality}`,
     ...shouldInterlace(state) ? ['-interlace', 'JPEG'] : [],
     '-colorspace',
@@ -96,6 +96,10 @@ export default class Compress implements Operation {
 
       case 'webp':
         options = magickOptions(this.config, state);
+        break;
+
+      case 'heic':
+        options = ['cat']; // passing through, heic is a compressed format.
         break;
     }
 
