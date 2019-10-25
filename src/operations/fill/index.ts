@@ -39,7 +39,7 @@ export const magickOptions = (config: FillConfig, state: ImageDefinition): strin
     '-',
     `-resize ${config.width}x${config.height}^`,
     `-gravity ${magickGravityMap[gravity]}`,
-    `-extent ${config.width}x${config.height}${offset}`,
+    `-crop ${config.width}x${config.height}${offset}`,
     `${state.type}:-`,
   ];
 };

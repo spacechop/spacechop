@@ -9,6 +9,7 @@ import createTransformedStream from '../../../test/utils/createTransformedStream
 import toMatchImageSnapshot from '../../../test/utils/toMatchImageSnapshot';
 import { CompressConfig } from '../types';
 import { allFormats } from './../../../types/Format';
+import identify from '../../../lib/types';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -29,6 +30,7 @@ describe('Compress', () => {
     png: path.join(__dirname, assets, 'grid.png'),
     gif: path.join(__dirname, assets, 'grid.gif'),
     webp: path.join(__dirname, assets, 'grid.webp'),
+    heic: path.join(__dirname, assets, 'grid.heic'),
   };
 
   // create a test for all file types
@@ -65,13 +67,13 @@ describe('Compress', () => {
 
       it('should be smaller in size than source', async () => {
         const size = await countStreamBytes(resultCopies[1]);
-        expect(size).toBeLessThan(stats.size);
+        expect(size).toBeLessThanOrEqual(stats.size);
       });
 
       it('should match source mime', async () => {
         // measure mime type and image size to match source.
-        const meta = await probeImageSize(resultCopies[2]);
-        expect(meta.mime).toBe(`image/${state.type}`);
+        const meta = await identify(resultCopies[2]);
+        expect(meta.type).toBe(state.type);
       });
     });
   }

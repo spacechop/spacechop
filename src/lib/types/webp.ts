@@ -26,7 +26,7 @@ import { ImageDefinition } from '../../types';
 // const ANMF = new Uint8Array([
 //   0x41, 0x4e, 0x4d, 0x46,
 // ]);
-export default (buffer): ImageDefinition => {
+export default (buffer: Buffer): ImageDefinition => {
   if (buffer.length < 12 ||
     buffer.slice(0, 4).toString() !== 'RIFF' ||
     buffer.slice(8, 12).toString() !== 'WEBP') {

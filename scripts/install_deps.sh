@@ -4,7 +4,11 @@ apk update
 apk upgrade
 
 # Install dependencies.
-apk add --no-cache imagemagick openblas
+apk add --no-cache zlib-dev libpng-dev libjpeg-turbo-dev freetype-dev fontconfig-dev \
+	perl-dev ghostscript-dev libwebp-dev libtool tiff-dev lcms2-dev \
+	libwebp-dev libxml2-dev librsvg-dev libx11-dev libxext-dev chrpath \
+	libheif-dev --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+apk add --no-cache openblas
 
 # Install build dependencies.
 apk --no-cache add -t .build-deps \
@@ -25,7 +29,53 @@ apk --no-cache add -t .build-deps \
   nasm \
   pkgconf \
   openblas-dev
-  clang
+  # clang
+
+# imagemagick with heic support
+cd /tmp
+git clone https://github.com/strukturag/libde265.git 
+git clone https://github.com/strukturag/libheif.git 
+cd libde265/
+./autogen.sh
+./configure
+make
+make install
+cd ../libheif/
+./autogen.sh
+./configure
+make
+make install
+cd ..
+curl -O https://www.imagemagick.org/download/ImageMagick.tar.gz 
+tar xf ImageMagick.tar.gz 
+cd ImageMagick-7*
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --mandir=/usr/share/man \
+  --infodir=/usr/share/info \
+  --with-threads \
+  --enable-shared \
+  --enable-static \
+  --with-tiff \
+  --with-png=yes \
+  --with-webp=yes \
+  --with-heic=yes \
+  --without-gslib \
+  --with-gs-font-dir=/usr/share/fonts/Type1 \
+  --with-modules \
+  --without-fftw \
+  --without-pango \
+  --without-x \
+  --without-wmf \
+  --enable-openmp \
+  --with-xml \
+  --with-perl \
+  --with-perl-options="PREFIX=/usr INSTALLDIRS=vendor" \
+  CC=clang CXX=clang++
+make
+make install
+ldconfig
 
 # Custom dlib face detection with landmarks (facedetect).
 git clone https://github.com/davisking/dlib.git /usr/share/dlib
