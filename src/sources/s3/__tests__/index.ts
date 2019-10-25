@@ -1,4 +1,6 @@
 import { Readable } from 'stream';
+import Http from 'http';
+import Https from 'https';
 import { S3SourceConfig } from '../types';
 import S3Source from './../index';
 
@@ -8,19 +10,20 @@ const mocks = {
 };
 
 jest.mock('aws-sdk', () => ({
-  S3: jest.fn().mockImplementation(() => ({
+  S3: jest.fn().mockImplementation(args => ({
     headObject: mocks.headObject,
     getObject: jest.fn(() => ({
       createReadStream: jest.fn(() => {
-        const { PassThrough } =  require('stream');
+        const { PassThrough } = require('stream');
         return new PassThrough();
       }),
     })),
+    config: args
   })),
   Endpoint: jest.fn().mockImplementation(
     (...args) => mocks.Endpoint(...args),
   ),
-  config: { update: jest.fn() },
+  config: { update: jest.fn() }
 }));
 
 const defaultConfig: S3SourceConfig = {
@@ -73,6 +76,18 @@ describe('S3 source', () => {
       // console.log(source);
       const result = await source.stream({ image: 'hej' });
       expect(result).toBeInstanceOf(Readable);
+    });
+  });
+
+  describe('.agent', () => {
+    it('should utilize the http agent when ssl is disabled', async () => {
+      const source = new S3Source({ ...defaultConfig, sslDisabled: true });
+      expect(source.S3.config.httpOptions.agent.protocol).toBe('http:');
+    });
+
+    it('should utilize the https agent when ssl is enabled', async () => {
+      const source = new S3Source({ ...defaultConfig });
+      expect(source.S3.config.httpOptions.agent.protocol).toBe('https:');
     });
   });
 

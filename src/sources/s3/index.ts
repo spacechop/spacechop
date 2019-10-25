@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import Http from 'http';
 import Https from 'https';
 import { Stream } from 'stream';
 import compilePath from '../../lib/compile-path';
@@ -6,17 +7,11 @@ import hashKey from '../../lib/hashKey';
 import Source from '../source';
 import { S3SourceConfig } from './types';
 
-const agent = new Https.Agent({
+const AgentOptions = {
   keepAlive: true,
   keepAliveMsecs: 3000,
-  maxSockets: 100,
-});
-
-AWS.config.update({
-  httpOptions: {
-    agent,
-  },
-});
+  maxSockets: 100
+};
 
 export default class S3Source implements Source {
   public S3: any;
@@ -35,6 +30,14 @@ export default class S3Source implements Source {
       secretAccessKey: config.secret_access_key,
       region: config.region,
       endpoint,
+      s3ForcePathStyle: config.s3ForcePathStyle,
+      signatureVersion: config.signatureVersion,
+      sslEnabled: !config.sslDisabled,
+      httpOptions: {
+        agent: config.sslDisabled
+          ? new Http.Agent(AgentOptions)
+          : new Https.Agent(AgentOptions)
+      }
     });
 
     this.bucketName = config.bucket_name;
@@ -49,7 +52,7 @@ export default class S3Source implements Source {
     const Key = compilePath(this.config.path, params);
     const Bucket = this.config.bucket_name;
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const query = {
         Bucket,
         Key,
