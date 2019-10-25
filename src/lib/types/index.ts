@@ -4,28 +4,27 @@ import isGIF from './gif';
 import isJPEG from './jpeg';
 import isPNG from './png';
 import isWEBP from './webp';
+import isOther from './other';
+import streamToBuffer from '../streamToBuffer';
 
 const tests = [
   isGIF,
   isJPEG,
   isPNG,
   isWEBP,
+  isOther,
 ];
 
-export default (stream: Stream): Promise<ImageDefinition> => new Promise((resolve, reject) => {
-  const chunks = [];
-  stream.on('data', (chunk) => {
-    chunks.push(chunk);
-  });
-  stream.on('end', async () => {
-    const buffer = Buffer.concat(chunks);
+export default (stream: Stream): Promise<ImageDefinition> => new Promise(async (resolve, reject) => {
+  try {
+    const buffer = await streamToBuffer(stream);
     for (const test of tests) {
-      const result: ImageDefinition = test(buffer);
+      const result: ImageDefinition = await test(buffer);
       if (result) {
         resolve(result);
-        break;
+        return;
       }
     }
-    reject('Unsupported type');
-  });
+  } catch { }
+  reject('Unsupported type');
 });

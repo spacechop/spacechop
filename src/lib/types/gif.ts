@@ -23,7 +23,7 @@ import { ImageDefinition } from '../../types';
  *          1 bytes  <Trailer> (0x3b)
  * *
  */
-export default (buffer): ImageDefinition => {
+export default (buffer: Buffer): ImageDefinition => {
   const BLOCK_TERMINATOR = 0x00;
   const EXTENSION_INTRODUCER = 0x21;
   const GRAPHIC_CONTROL_LABEL = 0xf9;
@@ -31,10 +31,10 @@ export default (buffer): ImageDefinition => {
   const IMAGE_SEPARATOR = 0x2c;
   const INTERLACE_FLAG = 0x64;
   if (buffer.length < 13 ||
-      // "GIF" 0x47 0x49 0x46
-      buffer[0] !== 0x47 || buffer[1] !== 0x49 || buffer[2] !== 0x46 ||
-      // "87a" or "89a"
-      buffer[3] !== 0x38 || (buffer[4] !== 0x39 && buffer[4] !== 0x37) || buffer[5] !== 0x61) {
+    // "GIF" 0x47 0x49 0x46
+    buffer[0] !== 0x47 || buffer[1] !== 0x49 || buffer[2] !== 0x46 ||
+    // "87a" or "89a"
+    buffer[3] !== 0x38 || (buffer[4] !== 0x39 && buffer[4] !== 0x37) || buffer[5] !== 0x61) {
     return;
   }
   const width = buffer.readUInt16LE(6);
@@ -50,8 +50,8 @@ export default (buffer): ImageDefinition => {
     for (let i = 14; i < buffer.length; i++) {
       // BLOCK_TERMINATOR
       if (buffer[i] === BLOCK_TERMINATOR &&
-          buffer[i + 1] === EXTENSION_INTRODUCER &&
-          buffer[i + 2] === GRAPHIC_CONTROL_LABEL) {
+        buffer[i + 1] === EXTENSION_INTRODUCER &&
+        buffer[i + 2] === GRAPHIC_CONTROL_LABEL) {
         frames++;
         alpha = !!(buffer[i + 4] & TRANSPARENT_COLOR_FLAG); // tslint:disable-line
         if (frames > 1) {

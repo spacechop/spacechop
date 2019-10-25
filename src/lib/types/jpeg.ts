@@ -1,6 +1,6 @@
 import { ImageDefinition } from '../../types';
 
-export default (buffer): ImageDefinition => {
+export default (buffer: Buffer): ImageDefinition => {
   if (buffer.length < 3 ||
     buffer[0] !== 255 ||
     buffer[1] !== 216 ||

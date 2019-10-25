@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should validate format config should throw on invalid config require type 1`] = `"Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\") | { from_path: string; }, but was undefined"`;
+exports[`should validate format config should throw on invalid config require type 1`] = `"Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\" | \\"heic\\") | { from_path: string; }, but was undefined"`;
 
-exports[`should validate format config should throw on invalid config require valid format type 1`] = `"Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\") | { from_path: string; }, but was string"`;
+exports[`should validate format config should throw on invalid config require valid format type 1`] = `"Expected (\\"jpeg\\" | \\"png\\" | \\"gif\\" | \\"webp\\" | \\"heic\\") | { from_path: string; }, but was string"`;
