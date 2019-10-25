@@ -37,7 +37,9 @@ sources:
       </td>
     </tr>
   </tbody>
-</table>## S3 Source
+</table>
+
+## S3 Source
 
 The S3 sources fetches original images from a S3 bucket. Can also be used for Digital Ocean spaces, by changing the endpoint.
 
