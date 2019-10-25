@@ -13,6 +13,7 @@ sources:
   - http:
       root: https://example.com/assets/:image
 ```
+
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
@@ -172,7 +173,9 @@ sources:
       </td>
     </tr>
   </tbody>
-</table>{% hint style="info" %}
+</table>
+
+{% hint style="info" %}
 Avoid using forward slash in **path**, it will create unnamed folders.
 {% endhint %}
 
