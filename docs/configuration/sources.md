@@ -13,7 +13,6 @@ sources:
   - http:
       root: https://example.com/assets/:image
 ```
-
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
@@ -57,8 +56,13 @@ sources:
       bucket_name: 'my-bucket'
       path: 'originals/:image'
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Example ([minio](https://min.io/))
+
+{% code-tabs %}
+{% code-tabs-item title="config.yml" %}
 ```yaml
 sources:
   - s3:
@@ -72,7 +76,6 @@ sources:
       signatureVersion: "v4"
       s3ForcePathStyle: true
 ```
-
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
