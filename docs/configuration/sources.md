@@ -70,7 +70,7 @@ sources:
       secret_access_key: 'yyy'
       region: 'us-east-1'
       bucket_name: 'my-bucket'
-      path: '/originals/:image'
+      path: 'originals/:image'
       endpoint: "http://localhost:9000"
       sslDisabled: true
       signatureVersion: "v4"
