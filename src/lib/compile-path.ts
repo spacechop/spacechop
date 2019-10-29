@@ -9,7 +9,10 @@ export default (pattern, parameters) => {
     throw new Error('Cant compile path. No pattern provided.');
   }
 
-  if (cache[pattern]) { return cache[pattern](parameters); }
+  if (cache[pattern]) {
+    return cache[pattern](parameters)
+      .replace(/%2F/g, '/'); // Support folders in s3 dynamically from the path.
+  }
 
   const toPath = pathToRegexp.compile(pattern);
 
@@ -18,5 +21,6 @@ export default (pattern, parameters) => {
     cacheCount++;
   }
 
-  return toPath(parameters);
+  return toPath(parameters)
+    .replace(/%2F/g, '/'); // Support folders in s3 dynamically from the path.
 };
