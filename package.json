@@ -24,7 +24,7 @@
     "path-to-regexp": "2.4.0",
     "prom-client": "11.2.0",
     "request": "2.88.0",
-    "runtypes": "4.0.1",
+    "runtypes": "4.1.0",
     "uuid": "3.3.2",
     "winston": "3.1.0",
     "winston-daily-rotate-file": "3.5.2"
