@@ -25,7 +25,7 @@
     "prom-client": "11.2.0",
     "request": "2.88.0",
     "runtypes": "4.0.1",
-    "uuid": "3.3.2",
+    "uuid": "7.0.1",
     "winston": "3.1.0",
     "winston-daily-rotate-file": "3.5.2"
   },
