@@ -35,7 +35,7 @@
     "@types/jest": "24.0.19",
     "@types/node": "10.12.10",
     "@types/request": "2.47.1",
-    "@types/uuid": "3.4.4",
+    "@types/uuid": "7.0.3",
     "body-parser": "1.18.3",
     "codecov": "3.0.4",
     "jest": "23.5.0",
