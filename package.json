@@ -40,7 +40,7 @@
     "codecov": "3.0.4",
     "jest": "23.5.0",
     "jest-express": "1.7.0",
-    "jest-image-snapshot": "2.4.3",
+    "jest-image-snapshot": "4.0.0",
     "node-exiftool": "2.3.0",
     "nodemon": "1.19.2",
     "react-router": "4.3.1",
